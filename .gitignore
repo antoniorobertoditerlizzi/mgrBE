@@ -4,6 +4,23 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# Ignora tutti i file .log
+logs/
+logs/*
+*.log
+*.gz
+app.log
+!**/logs/*
+!**/logs/
+
+# Ignora le directory build e dist
+build/
+dist/
+
+# Ignora tutti i file temporanei
+temp/*
+
+
 ### STS ###
 .apt_generated
 .classpath
