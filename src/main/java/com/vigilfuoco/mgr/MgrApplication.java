@@ -14,7 +14,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 @SpringBootApplication
 @EnableSwagger2 					//http://localhost:8080/swagger-ui/  -  http://localhost:8080/v2/api-docs
 @EnableJpaRepositories(basePackages = {
-	    "com.vigilfuoco.mgr.repository"	
+	    "com.vigilfuoco.mgr.repository"
 })
 @EntityScan(basePackages = {
 	    "com.vigilfuoco.mgr.model",

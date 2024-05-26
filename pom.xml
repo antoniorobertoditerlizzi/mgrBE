@@ -95,9 +95,13 @@
 			 <artifactId>springfox-boot-starter</artifactId>
 			 <version>3.0.0</version>
 		</dependency>
-
-
 		
+		<!-- SPRING SECURITY -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+				
 	</dependencies>
 
 	<build>

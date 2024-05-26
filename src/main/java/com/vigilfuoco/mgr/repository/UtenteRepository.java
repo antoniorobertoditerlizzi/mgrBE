@@ -3,6 +3,8 @@ package com.vigilfuoco.mgr.repository;
 
 import com.vigilfuoco.mgr.model.Utente;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,14 +18,13 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository
-public interface UtenteWAUCRepository extends JpaRepository<Utente, Long> {
+public interface UtenteRepository extends JpaRepository<Utente, Long> {
 
-	//List<Utente> findByDescrizione(String descrizione);
-	
-    
+	List<Utente> findByAccountDipvvf(String accountDipvvf);
+	    
     //Query
-	//@Query(value = "SELECT * FROM UTENTE WHERE descrizione LIKE :ds", nativeQuery = true)
-	//List<Utente> SelByDescrizioneLike(@Param("ds") String ds);
+	/*@Query(value = "SELECT * FROM Utente WHERE accountDipvvf LIKE :ds", nativeQuery = true)
+	List<Utente> SelByAccountDipvvfLike(@Param("accountDipvvf") String accounDipvvf);*/
 	
 	
 	//Query JPQL
