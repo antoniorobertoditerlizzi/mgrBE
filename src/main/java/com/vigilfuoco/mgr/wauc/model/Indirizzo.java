@@ -1,28 +1,17 @@
 package com.vigilfuoco.mgr.wauc.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
 
-@Entity
 public class Indirizzo {
 
-    @Column(nullable = false)
     private String indirizzo;
 
-    @Column(nullable = false)
     private String cap;
 
-    @Column(nullable = false)
     private String comune;
 
-    @Id
-    @Column(nullable = false)
     private String codIstat;
 
-    @Column(nullable = false)
     private String provincia;
-
 
 	public String getIndirizzo() {
 		return indirizzo;

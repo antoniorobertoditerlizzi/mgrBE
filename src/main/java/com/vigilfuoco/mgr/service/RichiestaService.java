@@ -6,8 +6,10 @@ import org.springframework.stereotype.Service;
 import com.vigilfuoco.mgr.model.Richiesta;
 import com.vigilfuoco.mgr.repository.RichiestaRepository;
 
-//Logica di Business
-
+/* 
+ * Logica di Business. Dettaglio della logica del singolo servizio.
+ * 
+ */
 	@Service
 	public class RichiestaService {
 

@@ -5,12 +5,20 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vigilfuoco.mgr.wauc.model.UtenteWAUC;
+
 @Configuration
 @EnableConfigurationProperties(DataSourceProperties.class)
 public class Utility {
-	/* Autoconfigurazione delle connessioni al DB tramite DataSourceProperties e 
+	
+	/* 
+	 * Autoconfigurazione delle connessioni al DB tramite DataSourceProperties e 
 	 * variabili definite nell'application.properties
+	 * 
 	 */
+	
     @Value("${spring.datasource.url}")
     private String jdbcUrl;
 
@@ -28,4 +36,5 @@ public class Utility {
         dataSource.setPassword(password);
         return dataSource;
     }*/
+    
 }

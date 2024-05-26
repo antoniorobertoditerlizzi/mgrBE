@@ -1,31 +1,16 @@
 package com.vigilfuoco.mgr.wauc.model;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 
-
-@Entity
 public class Qualifica {
 
-    @Column(nullable = false)
     private String nome;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "gruppo_id")
     private Gruppo gruppo;
     
-    @Column(nullable = false)
     private String codSettore;
 
-    @Id
-    @Column(nullable = false)
     private String codice;
 
-    @Column(nullable = false)
     private String descrizione;
 
 	public String getNome() {

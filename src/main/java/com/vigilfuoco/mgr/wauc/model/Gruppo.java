@@ -1,17 +1,10 @@
 package com.vigilfuoco.mgr.wauc.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
 
-
-@Entity
 public class Gruppo {
-	@Id
-    @Column(nullable = false)
+
     private String codice;
     
-    @Column(nullable = false)
     private String descrizione;
 
 	public String getCodice() {
@@ -34,7 +27,6 @@ public class Gruppo {
 	public String toString() {
 		return "Gruppo [codice=" + codice + ", descrizione=" + descrizione + "]";
 	}
-
 
 
 }

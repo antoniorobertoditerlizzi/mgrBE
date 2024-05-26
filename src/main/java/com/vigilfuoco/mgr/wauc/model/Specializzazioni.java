@@ -1,25 +1,13 @@
 package com.vigilfuoco.mgr.wauc.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
-
-
-@Entity
 public class Specializzazioni {
 
-	@Id
-    @Column(nullable = false)
     private String codice;
 
-    @Column(nullable = false)
     private String descrizione;
 
-    @Column(nullable = false)
     private String dataInizioValidita;
 
-    @Column(nullable = false)
     private String dataFineValidita;
 
 	public String getCodice() {
@@ -61,6 +49,4 @@ public class Specializzazioni {
 	}
 
 	
-
-
 }

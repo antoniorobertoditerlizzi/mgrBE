@@ -8,6 +8,10 @@ import java.net.URL;
 
 import org.springframework.stereotype.Component;
 
+/* 
+ * Utility di chiamata alle API esterne di Utente Comune ricavando il json con tutti i dati utente.
+ * 
+ */
 @Component
 public class ExternalAPIClient {
 

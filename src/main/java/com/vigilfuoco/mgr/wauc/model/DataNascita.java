@@ -1,24 +1,14 @@
 package com.vigilfuoco.mgr.wauc.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
 
-
-@Entity
 public class DataNascita {
 
-    @Column(nullable = false)
     private String data;
 
-    @Column(nullable = false)
     private String comune;
 
-    @Id
-    @Column(nullable = false)
     private String codIstat;
 
-    @Column(nullable = false)
     private String provincia;
 
 

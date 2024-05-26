@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/* 
+ * Definizione di tutte le API che contraddistinguono la Richiesta
+ * 
+ */
+
 @RestController
 @RequestMapping("/api/richiesta/")
 @CrossOrigin(origins = "http://localhost:3000") // URL del frontend React
@@ -26,7 +31,7 @@ public class RichiestaController {
     @Autowired
     private RichiestaRepository repository;
 	
-	// Ricerca per id richiesta ------------------------------------ /api/richiesta/id/2
+	// API Ricerca per id richiesta ------------------------------------ /api/richiesta/id/2
 	@RequestMapping(value = "/id/{id}", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<Optional<Richiesta>> ricercaPerId(@PathVariable("id") Long id)
 	
@@ -39,7 +44,7 @@ public class RichiestaController {
 	}
 	
 	
-	// Ricerca per descrizione ------------------------------------ /api/richiesta/cerca/prima richiesta
+	// API Ricerca per descrizione ------------------------------------ /api/richiesta/cerca/prima richiesta
 	@RequestMapping(value = "/cerca/{descrizione}", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<List<Richiesta>> ricercaDescrizione(@PathVariable("descrizione") String descrizione)
 	
@@ -53,7 +58,7 @@ public class RichiestaController {
 
 	
 	
-	// Ricerca tutte le richieste ------------------------------------
+	// API Ricerca tutte le richieste ------------------------------------
 	@RequestMapping(value = "/all", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<Iterable<Richiesta>> listaCompleta()
 			
@@ -71,7 +76,7 @@ public class RichiestaController {
 		return new ResponseEntity<Iterable<Richiesta>>(res, HttpStatus.OK);
 	}
 	 
-	// Test 1-------------------
+	// API Test 1-------------------
 	@RequestMapping(value = "/api/richiesta/ciao", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<String> helloWorld()  
 	{
@@ -79,7 +84,7 @@ public class RichiestaController {
 		return new ResponseEntity<String>("\"ciao\"", HttpStatus.OK);
 	}
 	
-	// Test 2-------------------
+	// API Test 2-------------------
     @GetMapping("/test")
     public String testRequest() {
 		logger.debug("Ingresso api /api/richiesta/test");
@@ -87,7 +92,7 @@ public class RichiestaController {
         return "TEST";
     }
     
-	// Salva Richiesta a DB ----------------
+	// API Salva Richiesta a DB ----------------
     @PostMapping("/save")
     public Richiesta createRequest(@RequestBody Richiesta request) {
 		logger.debug("Ingresso api /api/richiesta/save");
