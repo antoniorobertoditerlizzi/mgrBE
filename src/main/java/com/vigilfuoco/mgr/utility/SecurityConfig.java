@@ -2,8 +2,6 @@ package com.vigilfuoco.mgr.utility;
 
 import java.util.Arrays;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -13,6 +11,7 @@ import org.springframework.web.cors.CorsConfiguration;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -32,15 +31,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         //Gestire le autorizzazioni agli accessi dei singoli endpoint
         http.authorizeRequests()
-            .antMatchers("/api/utente/login").permitAll() // Allow login without authentication
-            .antMatchers("/api/utente/accounts").hasRole("ADMIN") // Admin-only access for accounts
-            .antMatchers("/api/richiesta/id/**").authenticated() // Require authentication for all endpoints
+        	.antMatchers("/login", "/logout").permitAll() // Permetto a tutti l'accesso all'invocazione delle api di login e logout
+            .antMatchers("/api/utente/login").permitAll() // Accesso a tutti senza autenticazione
+            .antMatchers("/api/utente/accounts").hasRole("ADMIN") // Accesso endpoint solo da ADMIN user
+            .antMatchers("/api/adminpanel/").hasRole("ADMIN") // L'Admin vedrà tutto cio che c'è dopo l'admin panel url
+            .antMatchers("/api/richiesta/id/**").authenticated() // Richiesta di autenticazione per tutti gli endpoints
             .antMatchers("/api/richiesta/cerca/**", "/api/richiesta/all", "/api/richiesta/save", "/api/richiesta/ciao", "/api/richiesta/test").hasAnyRole("USER", "ADMIN")
-            .anyRequest().denyAll() // Deny all other requests by default
+            .anyRequest().authenticated() // Nega tutte le altre richieste
         .and()
-        .formLogin()
+        .formLogin().disable() //Disabilito pagina login di default di spring security dato che abbiamo frontend in REACT
+        .logout().disable()	   //Disabilito pagina logout di default di spring security dato che abbiamo frontend in REACT
+        .exceptionHandling().accessDeniedPage("/403") 
         .and()
         .httpBasic(); 
     }
 
+    
 }

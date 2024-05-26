@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -45,9 +46,24 @@ import com.vigilfuoco.mgr.wauc.model.UtenteWAUC;
 	    		  if (request.getAccountDipvvf() != null) {
 	    			  utente.setAccountDipvvf(request.getAccountDipvvf());
 	    			  utente.setEmailVigilfuoco(request.getEmailVigilfuoco());
+	    			  utente.setUsername(request.getAccountDipvvf());
+	    			  utente.setPassword(bcrypt(request.getAccountDipvvf()));
+	    			  utente.setRole("ROLE_ADMIN");
+	    			  utente.setEnabled(true);
 	    		  }
 	    	//Salvo a DB l'utente trovato
 	        return utenteWAUCRepository2.save(utente);
+	    }
+	    
+	    public String bcrypt(String password) {
+	    	/**
+	    	 * BCrypt: Include una funzione di crypt che aumenta la sicurezza e rende più difficile il calcolo di hash simili da password diverse. Inoltre, è configurabile con un parametro di costo che regola la forza di hash.
+	 		 * SHA-256 o 512: Più indicato per i digest dei messaggi e i controlli di integrità dei file. il BCript offre una sicurezza superiore per le password.
+			 * MD5: Non include una funzione di crypt integrata ed è vulnerabile a collisioni.
+			 * 
+			 * */
+	         String hash = BCrypt.hashpw(password, BCrypt.gensalt());
+	         return hash;
 	    }
 	    
 	}
