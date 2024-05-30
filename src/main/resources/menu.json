@@ -1,0 +1,134 @@
+{
+    "id_menu": 1,
+    "json_menu": [
+        {
+            "id_ruolo": 1,
+            "voce_menu": {
+                "home": {
+                    "titolo": "Home",
+                    "url": "/"
+                },
+                "voce_menu1": {
+                    "titolo": "Voce Menu 1",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 1.1",
+                            "url": "/voce_menu1/sottovoce1.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 1.2",
+                            "url": "/voce_menu1/sottovoce1.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 1.3",
+                            "url": "/voce_menu1/sottovoce1.3"
+                        }
+                    ]
+                },
+                "voce_menu2": {
+                    "titolo": "Voce Menu 2",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 2.1",
+                            "url": "/voce_menu2/sottovoce2.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 2.2",
+                            "url": "/voce_menu2/sottovoce2.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 2.3",
+                            "url": "/voce_menu2/sottovoce2.3"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id_ruolo": 2,
+            "voce_menu": {
+                "home": {
+                    "titolo": "Home",
+                    "url": "/"
+                },
+                "voce_menu3": {
+                    "titolo": "Voce Menu 3",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 3.1",
+                            "url": "/voce_menu3/sottovoce3.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 3.2",
+                            "url": "/voce_menu3/sottovoce3.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 3.3",
+                            "url": "/voce_menu3/sottovoce3.3"
+                        }
+                    ]
+                },
+                "voce_menu4": {
+                    "titolo": "Voce Menu 4",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 4.1",
+                            "url": "/voce_menu4/sottovoce4.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 4.2",
+                            "url": "/voce_menu4/sottovoce4.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 4.3",
+                            "url": "/voce_menu4/sottovoce4.3"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id_ruolo": 6,
+            "voce_menu": {
+                "home": {
+                    "titolo": "Home",
+                    "url": "/"
+                },
+                "voce_menu6": {
+                    "titolo": "Voce Menu 6",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 6.1",
+                            "url": "/voce_menu6/sottovoce6.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 6.2",
+                            "url": "/voce_menu6/sottovoce6.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 6.3",
+                            "url": "/voce_menu6/sottovoce6.3"
+                        }
+                    ]
+                },
+                "voce_menu7": {
+                    "titolo": "Voce Menu 7",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 7.1",
+                            "url": "/voce_menu7/sottovoce7.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 7.2",
+                            "url": "/voce_menu7/sottovoce7.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 7.3",
+                            "url": "/voce_menu7/sottovoce7.3"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

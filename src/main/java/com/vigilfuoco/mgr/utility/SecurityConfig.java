@@ -37,6 +37,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/adminpanel/").hasRole("ADMIN") // L'Admin vedrà tutto cio che c'è dopo l'admin panel url
             .antMatchers("/api/richiesta/id/**").authenticated() // Richiesta di autenticazione per tutti gli endpoints
             .antMatchers("/api/richiesta/cerca/**", "/api/richiesta/all", "/api/richiesta/save", "/api/richiesta/ciao", "/api/richiesta/test").hasAnyRole("USER", "ADMIN")
+        	.antMatchers("/api/utente/menu**").permitAll() // WIP
+
             .anyRequest().authenticated() // Nega tutte le altre richieste
         .and()
         .formLogin().disable() //Disabilito pagina login di default di spring security dato che abbiamo frontend in REACT

@@ -5,19 +5,25 @@ import com.vigilfuoco.mgr.model.Utente;
 import com.vigilfuoco.mgr.repository.UtenteRepository;
 import com.vigilfuoco.mgr.repository.UtenteWAUCRepository;
 import com.vigilfuoco.mgr.service.UtenteWAUC_to_Utente_Service;
+import com.vigilfuoco.mgr.utility.GetMenuByRole;
+import com.vigilfuoco.mgr.utility.Utility;
 import com.vigilfuoco.mgr.wauc.model.UtenteWAUC;
 
 import java.io.IOException;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONObject;
 
 /* 
  * Definizione di tutte le API che contraddistinguono l'Utente
@@ -46,7 +52,12 @@ public class UtenteController {
 	private static final Logger logger = LogManager.getLogger(UtenteController.class);
 
 	private UtenteWAUC_to_Utente_Service utenteWAUC_to_Utente_Service = new UtenteWAUC_to_Utente_Service();
+
+	private ResourceLoader resourceLoader;
 	
+    public UtenteController(ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
+    }
 	
 	// API LoginCheck -------------------------------- /api/utente/login?accountName=antonioroberto.diterlizzi
 	@GetMapping("login")
@@ -104,6 +115,33 @@ public class UtenteController {
 		return new ResponseEntity<List<Utente>>(res, HttpStatus.OK);
 	}
     
+
+    
+	// API MENU --------------------------------- /api/utente/menu?roleId=2
+    @GetMapping("/menu")
+    public String getMenu(@RequestParam int roleId) throws IOException {
+        // Replace with actual ResourceLoader from your Spring Boot application
+        String strutturaMenu = "";
+
+        Resource path = resourceLoader.getResource("classpath:menu.json");
+        
+        JSONObject menuJson = GetMenuByRole.getMenuByRole(roleId, path);
+        if (menuJson != null) {
+            if (!menuJson.isEmpty()) {
+                strutturaMenu = menuJson.toString();
+            } else {
+                strutturaMenu = "Menu vuoto";
+            }
+        } else {
+            strutturaMenu = "Nessun Menu trovato appartenente al ruolo " + roleId + " richiesto";
+        }
+        
+        System.out.println(menuJson);
+		return strutturaMenu;
+	}
+    
+    
+
     
 		
 }
