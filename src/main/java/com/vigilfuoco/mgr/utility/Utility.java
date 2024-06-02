@@ -14,7 +14,6 @@ public class Utility {
 	 * variabili definite nell'application.properties
 	 * 
 	 */
-	
     @Value("${spring.datasource.url}")
     private String jdbcUrl;
 

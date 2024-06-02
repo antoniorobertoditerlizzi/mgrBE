@@ -1,5 +1,6 @@
 package com.vigilfuoco.mgr;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -7,7 +8,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 /*
- * Main per il RUN dell'applicativo di BE
+ * Main per il RUN dell'applicativo di BE. REPO: https://github.com/antoniorobertoditerlizzi/mgrBE/
  * 
  */
 
@@ -21,6 +22,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 	    "com.vigilfuoco.mgr.wauc.model"
 	})
 public class MgrApplication {
+	
     public static void main(String[] args) {
         SpringApplication.run(MgrApplication.class, args);
     }

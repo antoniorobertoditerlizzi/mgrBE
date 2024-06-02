@@ -2,17 +2,26 @@ package com.vigilfuoco.mgr.controller;
 
 import com.vigilfuoco.mgr.model.Richiesta;
 import com.vigilfuoco.mgr.repository.RichiestaRepository;
+import com.vigilfuoco.mgr.service.BlacklistServiceImpl;
 import com.vigilfuoco.mgr.service.RichiestaService;
+import com.vigilfuoco.mgr.token.JwtTokenProvider;
+import com.vigilfuoco.mgr.utility.GetMenuByRole;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONObject;
 
 /* 
  * Definizione di tutte le API che contraddistinguono la Richiesta
@@ -22,28 +31,36 @@ import org.apache.logging.log4j.Logger;
 @RestController
 @RequestMapping("/api/richiesta/")
 public class RichiestaController {
-		
+	
     private static final Logger logger = LogManager.getLogger(RichiestaController.class);
 
     @Autowired
     private RichiestaRepository repository;
-	
-	// API Ricerca per id richiesta ------------------------------------ /api/richiesta/id/2
-	@RequestMapping(value = "/id/{id}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<Optional<Richiesta>> ricercaPerId(@PathVariable("id") Long id)
-	
-	{
-		logger.debug("Ingresso api /api/richiesta/id");
-		Optional<Richiesta> res = repository.findById(id);
-		return new ResponseEntity<Optional<Richiesta>>(res, HttpStatus.OK);
+    
+    @Autowired
+    private BlacklistServiceImpl blacklistService;
+    
+    @Autowired 
+    private JwtTokenProvider jwtTokenProvider;
+    
+	// API Ricerca per id richiesta ------------------------------------ /api/richiesta/cerca?id=2
+    @GetMapping("/cerca")
+    public ResponseEntity<Richiesta> ricercaPerId(@RequestParam long id) throws IOException {
+		logger.debug("Ingresso api /api/richiesta/cerca?id=");
+		Richiesta res = repository.findById(id);
+		return new ResponseEntity<Richiesta>(res, HttpStatus.OK);
 	}
 	
 	
 	// API Ricerca per descrizione ------------------------------------ /api/richiesta/cerca/prima richiesta
 	@RequestMapping(value = "/cerca/{descrizione}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<List<Richiesta>> ricercaDescrizione(@PathVariable("descrizione") String descrizione)
+	@PreAuthorize("isAuthenticated()") 
+	public ResponseEntity<List<Richiesta>> ricercaDescrizione(@PathVariable("descrizione") String descrizione, Authentication authentication)
 	
 	{
+		// Controlli autorizzativi
+		checkAuthorization(authentication);
+	    
 		logger.debug("Ingresso api /api/richiesta/cerca/{descrizione}" + "descrizione:"+ descrizione);
 		List<Richiesta> res = repository.findByDescrizione(descrizione);
 		return new ResponseEntity<List<Richiesta>>(res, HttpStatus.OK);
@@ -53,9 +70,12 @@ public class RichiestaController {
 	
 	// API Ricerca tutte le richieste ------------------------------------ /api/richiesta/all
 	@RequestMapping(value = "/all", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<Iterable<Richiesta>> listaCompleta()
+	@PreAuthorize("isAuthenticated()") 
+	public ResponseEntity<Iterable<Richiesta>> listaCompleta(Authentication authentication)
 	{
-		logger.debug("Ingresso api /api/richiesta/ALL");
+		// Controlli autorizzativi
+		checkAuthorization(authentication);
+		
 		Iterable<Richiesta> res = repository.findAll();
 		for (Richiesta richiesta : res) {
 			System.out.println("richiesta.getId():"+richiesta.getId());
@@ -63,7 +83,9 @@ public class RichiestaController {
 		}
 		return new ResponseEntity<Iterable<Richiesta>>(res, HttpStatus.OK);
 	}
-	 
+
+
+
 	// API Salva Richiesta a DB ---------------- /api/richiesta/save
     @PostMapping("/save")
     public Richiesta createRequest(@RequestBody Richiesta request) {
@@ -110,4 +132,24 @@ public class RichiestaController {
     }
     
 
+    private ResponseEntity<Object> checkAuthorization(Authentication authentication) {
+    	// Controllo se l'utente ha effettuato il login e quindi è autenticato,
+	    if (authentication == null || !authentication.isAuthenticated()) {
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+	    }
+    	// Recupero il token di sessione di quell'utente
+		String token = jwtTokenProvider.getToken(authentication.getPrincipal().toString()); 
+		logger.debug("Ingresso checkAuthorization - Bearer Token:" + token);
+		
+    	// Controllo se ha gia effettuato il logout con quel token e quindi è un token blacklisted
+	    if (blacklistService.isTokenBlacklisted(token)) {
+	        logger.warn("Token rifiutato in quanto già inserito in blacklist. ", token);
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+	    }
+	    // Permetto di procedere nella richiesta desiderata
+		return null;
+    }
+
+    
+    
 }
