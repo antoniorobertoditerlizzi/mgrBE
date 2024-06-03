@@ -4889,3 +4889,917 @@
 2024-06-02 21:57:22,671 DEBUG c.v.m.t.JwtTokenProvider [http-nio-8080-exec-2] Token valid for user: antonioroberto.diterlizzi
 2024-06-02 21:57:22,675 DEBUG c.v.m.c.RichiestaController [http-nio-8080-exec-2] Ingresso api /api/richiesta/cerca?id=
 2024-06-02 21:57:22,691 DEBUG c.v.m.c.RichiestaController [http-nio-8080-exec-2] Ingresso api /api/richiesta/cerca?id=
+2024-06-02 22:01:41,051 INFO c.v.m.MgrApplication [restartedMain] Starting MgrApplication using Java 17.0.10 on Notebook-DiTerlizzi with PID 11084 (C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE\target\classes started by Antonio Di Terlizzi in C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE)
+2024-06-02 22:01:41,061 DEBUG c.v.m.MgrApplication [restartedMain] Running with Spring Boot v2.5.0, Spring v5.3.7
+2024-06-02 22:01:41,061 INFO c.v.m.MgrApplication [restartedMain] No active profile set, falling back to default profiles: default
+2024-06-02 22:01:47,181 INFO c.v.m.MgrApplication [restartedMain] Started MgrApplication in 6.545 seconds (JVM running for 7.61)
+2024-06-02 22:01:51,050 DEBUG c.v.m.c.RichiestaController [http-nio-8080-exec-2] Ingresso api /api/richiesta/cerca?id=
+2024-06-02 22:01:58,283 DEBUG c.v.m.c.UserWAUCController [http-nio-8080-exec-3] Ingresso api https://wauc-test.dipvvf.it/api/Personale?accountName=antonioroberto.diterlizziresponse: [{"codiceFiscale":"DTRNNR85E11L109U","cognome":"DI TERLIZZI","nome":"ANTONIO ROBERTO","accountDipvvf":"antonioroberto.diterlizzi","emailVigilfuoco":"antonioroberto.diterlizzi@vigilfuoco.it","qualifica":{"nome":"II","gruppo":{"codice":"35","descrizione":"ISPETTORI INFORMATICI"},"codSettore":null,"codice":"609","descrizione":"ISPETTORE INFORMATICO"},"sede":{"id":"CB.1000","codice":"CB","codDistaccamento":"1000","descrizione":"Centrale","descrizionePadre":"Comando VV.F. CAMPOBASSO"},"specializzazioni":[],"turno":"G","saltoTurno":"5","tipoPersonale":{"codice":"4","descrizione":"SERVIZI AMMINISTRATIVI TECNICI INFORMATICI (S.A.T.I.)"}}]
+2024-06-02 22:01:58,346 DEBUG c.v.m.c.UtenteController [http-nio-8080-exec-3] Ingresso api /api/utente/loginCheck?accountName=antonioroberto.diterlizzi lista utenti: [UtenteWAUC [codiceFiscale=DTRNNR85E11L109U, cognome=DI TERLIZZI, nome=ANTONIO ROBERTO, sesso=null, accountDipvvf=antonioroberto.diterlizzi, emailVigilfuoco=antonioroberto.diterlizzi@vigilfuoco.it, qualifica=Qualifica [nome=II, gruppo=Gruppo [codice=35, descrizione=ISPETTORI INFORMATICI], codSettore=null, codice=609, descrizione=ISPETTORE INFORMATICO], specializzazioni=[], nascita=null, residenza=null, domicilio=null, contatti=null, sede=Sede [id=CB.1000, codice=CB, codDistaccamento=1000, descrizione=Centrale, descrizionePadre=Comando VV.F. CAMPOBASSO], turno=G, saltoTurno=5, tipoPersonale=TipoPersonale [codice=4, descrizione=SERVIZI AMMINISTRATIVI TECNICI INFORMATICI (S.A.T.I.)]]]
+2024-06-02 22:01:58,348 DEBUG c.v.m.t.JwtTokenProvider [http-nio-8080-exec-3] Secret Key: ciao
+2024-06-02 22:01:58,351 DEBUG c.v.m.t.JwtTokenProvider [http-nio-8080-exec-3] Timeout del token impostaot a: 900000
+2024-06-02 22:01:58,608 DEBUG c.v.m.t.JwtTokenProvider [http-nio-8080-exec-3] Il nuovo token generato e': eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbnRvbmlvcm9iZXJ0by5kaXRlcmxpenppIiwiaWF0IjoxNzE3MzU4NTE4LCJleHAiOjE3MTczNTk0MTh9.orGl2aJG475ikWDhdGeq8zAioXm1jZJ52feeXhanKhXJwEYXCDLhOO0azQ2JhuCtVvDN-cLacjjVVd9T8dT83Q
+2024-06-02 22:02:05,872 DEBUG c.v.m.u.GetMenuByRole [http-nio-8080-exec-6] {
+    "id_menu": 1,
+    "json_menu": [
+        {
+            "id_ruolo": 1,
+            "voce_menu": {
+                "home": {
+                    "titolo": "Home",
+                    "url": "/"
+                },
+                "voce_menu1": {
+                    "titolo": "Voce Menu 1",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 1.1",
+                            "url": "/voce_menu1/sottovoce1.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 1.2",
+                            "url": "/voce_menu1/sottovoce1.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 1.3",
+                            "url": "/voce_menu1/sottovoce1.3"
+                        }
+                    ]
+                },
+                "voce_menu2": {
+                    "titolo": "Voce Menu 2",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 2.1",
+                            "url": "/voce_menu2/sottovoce2.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 2.2",
+                            "url": "/voce_menu2/sottovoce2.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 2.3",
+                            "url": "/voce_menu2/sottovoce2.3"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id_ruolo": 2,
+            "voce_menu": {
+                "home": {
+                    "titolo": "Home",
+                    "url": "/"
+                },
+                "voce_menu3": {
+                    "titolo": "Voce Menu 3",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 3.1",
+                            "url": "/voce_menu3/sottovoce3.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 3.2",
+                            "url": "/voce_menu3/sottovoce3.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 3.3",
+                            "url": "/voce_menu3/sottovoce3.3"
+                        }
+                    ]
+                },
+                "voce_menu4": {
+                    "titolo": "Voce Menu 4",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 4.1",
+                            "url": "/voce_menu4/sottovoce4.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 4.2",
+                            "url": "/voce_menu4/sottovoce4.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 4.3",
+                            "url": "/voce_menu4/sottovoce4.3"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id_ruolo": 6,
+            "voce_menu": {
+                "home": {
+                    "titolo": "Home",
+                    "url": "/"
+                },
+                "voce_menu6": {
+                    "titolo": "Voce Menu 6",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 6.1",
+                            "url": "/voce_menu6/sottovoce6.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 6.2",
+                            "url": "/voce_menu6/sottovoce6.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 6.3",
+                            "url": "/voce_menu6/sottovoce6.3"
+                        }
+                    ]
+                },
+                "voce_menu7": {
+                    "titolo": "Voce Menu 7",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 7.1",
+                            "url": "/voce_menu7/sottovoce7.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 7.2",
+                            "url": "/voce_menu7/sottovoce7.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 7.3",
+                            "url": "/voce_menu7/sottovoce7.3"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}
+
+2024-06-02 22:02:05,882 DEBUG c.v.m.c.UtenteController [http-nio-8080-exec-6] {"voce_menu4":{"titolo":"Voce Menu 4","sottovoci":[{"titolo":"Sottovoce 4.1","url":"/voce_menu4/sottovoce4.1"},{"titolo":"Sottovoce 4.2","url":"/voce_menu4/sottovoce4.2"},{"titolo":"Sottovoce 4.3","url":"/voce_menu4/sottovoce4.3"}]},"voce_menu3":{"titolo":"Voce Menu 3","sottovoci":[{"titolo":"Sottovoce 3.1","url":"/voce_menu3/sottovoce3.1"},{"titolo":"Sottovoce 3.2","url":"/voce_menu3/sottovoce3.2"},{"titolo":"Sottovoce 3.3","url":"/voce_menu3/sottovoce3.3"}]},"home":{"titolo":"Home","url":"/"}}
+2024-06-02 22:02:08,232 DEBUG c.v.m.u.GetMenuByRole [http-nio-8080-exec-5] {
+    "id_menu": 1,
+    "json_menu": [
+        {
+            "id_ruolo": 1,
+            "voce_menu": {
+                "home": {
+                    "titolo": "Home",
+                    "url": "/"
+                },
+                "voce_menu1": {
+                    "titolo": "Voce Menu 1",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 1.1",
+                            "url": "/voce_menu1/sottovoce1.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 1.2",
+                            "url": "/voce_menu1/sottovoce1.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 1.3",
+                            "url": "/voce_menu1/sottovoce1.3"
+                        }
+                    ]
+                },
+                "voce_menu2": {
+                    "titolo": "Voce Menu 2",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 2.1",
+                            "url": "/voce_menu2/sottovoce2.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 2.2",
+                            "url": "/voce_menu2/sottovoce2.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 2.3",
+                            "url": "/voce_menu2/sottovoce2.3"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id_ruolo": 2,
+            "voce_menu": {
+                "home": {
+                    "titolo": "Home",
+                    "url": "/"
+                },
+                "voce_menu3": {
+                    "titolo": "Voce Menu 3",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 3.1",
+                            "url": "/voce_menu3/sottovoce3.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 3.2",
+                            "url": "/voce_menu3/sottovoce3.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 3.3",
+                            "url": "/voce_menu3/sottovoce3.3"
+                        }
+                    ]
+                },
+                "voce_menu4": {
+                    "titolo": "Voce Menu 4",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 4.1",
+                            "url": "/voce_menu4/sottovoce4.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 4.2",
+                            "url": "/voce_menu4/sottovoce4.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 4.3",
+                            "url": "/voce_menu4/sottovoce4.3"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id_ruolo": 6,
+            "voce_menu": {
+                "home": {
+                    "titolo": "Home",
+                    "url": "/"
+                },
+                "voce_menu6": {
+                    "titolo": "Voce Menu 6",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 6.1",
+                            "url": "/voce_menu6/sottovoce6.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 6.2",
+                            "url": "/voce_menu6/sottovoce6.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 6.3",
+                            "url": "/voce_menu6/sottovoce6.3"
+                        }
+                    ]
+                },
+                "voce_menu7": {
+                    "titolo": "Voce Menu 7",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 7.1",
+                            "url": "/voce_menu7/sottovoce7.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 7.2",
+                            "url": "/voce_menu7/sottovoce7.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 7.3",
+                            "url": "/voce_menu7/sottovoce7.3"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}
+
+2024-06-02 22:02:08,234 DEBUG c.v.m.c.UtenteController [http-nio-8080-exec-5] {"voce_menu4":{"titolo":"Voce Menu 4","sottovoci":[{"titolo":"Sottovoce 4.1","url":"/voce_menu4/sottovoce4.1"},{"titolo":"Sottovoce 4.2","url":"/voce_menu4/sottovoce4.2"},{"titolo":"Sottovoce 4.3","url":"/voce_menu4/sottovoce4.3"}]},"voce_menu3":{"titolo":"Voce Menu 3","sottovoci":[{"titolo":"Sottovoce 3.1","url":"/voce_menu3/sottovoce3.1"},{"titolo":"Sottovoce 3.2","url":"/voce_menu3/sottovoce3.2"},{"titolo":"Sottovoce 3.3","url":"/voce_menu3/sottovoce3.3"}]},"home":{"titolo":"Home","url":"/"}}
+2024-06-02 22:02:10,947 DEBUG c.v.m.u.GetMenuByRole [http-nio-8080-exec-4] {
+    "id_menu": 1,
+    "json_menu": [
+        {
+            "id_ruolo": 1,
+            "voce_menu": {
+                "home": {
+                    "titolo": "Home",
+                    "url": "/"
+                },
+                "voce_menu1": {
+                    "titolo": "Voce Menu 1",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 1.1",
+                            "url": "/voce_menu1/sottovoce1.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 1.2",
+                            "url": "/voce_menu1/sottovoce1.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 1.3",
+                            "url": "/voce_menu1/sottovoce1.3"
+                        }
+                    ]
+                },
+                "voce_menu2": {
+                    "titolo": "Voce Menu 2",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 2.1",
+                            "url": "/voce_menu2/sottovoce2.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 2.2",
+                            "url": "/voce_menu2/sottovoce2.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 2.3",
+                            "url": "/voce_menu2/sottovoce2.3"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id_ruolo": 2,
+            "voce_menu": {
+                "home": {
+                    "titolo": "Home",
+                    "url": "/"
+                },
+                "voce_menu3": {
+                    "titolo": "Voce Menu 3",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 3.1",
+                            "url": "/voce_menu3/sottovoce3.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 3.2",
+                            "url": "/voce_menu3/sottovoce3.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 3.3",
+                            "url": "/voce_menu3/sottovoce3.3"
+                        }
+                    ]
+                },
+                "voce_menu4": {
+                    "titolo": "Voce Menu 4",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 4.1",
+                            "url": "/voce_menu4/sottovoce4.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 4.2",
+                            "url": "/voce_menu4/sottovoce4.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 4.3",
+                            "url": "/voce_menu4/sottovoce4.3"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id_ruolo": 6,
+            "voce_menu": {
+                "home": {
+                    "titolo": "Home",
+                    "url": "/"
+                },
+                "voce_menu6": {
+                    "titolo": "Voce Menu 6",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 6.1",
+                            "url": "/voce_menu6/sottovoce6.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 6.2",
+                            "url": "/voce_menu6/sottovoce6.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 6.3",
+                            "url": "/voce_menu6/sottovoce6.3"
+                        }
+                    ]
+                },
+                "voce_menu7": {
+                    "titolo": "Voce Menu 7",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 7.1",
+                            "url": "/voce_menu7/sottovoce7.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 7.2",
+                            "url": "/voce_menu7/sottovoce7.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 7.3",
+                            "url": "/voce_menu7/sottovoce7.3"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}
+
+2024-06-02 22:02:10,948 DEBUG c.v.m.c.UtenteController [http-nio-8080-exec-4] {"voce_menu4":{"titolo":"Voce Menu 4","sottovoci":[{"titolo":"Sottovoce 4.1","url":"/voce_menu4/sottovoce4.1"},{"titolo":"Sottovoce 4.2","url":"/voce_menu4/sottovoce4.2"},{"titolo":"Sottovoce 4.3","url":"/voce_menu4/sottovoce4.3"}]},"voce_menu3":{"titolo":"Voce Menu 3","sottovoci":[{"titolo":"Sottovoce 3.1","url":"/voce_menu3/sottovoce3.1"},{"titolo":"Sottovoce 3.2","url":"/voce_menu3/sottovoce3.2"},{"titolo":"Sottovoce 3.3","url":"/voce_menu3/sottovoce3.3"}]},"home":{"titolo":"Home","url":"/"}}
+2024-06-02 22:02:16,617 DEBUG c.v.m.c.RichiestaController [http-nio-8080-exec-7] Ingresso api /api/richiesta/cerca?id=
+2024-06-02 22:02:28,211 INFO c.v.m.MgrApplication [restartedMain] Starting MgrApplication using Java 17.0.10 on Notebook-DiTerlizzi with PID 11084 (C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE\target\classes started by Antonio Di Terlizzi in C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE)
+2024-06-02 22:02:28,212 DEBUG c.v.m.MgrApplication [restartedMain] Running with Spring Boot v2.5.0, Spring v5.3.7
+2024-06-02 22:02:28,212 INFO c.v.m.MgrApplication [restartedMain] No active profile set, falling back to default profiles: default
+2024-06-02 22:02:29,413 INFO c.v.m.MgrApplication [restartedMain] Started MgrApplication in 1.267 seconds (JVM running for 49.842)
+2024-06-02 22:02:32,802 DEBUG c.v.m.c.RichiestaController [http-nio-8080-exec-1] Ingresso api /api/richiesta/cerca?id=
+2024-06-02 22:02:33,831 DEBUG c.v.m.c.RichiestaController [http-nio-8080-exec-3] Ingresso api /api/richiesta/cerca?id=
+2024-06-02 22:02:47,192 INFO c.v.m.MgrApplication [restartedMain] Starting MgrApplication using Java 17.0.10 on Notebook-DiTerlizzi with PID 11084 (C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE\target\classes started by Antonio Di Terlizzi in C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE)
+2024-06-02 22:02:47,192 DEBUG c.v.m.MgrApplication [restartedMain] Running with Spring Boot v2.5.0, Spring v5.3.7
+2024-06-02 22:02:47,192 INFO c.v.m.MgrApplication [restartedMain] No active profile set, falling back to default profiles: default
+2024-06-02 22:02:59,844 INFO c.v.m.MgrApplication [restartedMain] Starting MgrApplication using Java 17.0.10 on Notebook-DiTerlizzi with PID 11084 (C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE\target\classes started by Antonio Di Terlizzi in C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE)
+2024-06-02 22:02:59,845 DEBUG c.v.m.MgrApplication [restartedMain] Running with Spring Boot v2.5.0, Spring v5.3.7
+2024-06-02 22:02:59,845 INFO c.v.m.MgrApplication [restartedMain] No active profile set, falling back to default profiles: default
+2024-06-02 22:03:00,790 INFO c.v.m.MgrApplication [restartedMain] Started MgrApplication in 0.995 seconds (JVM running for 81.219)
+2024-06-02 22:03:18,612 INFO c.v.m.MgrApplication [restartedMain] Starting MgrApplication using Java 17.0.10 on Notebook-DiTerlizzi with PID 11084 (C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE\target\classes started by Antonio Di Terlizzi in C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE)
+2024-06-02 22:03:18,613 DEBUG c.v.m.MgrApplication [restartedMain] Running with Spring Boot v2.5.0, Spring v5.3.7
+2024-06-02 22:03:18,614 INFO c.v.m.MgrApplication [restartedMain] No active profile set, falling back to default profiles: default
+2024-06-02 22:03:19,395 INFO c.v.m.MgrApplication [restartedMain] Started MgrApplication in 0.833 seconds (JVM running for 99.824)
+2024-06-02 22:03:23,076 DEBUG c.v.m.t.JwtTokenProvider [http-nio-8080-exec-2] Token valid for user: antonioroberto.diterlizzi
+2024-06-02 22:03:23,078 DEBUG c.v.m.c.RichiestaController [http-nio-8080-exec-2] Ingresso api /api/richiesta/cerca?id=
+2024-06-02 22:03:23,089 DEBUG c.v.m.c.RichiestaController [http-nio-8080-exec-2] Ingresso api /api/richiesta/cerca?id=
+2024-06-02 22:03:35,201 INFO c.v.m.MgrApplication [restartedMain] Starting MgrApplication using Java 17.0.10 on Notebook-DiTerlizzi with PID 11084 (C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE\target\classes started by Antonio Di Terlizzi in C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE)
+2024-06-02 22:03:35,202 DEBUG c.v.m.MgrApplication [restartedMain] Running with Spring Boot v2.5.0, Spring v5.3.7
+2024-06-02 22:03:35,202 INFO c.v.m.MgrApplication [restartedMain] No active profile set, falling back to default profiles: default
+2024-06-02 22:03:36,062 INFO c.v.m.MgrApplication [restartedMain] Started MgrApplication in 0.924 seconds (JVM running for 116.491)
+2024-06-02 22:03:41,142 DEBUG c.v.m.c.UserWAUCController [http-nio-8080-exec-3] Ingresso api https://wauc-test.dipvvf.it/api/Personale?accountName=antonioroberto.diterlizziresponse: [{"codiceFiscale":"DTRNNR85E11L109U","cognome":"DI TERLIZZI","nome":"ANTONIO ROBERTO","accountDipvvf":"antonioroberto.diterlizzi","emailVigilfuoco":"antonioroberto.diterlizzi@vigilfuoco.it","qualifica":{"nome":"II","gruppo":{"codice":"35","descrizione":"ISPETTORI INFORMATICI"},"codSettore":null,"codice":"609","descrizione":"ISPETTORE INFORMATICO"},"sede":{"id":"CB.1000","codice":"CB","codDistaccamento":"1000","descrizione":"Centrale","descrizionePadre":"Comando VV.F. CAMPOBASSO"},"specializzazioni":[],"turno":"G","saltoTurno":"5","tipoPersonale":{"codice":"4","descrizione":"SERVIZI AMMINISTRATIVI TECNICI INFORMATICI (S.A.T.I.)"}}]
+2024-06-02 22:03:41,153 DEBUG c.v.m.c.UtenteController [http-nio-8080-exec-3] Ingresso api /api/utente/loginCheck?accountName=antonioroberto.diterlizzi lista utenti: [UtenteWAUC [codiceFiscale=DTRNNR85E11L109U, cognome=DI TERLIZZI, nome=ANTONIO ROBERTO, sesso=null, accountDipvvf=antonioroberto.diterlizzi, emailVigilfuoco=antonioroberto.diterlizzi@vigilfuoco.it, qualifica=Qualifica [nome=II, gruppo=Gruppo [codice=35, descrizione=ISPETTORI INFORMATICI], codSettore=null, codice=609, descrizione=ISPETTORE INFORMATICO], specializzazioni=[], nascita=null, residenza=null, domicilio=null, contatti=null, sede=Sede [id=CB.1000, codice=CB, codDistaccamento=1000, descrizione=Centrale, descrizionePadre=Comando VV.F. CAMPOBASSO], turno=G, saltoTurno=5, tipoPersonale=TipoPersonale [codice=4, descrizione=SERVIZI AMMINISTRATIVI TECNICI INFORMATICI (S.A.T.I.)]]]
+2024-06-02 22:03:41,155 DEBUG c.v.m.t.JwtTokenProvider [http-nio-8080-exec-3] Secret Key: ciao
+2024-06-02 22:03:41,155 DEBUG c.v.m.t.JwtTokenProvider [http-nio-8080-exec-3] Timeout del token impostaot a: 900000
+2024-06-02 22:03:41,157 DEBUG c.v.m.t.JwtTokenProvider [http-nio-8080-exec-3] Il nuovo token generato e': eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbnRvbmlvcm9iZXJ0by5kaXRlcmxpenppIiwiaWF0IjoxNzE3MzU4NjIxLCJleHAiOjE3MTczNTk1MjF9.qO6xAPV-jg_7OwiRMtVQikbMHQWxr2sTvkG8NNiKy7J7qAOWH4s4p0iNu16aTEupPYEQRt3_EwLL4sKdoEp6JQ
+2024-06-02 22:05:57,347 INFO c.v.m.MgrApplication [restartedMain] Starting MgrApplication using Java 17.0.10 on Notebook-DiTerlizzi with PID 11084 (C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE\target\classes started by Antonio Di Terlizzi in C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE)
+2024-06-02 22:05:57,349 DEBUG c.v.m.MgrApplication [restartedMain] Running with Spring Boot v2.5.0, Spring v5.3.7
+2024-06-02 22:05:57,349 INFO c.v.m.MgrApplication [restartedMain] No active profile set, falling back to default profiles: default
+2024-06-02 22:05:58,103 INFO c.v.m.MgrApplication [restartedMain] Started MgrApplication in 0.799 seconds (JVM running for 258.533)
+2024-06-02 22:06:25,186 INFO c.v.m.MgrApplication [restartedMain] Starting MgrApplication using Java 17.0.10 on Notebook-DiTerlizzi with PID 11084 (C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE\target\classes started by Antonio Di Terlizzi in C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE)
+2024-06-02 22:06:25,187 DEBUG c.v.m.MgrApplication [restartedMain] Running with Spring Boot v2.5.0, Spring v5.3.7
+2024-06-02 22:06:25,187 INFO c.v.m.MgrApplication [restartedMain] No active profile set, falling back to default profiles: default
+2024-06-02 22:06:25,948 INFO c.v.m.MgrApplication [restartedMain] Started MgrApplication in 0.806 seconds (JVM running for 286.377)
+2024-06-02 22:06:27,071 DEBUG c.v.m.t.JwtTokenProvider [http-nio-8080-exec-2] Token valid for user: antonioroberto.diterlizzi
+2024-06-02 22:06:27,073 DEBUG c.v.m.c.RichiestaController [http-nio-8080-exec-2] Ingresso api /api/richiesta/cerca?id=
+2024-06-02 22:06:31,723 DEBUG c.v.m.c.UserWAUCController [http-nio-8080-exec-3] Ingresso api https://wauc-test.dipvvf.it/api/Personale?accountName=antonioroberto.diterlizziresponse: [{"codiceFiscale":"DTRNNR85E11L109U","cognome":"DI TERLIZZI","nome":"ANTONIO ROBERTO","accountDipvvf":"antonioroberto.diterlizzi","emailVigilfuoco":"antonioroberto.diterlizzi@vigilfuoco.it","qualifica":{"nome":"II","gruppo":{"codice":"35","descrizione":"ISPETTORI INFORMATICI"},"codSettore":null,"codice":"609","descrizione":"ISPETTORE INFORMATICO"},"sede":{"id":"CB.1000","codice":"CB","codDistaccamento":"1000","descrizione":"Centrale","descrizionePadre":"Comando VV.F. CAMPOBASSO"},"specializzazioni":[],"turno":"G","saltoTurno":"5","tipoPersonale":{"codice":"4","descrizione":"SERVIZI AMMINISTRATIVI TECNICI INFORMATICI (S.A.T.I.)"}}]
+2024-06-02 22:06:31,730 DEBUG c.v.m.c.UtenteController [http-nio-8080-exec-3] Ingresso api /api/utente/loginCheck?accountName=antonioroberto.diterlizzi lista utenti: [UtenteWAUC [codiceFiscale=DTRNNR85E11L109U, cognome=DI TERLIZZI, nome=ANTONIO ROBERTO, sesso=null, accountDipvvf=antonioroberto.diterlizzi, emailVigilfuoco=antonioroberto.diterlizzi@vigilfuoco.it, qualifica=Qualifica [nome=II, gruppo=Gruppo [codice=35, descrizione=ISPETTORI INFORMATICI], codSettore=null, codice=609, descrizione=ISPETTORE INFORMATICO], specializzazioni=[], nascita=null, residenza=null, domicilio=null, contatti=null, sede=Sede [id=CB.1000, codice=CB, codDistaccamento=1000, descrizione=Centrale, descrizionePadre=Comando VV.F. CAMPOBASSO], turno=G, saltoTurno=5, tipoPersonale=TipoPersonale [codice=4, descrizione=SERVIZI AMMINISTRATIVI TECNICI INFORMATICI (S.A.T.I.)]]]
+2024-06-02 22:06:31,732 DEBUG c.v.m.t.JwtTokenProvider [http-nio-8080-exec-3] Secret Key: ciao
+2024-06-02 22:06:31,732 DEBUG c.v.m.t.JwtTokenProvider [http-nio-8080-exec-3] Timeout del token impostaot a: 900000
+2024-06-02 22:06:31,734 DEBUG c.v.m.t.JwtTokenProvider [http-nio-8080-exec-3] Il nuovo token generato e': eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbnRvbmlvcm9iZXJ0by5kaXRlcmxpenppIiwiaWF0IjoxNzE3MzU4NzkxLCJleHAiOjE3MTczNTk2OTF9.pwUo8-J06kQ7F7ZzOUPsd7TkxbtJC6EUQyxpPl9z0GuudbQFeXWqDpzKupL-hvkJTpvZSNj3313TGQ6Oc3p6OQ
+2024-06-02 22:06:38,541 DEBUG c.v.m.t.JwtTokenProvider [http-nio-8080-exec-4] Token valid for user: antonioroberto.diterlizzi
+2024-06-02 22:06:38,542 DEBUG c.v.m.c.RichiestaController [http-nio-8080-exec-4] Ingresso api /api/richiesta/cerca?id=
+2024-06-02 22:06:47,737 DEBUG c.v.m.t.JwtTokenProvider [http-nio-8080-exec-6] Token valid for user: antonioroberto.diterlizzi
+2024-06-02 22:06:47,738 DEBUG c.v.m.c.RichiestaController [http-nio-8080-exec-6] Ingresso api /api/richiesta/cerca?id=
+2024-06-02 22:06:51,246 ERROR c.v.m.t.JwtTokenFilter [http-nio-8080-exec-7] Invalid JWT token: Invalid token signature
+2024-06-02 22:06:54,205 DEBUG c.v.m.t.JwtTokenProvider [http-nio-8080-exec-8] Token valid for user: antonioroberto.diterlizzi
+2024-06-02 22:06:54,206 DEBUG c.v.m.c.RichiestaController [http-nio-8080-exec-8] Ingresso api /api/richiesta/cerca?id=
+2024-06-02 22:09:01,552 INFO c.v.m.MgrApplication [restartedMain] Starting MgrApplication using Java 17.0.10 on Notebook-DiTerlizzi with PID 11084 (C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE\target\classes started by Antonio Di Terlizzi in C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE)
+2024-06-02 22:09:01,552 DEBUG c.v.m.MgrApplication [restartedMain] Running with Spring Boot v2.5.0, Spring v5.3.7
+2024-06-02 22:09:01,552 INFO c.v.m.MgrApplication [restartedMain] No active profile set, falling back to default profiles: default
+2024-06-02 22:09:02,392 INFO c.v.m.MgrApplication [restartedMain] Started MgrApplication in 0.883 seconds (JVM running for 442.821)
+2024-06-02 22:09:07,525 DEBUG c.v.m.t.JwtTokenProvider [http-nio-8080-exec-2] Token valid for user: antonioroberto.diterlizzi
+2024-06-02 22:09:07,531 DEBUG c.v.m.u.GetMenuByRole [http-nio-8080-exec-2] {
+    "id_menu": 1,
+    "json_menu": [
+        {
+            "id_ruolo": 1,
+            "voce_menu": {
+                "home": {
+                    "titolo": "Home",
+                    "url": "/"
+                },
+                "voce_menu1": {
+                    "titolo": "Voce Menu 1",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 1.1",
+                            "url": "/voce_menu1/sottovoce1.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 1.2",
+                            "url": "/voce_menu1/sottovoce1.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 1.3",
+                            "url": "/voce_menu1/sottovoce1.3"
+                        }
+                    ]
+                },
+                "voce_menu2": {
+                    "titolo": "Voce Menu 2",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 2.1",
+                            "url": "/voce_menu2/sottovoce2.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 2.2",
+                            "url": "/voce_menu2/sottovoce2.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 2.3",
+                            "url": "/voce_menu2/sottovoce2.3"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id_ruolo": 2,
+            "voce_menu": {
+                "home": {
+                    "titolo": "Home",
+                    "url": "/"
+                },
+                "voce_menu3": {
+                    "titolo": "Voce Menu 3",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 3.1",
+                            "url": "/voce_menu3/sottovoce3.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 3.2",
+                            "url": "/voce_menu3/sottovoce3.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 3.3",
+                            "url": "/voce_menu3/sottovoce3.3"
+                        }
+                    ]
+                },
+                "voce_menu4": {
+                    "titolo": "Voce Menu 4",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 4.1",
+                            "url": "/voce_menu4/sottovoce4.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 4.2",
+                            "url": "/voce_menu4/sottovoce4.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 4.3",
+                            "url": "/voce_menu4/sottovoce4.3"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id_ruolo": 6,
+            "voce_menu": {
+                "home": {
+                    "titolo": "Home",
+                    "url": "/"
+                },
+                "voce_menu6": {
+                    "titolo": "Voce Menu 6",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 6.1",
+                            "url": "/voce_menu6/sottovoce6.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 6.2",
+                            "url": "/voce_menu6/sottovoce6.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 6.3",
+                            "url": "/voce_menu6/sottovoce6.3"
+                        }
+                    ]
+                },
+                "voce_menu7": {
+                    "titolo": "Voce Menu 7",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 7.1",
+                            "url": "/voce_menu7/sottovoce7.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 7.2",
+                            "url": "/voce_menu7/sottovoce7.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 7.3",
+                            "url": "/voce_menu7/sottovoce7.3"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}
+
+2024-06-02 22:09:07,532 DEBUG c.v.m.c.UtenteController [http-nio-8080-exec-2] {"voce_menu4":{"titolo":"Voce Menu 4","sottovoci":[{"titolo":"Sottovoce 4.1","url":"/voce_menu4/sottovoce4.1"},{"titolo":"Sottovoce 4.2","url":"/voce_menu4/sottovoce4.2"},{"titolo":"Sottovoce 4.3","url":"/voce_menu4/sottovoce4.3"}]},"voce_menu3":{"titolo":"Voce Menu 3","sottovoci":[{"titolo":"Sottovoce 3.1","url":"/voce_menu3/sottovoce3.1"},{"titolo":"Sottovoce 3.2","url":"/voce_menu3/sottovoce3.2"},{"titolo":"Sottovoce 3.3","url":"/voce_menu3/sottovoce3.3"}]},"home":{"titolo":"Home","url":"/"}}
+2024-06-02 22:09:15,679 DEBUG c.v.m.c.UserWAUCController [http-nio-8080-exec-3] Ingresso api https://wauc-test.dipvvf.it/api/Personale?accountName=antonioroberto.diterlizziresponse: [{"codiceFiscale":"DTRNNR85E11L109U","cognome":"DI TERLIZZI","nome":"ANTONIO ROBERTO","accountDipvvf":"antonioroberto.diterlizzi","emailVigilfuoco":"antonioroberto.diterlizzi@vigilfuoco.it","qualifica":{"nome":"II","gruppo":{"codice":"35","descrizione":"ISPETTORI INFORMATICI"},"codSettore":null,"codice":"609","descrizione":"ISPETTORE INFORMATICO"},"sede":{"id":"CB.1000","codice":"CB","codDistaccamento":"1000","descrizione":"Centrale","descrizionePadre":"Comando VV.F. CAMPOBASSO"},"specializzazioni":[],"turno":"G","saltoTurno":"5","tipoPersonale":{"codice":"4","descrizione":"SERVIZI AMMINISTRATIVI TECNICI INFORMATICI (S.A.T.I.)"}}]
+2024-06-02 22:09:15,685 DEBUG c.v.m.c.UtenteController [http-nio-8080-exec-3] Ingresso api /api/utente/loginCheck?accountName=antonioroberto.diterlizzi lista utenti: [UtenteWAUC [codiceFiscale=DTRNNR85E11L109U, cognome=DI TERLIZZI, nome=ANTONIO ROBERTO, sesso=null, accountDipvvf=antonioroberto.diterlizzi, emailVigilfuoco=antonioroberto.diterlizzi@vigilfuoco.it, qualifica=Qualifica [nome=II, gruppo=Gruppo [codice=35, descrizione=ISPETTORI INFORMATICI], codSettore=null, codice=609, descrizione=ISPETTORE INFORMATICO], specializzazioni=[], nascita=null, residenza=null, domicilio=null, contatti=null, sede=Sede [id=CB.1000, codice=CB, codDistaccamento=1000, descrizione=Centrale, descrizionePadre=Comando VV.F. CAMPOBASSO], turno=G, saltoTurno=5, tipoPersonale=TipoPersonale [codice=4, descrizione=SERVIZI AMMINISTRATIVI TECNICI INFORMATICI (S.A.T.I.)]]]
+2024-06-02 22:09:15,686 DEBUG c.v.m.t.JwtTokenProvider [http-nio-8080-exec-3] Secret Key: ciao
+2024-06-02 22:09:15,687 DEBUG c.v.m.t.JwtTokenProvider [http-nio-8080-exec-3] Timeout del token impostaot a: 900000
+2024-06-02 22:09:15,688 DEBUG c.v.m.t.JwtTokenProvider [http-nio-8080-exec-3] Il nuovo token generato e': eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbnRvbmlvcm9iZXJ0by5kaXRlcmxpenppIiwiaWF0IjoxNzE3MzU4OTU1LCJleHAiOjE3MTczNTk4NTV9.I2lgXVoqB8D8Rbzki5U9P_aI9yWXCZ9ApjW-L0MEO5iOj2iyhV_bVrotM385qJ71RN44xglFt52AM6a2ryNmTA
+2024-06-02 22:09:30,200 ERROR c.v.m.t.JwtTokenFilter [http-nio-8080-exec-4] Invalid JWT token: Token expired
+2024-06-02 22:09:38,445 DEBUG c.v.m.t.JwtTokenProvider [http-nio-8080-exec-5] Token valid for user: antonioroberto.diterlizzi
+2024-06-02 22:09:38,448 DEBUG c.v.m.u.GetMenuByRole [http-nio-8080-exec-5] {
+    "id_menu": 1,
+    "json_menu": [
+        {
+            "id_ruolo": 1,
+            "voce_menu": {
+                "home": {
+                    "titolo": "Home",
+                    "url": "/"
+                },
+                "voce_menu1": {
+                    "titolo": "Voce Menu 1",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 1.1",
+                            "url": "/voce_menu1/sottovoce1.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 1.2",
+                            "url": "/voce_menu1/sottovoce1.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 1.3",
+                            "url": "/voce_menu1/sottovoce1.3"
+                        }
+                    ]
+                },
+                "voce_menu2": {
+                    "titolo": "Voce Menu 2",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 2.1",
+                            "url": "/voce_menu2/sottovoce2.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 2.2",
+                            "url": "/voce_menu2/sottovoce2.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 2.3",
+                            "url": "/voce_menu2/sottovoce2.3"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id_ruolo": 2,
+            "voce_menu": {
+                "home": {
+                    "titolo": "Home",
+                    "url": "/"
+                },
+                "voce_menu3": {
+                    "titolo": "Voce Menu 3",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 3.1",
+                            "url": "/voce_menu3/sottovoce3.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 3.2",
+                            "url": "/voce_menu3/sottovoce3.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 3.3",
+                            "url": "/voce_menu3/sottovoce3.3"
+                        }
+                    ]
+                },
+                "voce_menu4": {
+                    "titolo": "Voce Menu 4",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 4.1",
+                            "url": "/voce_menu4/sottovoce4.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 4.2",
+                            "url": "/voce_menu4/sottovoce4.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 4.3",
+                            "url": "/voce_menu4/sottovoce4.3"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id_ruolo": 6,
+            "voce_menu": {
+                "home": {
+                    "titolo": "Home",
+                    "url": "/"
+                },
+                "voce_menu6": {
+                    "titolo": "Voce Menu 6",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 6.1",
+                            "url": "/voce_menu6/sottovoce6.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 6.2",
+                            "url": "/voce_menu6/sottovoce6.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 6.3",
+                            "url": "/voce_menu6/sottovoce6.3"
+                        }
+                    ]
+                },
+                "voce_menu7": {
+                    "titolo": "Voce Menu 7",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 7.1",
+                            "url": "/voce_menu7/sottovoce7.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 7.2",
+                            "url": "/voce_menu7/sottovoce7.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 7.3",
+                            "url": "/voce_menu7/sottovoce7.3"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}
+
+2024-06-02 22:09:38,449 DEBUG c.v.m.c.UtenteController [http-nio-8080-exec-5] {"voce_menu4":{"titolo":"Voce Menu 4","sottovoci":[{"titolo":"Sottovoce 4.1","url":"/voce_menu4/sottovoce4.1"},{"titolo":"Sottovoce 4.2","url":"/voce_menu4/sottovoce4.2"},{"titolo":"Sottovoce 4.3","url":"/voce_menu4/sottovoce4.3"}]},"voce_menu3":{"titolo":"Voce Menu 3","sottovoci":[{"titolo":"Sottovoce 3.1","url":"/voce_menu3/sottovoce3.1"},{"titolo":"Sottovoce 3.2","url":"/voce_menu3/sottovoce3.2"},{"titolo":"Sottovoce 3.3","url":"/voce_menu3/sottovoce3.3"}]},"home":{"titolo":"Home","url":"/"}}
+2024-06-02 22:09:42,152 DEBUG c.v.m.t.JwtTokenProvider [http-nio-8080-exec-6] Token valid for user: antonioroberto.diterlizzi
+2024-06-02 22:09:42,154 DEBUG c.v.m.c.RichiestaController [http-nio-8080-exec-6] Ingresso api /api/richiesta/cerca?id=
+2024-06-02 22:09:44,712 DEBUG c.v.m.t.JwtTokenProvider [http-nio-8080-exec-7] Token valid for user: antonioroberto.diterlizzi
+2024-06-02 22:09:44,713 DEBUG c.v.m.c.RichiestaController [http-nio-8080-exec-7] Ingresso api /api/richiesta/cerca?id=
+2024-06-02 22:09:45,338 DEBUG c.v.m.t.JwtTokenProvider [http-nio-8080-exec-8] Token valid for user: antonioroberto.diterlizzi
+2024-06-02 22:09:45,339 DEBUG c.v.m.c.RichiestaController [http-nio-8080-exec-8] Ingresso api /api/richiesta/cerca?id=
+2024-06-02 22:09:45,906 DEBUG c.v.m.t.JwtTokenProvider [http-nio-8080-exec-9] Token valid for user: antonioroberto.diterlizzi
+2024-06-02 22:09:45,909 DEBUG c.v.m.c.RichiestaController [http-nio-8080-exec-9] Ingresso api /api/richiesta/cerca?id=
+2024-06-02 22:09:50,320 DEBUG c.v.m.t.JwtTokenProvider [http-nio-8080-exec-10] Token valid for user: antonioroberto.diterlizzi
+2024-06-02 22:09:50,322 DEBUG c.v.m.c.RichiestaController [http-nio-8080-exec-10] Ingresso checkAuthorization - Bearer Token:Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbnRvbmlvcm9iZXJ0by5kaXRlcmxpenppIiwiaWF0IjoxNzE3MzU4OTU1LCJleHAiOjE3MTczNTk4NTV9.I2lgXVoqB8D8Rbzki5U9P_aI9yWXCZ9ApjW-L0MEO5iOj2iyhV_bVrotM385qJ71RN44xglFt52AM6a2ryNmTA
+2024-06-02 22:09:50,448 DEBUG c.v.m.c.RichiestaController [http-nio-8080-exec-10] Ingresso api /api/richiesta/cerca/{descrizione}descrizione:prima richiesta
+2024-06-02 22:12:43,364 INFO c.v.m.MgrApplication [restartedMain] Starting MgrApplication using Java 17.0.10 on Notebook-DiTerlizzi with PID 11084 (C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE\target\classes started by Antonio Di Terlizzi in C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE)
+2024-06-02 22:12:43,365 DEBUG c.v.m.MgrApplication [restartedMain] Running with Spring Boot v2.5.0, Spring v5.3.7
+2024-06-02 22:12:43,365 INFO c.v.m.MgrApplication [restartedMain] No active profile set, falling back to default profiles: default
+2024-06-02 22:12:44,189 INFO c.v.m.MgrApplication [restartedMain] Started MgrApplication in 0.863 seconds (JVM running for 664.619)
+2024-06-02 22:12:48,511 DEBUG c.v.m.t.JwtTokenProvider [http-nio-8080-exec-2] Token valid for user: antonioroberto.diterlizzi
+2024-06-02 22:12:48,515 DEBUG c.v.m.c.RichiestaController [http-nio-8080-exec-2] Ingresso checkAuthorization - Bearer Token:Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbnRvbmlvcm9iZXJ0by5kaXRlcmxpenppIiwiaWF0IjoxNzE3MzU4OTU1LCJleHAiOjE3MTczNTk4NTV9.I2lgXVoqB8D8Rbzki5U9P_aI9yWXCZ9ApjW-L0MEO5iOj2iyhV_bVrotM385qJ71RN44xglFt52AM6a2ryNmTA
+2024-06-02 22:12:48,529 DEBUG c.v.m.c.RichiestaController [http-nio-8080-exec-2] Ingresso api /api/richiesta/cerca/{descrizione}descrizione:prima richiesta
+2024-06-02 22:12:51,297 ERROR c.v.m.t.JwtTokenFilter [http-nio-8080-exec-3] Invalid JWT token: Malformed token
+2024-06-02 22:12:56,374 DEBUG c.v.m.t.JwtTokenProvider [http-nio-8080-exec-4] Token valid for user: antonioroberto.diterlizzi
+2024-06-02 22:12:56,378 DEBUG c.v.m.u.GetMenuByRole [http-nio-8080-exec-4] {
+    "id_menu": 1,
+    "json_menu": [
+        {
+            "id_ruolo": 1,
+            "voce_menu": {
+                "home": {
+                    "titolo": "Home",
+                    "url": "/"
+                },
+                "voce_menu1": {
+                    "titolo": "Voce Menu 1",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 1.1",
+                            "url": "/voce_menu1/sottovoce1.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 1.2",
+                            "url": "/voce_menu1/sottovoce1.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 1.3",
+                            "url": "/voce_menu1/sottovoce1.3"
+                        }
+                    ]
+                },
+                "voce_menu2": {
+                    "titolo": "Voce Menu 2",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 2.1",
+                            "url": "/voce_menu2/sottovoce2.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 2.2",
+                            "url": "/voce_menu2/sottovoce2.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 2.3",
+                            "url": "/voce_menu2/sottovoce2.3"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id_ruolo": 2,
+            "voce_menu": {
+                "home": {
+                    "titolo": "Home",
+                    "url": "/"
+                },
+                "voce_menu3": {
+                    "titolo": "Voce Menu 3",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 3.1",
+                            "url": "/voce_menu3/sottovoce3.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 3.2",
+                            "url": "/voce_menu3/sottovoce3.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 3.3",
+                            "url": "/voce_menu3/sottovoce3.3"
+                        }
+                    ]
+                },
+                "voce_menu4": {
+                    "titolo": "Voce Menu 4",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 4.1",
+                            "url": "/voce_menu4/sottovoce4.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 4.2",
+                            "url": "/voce_menu4/sottovoce4.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 4.3",
+                            "url": "/voce_menu4/sottovoce4.3"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id_ruolo": 6,
+            "voce_menu": {
+                "home": {
+                    "titolo": "Home",
+                    "url": "/"
+                },
+                "voce_menu6": {
+                    "titolo": "Voce Menu 6",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 6.1",
+                            "url": "/voce_menu6/sottovoce6.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 6.2",
+                            "url": "/voce_menu6/sottovoce6.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 6.3",
+                            "url": "/voce_menu6/sottovoce6.3"
+                        }
+                    ]
+                },
+                "voce_menu7": {
+                    "titolo": "Voce Menu 7",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 7.1",
+                            "url": "/voce_menu7/sottovoce7.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 7.2",
+                            "url": "/voce_menu7/sottovoce7.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 7.3",
+                            "url": "/voce_menu7/sottovoce7.3"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}
+
+2024-06-02 22:12:56,379 DEBUG c.v.m.c.UtenteController [http-nio-8080-exec-4] {"voce_menu4":{"titolo":"Voce Menu 4","sottovoci":[{"titolo":"Sottovoce 4.1","url":"/voce_menu4/sottovoce4.1"},{"titolo":"Sottovoce 4.2","url":"/voce_menu4/sottovoce4.2"},{"titolo":"Sottovoce 4.3","url":"/voce_menu4/sottovoce4.3"}]},"voce_menu3":{"titolo":"Voce Menu 3","sottovoci":[{"titolo":"Sottovoce 3.1","url":"/voce_menu3/sottovoce3.1"},{"titolo":"Sottovoce 3.2","url":"/voce_menu3/sottovoce3.2"},{"titolo":"Sottovoce 3.3","url":"/voce_menu3/sottovoce3.3"}]},"home":{"titolo":"Home","url":"/"}}
+2024-06-02 22:13:01,728 DEBUG c.v.m.t.JwtTokenProvider [http-nio-8080-exec-5] Token valid for user: antonioroberto.diterlizzi
+2024-06-02 22:13:01,730 DEBUG c.v.m.c.RichiestaController [http-nio-8080-exec-5] Ingresso api /api/richiesta/cerca?id=
+2024-06-02 22:13:08,911 ERROR c.v.m.t.JwtTokenFilter [http-nio-8080-exec-6] Invalid JWT token: Token expired
+2024-06-02 22:13:18,293 ERROR c.v.m.t.JwtTokenFilter [http-nio-8080-exec-7] Invalid JWT token: Token expired
