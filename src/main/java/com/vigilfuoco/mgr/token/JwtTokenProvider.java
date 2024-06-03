@@ -38,10 +38,10 @@ public class JwtTokenProvider {
 
     private final BlacklistService blacklistService;
 
-    // Method to generate a JWT token for a given username
+    // Metodo per generare un token JWT per un determinato username
     public String generateToken(String accountName) throws IOException {
         logger.debug("Secret Key: " + getResources("secret.token.key"));
-        // Generate JWT token
+        // Generazone del JWT token
         String username = accountName; // Username attuale
         
 
@@ -62,7 +62,7 @@ public class JwtTokenProvider {
         return token;
     }
 
-    // Method to validate a JWT token
+    // Metodo per la validazione del JWT token
     public boolean validateToken(HttpServletRequest request) throws InvalidTokenException, UnsupportedJwtException, IllegalArgumentException, IOException {
         try {
             String token = request.getHeader("Authorization").split(" ")[1];
@@ -71,28 +71,28 @@ public class JwtTokenProvider {
                     .parseClaimsJws(token)
                     .getBody();
 
-            // Check if token is valid (not expired)
+            // Controllo se il token è valido (non scaduto)
             Date expirationDate = claims.getExpiration();
             if (expirationDate.before(new Date())) {
-                throw new InvalidTokenException("Token expired");
+                throw new InvalidTokenException("Token scaduto");
             }
 
-            // Extract user information from claims
+            // Estraggo le user information dal claims
             String username = claims.getSubject();
 
-            // Successful token validation
-            logger.debug("Token valid for user: " + username);
+            // Token validato con successo
+            logger.debug("Token valido per l'utente: " + username);
             
             return true;
         } catch (ExpiredJwtException e) {
             SecurityContextHolder.getContext().setAuthentication(null);
-            throw new InvalidTokenException("Token expired");
+            throw new InvalidTokenException("Token scaduto");
         } catch (SignatureException e) {
             SecurityContextHolder.getContext().setAuthentication(null);
-            throw new InvalidTokenException("Invalid token signature");
+            throw new InvalidTokenException("Firma del token non valida");
         } catch (MalformedJwtException e) {
             SecurityContextHolder.getContext().setAuthentication(null);
-            throw new InvalidTokenException("Malformed token");
+            throw new InvalidTokenException("Token non valido");
         } catch (InvalidTokenException e) {
             throw e; 
         }
