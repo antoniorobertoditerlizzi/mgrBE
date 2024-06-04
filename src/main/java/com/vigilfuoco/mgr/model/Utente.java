@@ -30,6 +30,18 @@ public class Utente {
     
     @Column(nullable = false) 
     private Boolean enabled;
+    
+    @Column(nullable = false) 
+    private int ruoloID;
+
+    
+	public int getRuoloID() {
+		return ruoloID;
+	}
+
+	public void setRuoloID(int ruoloID) {
+		this.ruoloID = ruoloID;
+	}
 
 	public String getAccountDipvvf() {
 		return accountDipvvf;
@@ -79,6 +91,8 @@ public class Utente {
 		this.enabled = enabled;
 	}
 
+	
+	
 	public Utente() {
 		super();
 		this.accountDipvvf = accountDipvvf;
@@ -87,16 +101,17 @@ public class Utente {
 		this.password = password;
 		this.role = role;
 		this.enabled = enabled;
+		this.ruoloID = ruoloID;
 	}
 
 	@Override
 	public String toString() {
 		return "Utente [accountDipvvf=" + accountDipvvf + ", emailVigilfuoco=" + emailVigilfuoco + ", username="
-				+ username + ", password=" + password + ", role=" + role + ", enabled=" + enabled + "]";
+				+ username + ", password=" + password + ", role=" + role + ", enabled=" + enabled + ", ruoloID=" + ruoloID
+				+ "]";
 	}
 
 
-	
 
 }
 

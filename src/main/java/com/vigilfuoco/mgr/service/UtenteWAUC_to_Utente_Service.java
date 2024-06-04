@@ -48,8 +48,9 @@ import com.vigilfuoco.mgr.wauc.model.UtenteWAUC;
 	    			  utente.setEmailVigilfuoco(request.getEmailVigilfuoco());
 	    			  utente.setUsername(request.getAccountDipvvf());
 	    			  utente.setPassword(bcrypt(request.getAccountDipvvf()));
-	    			  utente.setRole("ROLE_ADMIN");
-	    			  utente.setEnabled(true);
+	    			  utente.setRole("ROLE_ADMIN"); // Aggiornare quando ci sarà schema DB aggiornato
+	    			  utente.setRuoloID(2); 		// Aggiornare quando ci sarà schema DB aggiornato
+	    			  utente.setEnabled(true); 		// Aggiornare quando ci sarà schema DB aggiornato
 	    		  }
 	    	//Salvo a DB l'utente trovato
 	        return utenteWAUCRepository2.save(utente);

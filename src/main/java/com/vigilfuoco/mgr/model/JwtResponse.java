@@ -4,12 +4,17 @@ public class JwtResponse {
 	
     private Utente utente;
     
+	private String menuObject;
+    
     private String token;
 
-    public JwtResponse(Utente utente, String token) {
+
+    public JwtResponse(Utente utente, String menuObject, String token) {
         this.utente = utente;
+        this.menuObject = menuObject;
         this.token = token;
     }
+
 
 	public Utente getUtente() {
 		return utente;
@@ -27,10 +32,18 @@ public class JwtResponse {
 		this.token = token;
 	}
 
+	public String getMenuObject() {
+		return menuObject;
+	}
+
+	public void setMenuObject(String menuObject) {
+		this.menuObject = menuObject;
+	}
+
 	@Override
 	public String toString() {
-		return "JwtResponse [utente=" + utente + ", token=" + token + "]";
+		return "JwtResponse [utente=" + utente + ", menuObject=" + menuObject + ", token=" + token + "]";
 	}
-    
+
     
 }
