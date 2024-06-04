@@ -85,7 +85,7 @@ public class UtenteController {
 	    if (!utentiList.isEmpty()) {
 		    try {
 		      // genero token di sessione
-		      //JwtTokenProvider jwtTokenProvider = new JwtTokenProvider(); // Create an instance of Token
+		      //JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
 		      String token = jwtTokenProvider.generateToken(accountName);
 		      
 		      if (token!= null) {

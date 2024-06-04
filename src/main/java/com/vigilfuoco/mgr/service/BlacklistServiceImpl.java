@@ -7,12 +7,12 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.vigilfuoco.mgr.model.BlacklistedToken;
 import com.vigilfuoco.mgr.repository.BlacklistRepository;
 
-@Component
+@Service
 public class BlacklistServiceImpl implements BlacklistService {
 
 	private static final Logger logger = LogManager.getLogger(BlacklistService.class);
@@ -48,7 +48,7 @@ public class BlacklistServiceImpl implements BlacklistService {
         return blacklistRepository.existsByToken(token);
     }
 
-    @Scheduled(fixedRateString="${fixedRate}")
+    @Scheduled(fixedRateString="${spring.scheduling.fixedRate}")
     public void removeExpiredTokens() {
         //long retentionPeriod = 60 * 60 * 24; // 24 hours in seconds
     	long retentionPeriod = expirationTokenTime;
@@ -59,7 +59,7 @@ public class BlacklistServiceImpl implements BlacklistService {
             long currentTime = System.currentTimeMillis();
 
             // Controllo se il periodo di conservazione è trascorso dal blacklistTime
-            if (currentTime - token.getBlacklistTime() > retentionPeriod) {
+            if (currentTime - expirationTokenTime > retentionPeriod) {
                 // Rimuovo il token da blacklist
                 blacklistRepository.delete(token);
                 logger.info("Token {} removed from blacklist due to expiration", token.getToken());

@@ -118,5 +118,19 @@ public class JwtTokenProvider {
     public String getToken(String token) {
 		return token;
     }
+    
+    public String getUsernameFromToken(String token) throws ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, SignatureException, IllegalArgumentException, IOException {
+	  // Parsing del JWT token per accedere ai claims
+	  Claims claims = Jwts.parser()
+	      .setSigningKey(getResources("secret.token.key"))
+	      .parseClaimsJws(token)
+	      .getBody();
+
+	  // Recupero l'username claim dal token
+	  String username = claims.getSubject();
+
+	  // Restituisco l'username
+	  return username;
+	}
 
 }

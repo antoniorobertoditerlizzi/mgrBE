@@ -5,15 +5,11 @@ import com.vigilfuoco.mgr.repository.RichiestaRepository;
 import com.vigilfuoco.mgr.service.BlacklistServiceImpl;
 import com.vigilfuoco.mgr.service.RichiestaService;
 import com.vigilfuoco.mgr.token.JwtTokenProvider;
-import com.vigilfuoco.mgr.utility.GetMenuByRole;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,7 +17,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.json.JSONObject;
 
 /* 
  * Definizione di tutte le API che contraddistinguono la Richiesta
@@ -46,10 +41,18 @@ public class RichiestaController {
 	// API Ricerca per id richiesta ------------------------------------ /api/richiesta/cerca?id=2
     @GetMapping("/cerca")
     public ResponseEntity<Richiesta> ricercaPerId(@RequestParam long id) throws IOException {
-		logger.debug("Ingresso api /api/richiesta/cerca?id=");
+		logger.debug("Ingresso api /api/richiesta/cerca?id=" + id);
 		Richiesta res = repository.findById(id);
 		return new ResponseEntity<Richiesta>(res, HttpStatus.OK);
 	}
+    
+
+    /*TEST
+    @GetMapping("/cerca")
+    public ResponseEntity<String> ricercaPerId(@RequestParam long id) throws IOException {
+
+    	return new ResponseEntity<String>("CIAO", HttpStatus.OK);
+	}*/
 	
 	
 	// API Ricerca per descrizione ------------------------------------ /api/richiesta/cerca/prima richiesta

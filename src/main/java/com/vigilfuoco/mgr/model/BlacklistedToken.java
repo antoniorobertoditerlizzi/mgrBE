@@ -18,7 +18,7 @@ public class BlacklistedToken {
     @Column(unique = true, nullable = false)
     private String token;
 
-    private long blacklistTime;
+
 
     public BlacklistedToken(String token) {
         this.token = token;
@@ -40,18 +40,16 @@ public class BlacklistedToken {
 		this.token = token;
 	}
 
-	public long getBlacklistTime() {
-		return blacklistTime;
-	}
-
-	public void setBlacklistTime(long blacklistTime) {
-		this.blacklistTime = blacklistTime;
-	}
 
 	@Override
 	public String toString() {
-		return "BlacklistedToken [id=" + id + ", token=" + token + ", blacklistTime=" + blacklistTime + "]";
+		return "BlacklistedToken [id=" + id + ", token=" + token + " ]";
 	}
 
+    public BlacklistedToken() {
+        // Optional: Initialize member variables with default values here
+    }
+
+	
 
 }
