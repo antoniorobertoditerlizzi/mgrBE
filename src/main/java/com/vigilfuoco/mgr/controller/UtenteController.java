@@ -1,7 +1,6 @@
 package com.vigilfuoco.mgr.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vigilfuoco.mgr.model.JwtResponse;
 import com.vigilfuoco.mgr.model.Utente;
 import com.vigilfuoco.mgr.repository.UtenteRepository;
