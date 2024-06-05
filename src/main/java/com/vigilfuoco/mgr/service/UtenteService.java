@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 
+import com.google.gson.Gson;
+import java.util.Map;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
@@ -67,11 +70,14 @@ public class UtenteService {
 						try {
 							//Recupero il menu utente in base al ruolo
 						    int roleId = savedUser.getRuoloID();
-
+						    
 						    // Recupero il menu associato al ruolo utente
-						    JSONObject menuObject = getMenuByRole(roleId, menuResource);
+						    //JSONObject menuObject = getMenuByRole(roleId, menuResource);
+						    
+						    // Recupero il menu associato al ruolo utente. Come oggetto dinamico.
+						    Map<String, Object> menuObject = getMenuByRole_OBJ(roleId);
 
-					    	return ResponseEntity.ok(new JwtResponse(savedUser, menuObject.toString(), token));
+					    	return ResponseEntity.ok(new JwtResponse(savedUser, menuObject, token));
 						} catch (Exception e) {
 							e.printStackTrace();
 							logger.error("Errore nella generazione del token: " + e.toString());
@@ -173,22 +179,49 @@ public class UtenteService {
 	
 	
 	public ResponseEntity<String> getMenuByRoleWS(int idRuolo) throws IOException {
-	       String strutturaMenu = "";
+	       JSONObject strutturaMenu = null;
+	        //Eventualmente si salva il json al DB e non piu su file
+	        JSONObject menuJson = getMenuByRole(idRuolo, menuResource);
+	        if (menuJson != null) {
+	            if (!menuJson.isEmpty()) {
+	                strutturaMenu = menuJson;
+	            } else {
+	            	logger.error("Menu vuoto");
+	            }
+	        } else {
+	        	logger.error("Nessun Menu trovato appartenente al ruolo " + idRuolo + " richiesto");
+	        }
+	        
+	        logger.debug(menuJson);
+			return new ResponseEntity<String>(strutturaMenu.toString(), HttpStatus.OK);
+	}
+	
+	
+	
+	public String getMenuByRoleWSString(int idRuolo) throws IOException {
+	       String strutturaMenu = null;
 	        //Eventualmente si salva il json al DB e non piu su file
 	        JSONObject menuJson = getMenuByRole(idRuolo, menuResource);
 	        if (menuJson != null) {
 	            if (!menuJson.isEmpty()) {
 	                strutturaMenu = menuJson.toString();
 	            } else {
-	                strutturaMenu = "Menu vuoto";
+	            	logger.error("Menu vuoto");
 	            }
 	        } else {
-	            strutturaMenu = "Nessun Menu trovato appartenente al ruolo " + idRuolo + " richiesto";
+	        	logger.error("Nessun Menu trovato appartenente al ruolo " + idRuolo + " richiesto");
 	        }
 	        
 	        logger.debug(menuJson);
-			return new ResponseEntity<String>(strutturaMenu, HttpStatus.OK);
+			return strutturaMenu;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public java.util.Map<String, Object> getMenuByRole_OBJ(int idRuolo) throws IOException {
+		String jsonString = getMenuByRoleWSString(idRuolo);
+	    Gson gson = new Gson();
+	    Map<String, Object> jsonData = gson.fromJson(jsonString, Map.class);
+	return jsonData;
+	}
 	
 }

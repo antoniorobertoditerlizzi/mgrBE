@@ -1,6 +1,7 @@
 package com.vigilfuoco.mgr.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vigilfuoco.mgr.model.JwtResponse;
 import com.vigilfuoco.mgr.model.Utente;
 import com.vigilfuoco.mgr.repository.UtenteRepository;
@@ -13,6 +14,7 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -57,7 +59,7 @@ public class UtenteController {
 	private UtenteWAUC_to_Utente_Service utenteWAUC_to_Utente_Service = new UtenteWAUC_to_Utente_Service();
 	
 
-	// API LoginCheck -------------------------------- /api/utente/login?accountName=antonioroberto.diterlizzi
+	// API LoginCheck ----------------------------------------------------------- /api/utente/login?accountName=antonioroberto.diterlizzi
 	@GetMapping("login")
 	public ResponseEntity<JwtResponse> login(@RequestParam String accountName) throws IllegalArgumentException, IOException, JsonProcessingException {
     	String decodedAccountName = URLEncoder.encode(accountName, "UTF-8");
@@ -68,7 +70,7 @@ public class UtenteController {
 		return utenteService.login(utentiList, accountName);
 	}
     
-	// API Loginout -------------------------------- /api/utente/logout
+	// API Loginout ----------------------------------------------------------- /api/utente/logout
 	@PostMapping("/logout")
 	public ResponseEntity<String> logout(@RequestHeader("Authorization") String authorizationHeader) throws InvalidTokenException, UnsupportedJwtException, IllegalArgumentException, IOException {
 	    String token = authorizationHeader.split(" ")[1];
@@ -77,7 +79,7 @@ public class UtenteController {
 	}
 	
 	
-	// API Ricerca tutti gli utenti salvati a DB -------------------------- /api/utente/accounts
+	// API Ricerca tutti gli utenti salvati a DB ----------------------------- /api/utente/accounts
     @GetMapping("accounts")
 	public ResponseEntity<Iterable<Utente>> getAccounts() throws IOException, JsonProcessingException {
     	String url = waucBasePath + waucPersonale + "/accounts";
@@ -103,18 +105,26 @@ public class UtenteController {
 		return new ResponseEntity<List<Utente>>(res, HttpStatus.OK);
 	}
     
-
-	// API MENU --------------------------------- /api/utente/menu?roleId=2
-    @GetMapping("/menu")
-    public ResponseEntity<String> getMenuByID(@RequestParam int roleId) throws IOException {
-		return utenteService.getMenuByRoleWS(roleId);
-	}
     
-    
-    // API MENU --------------------------------- /api/utente/menuByAccountName?accountName=antonioroberto.diterlizzi
+    // API MENU ----------------------------------------------------------- /api/utente/menuByAccountName?accountName=antonioroberto.diterlizzi
     @GetMapping("/menuByAccountName")
     public ResponseEntity<String> getMenuByAccountName(@RequestParam String accountName) throws IOException {
         return utenteService.getMenuByRoleFromAccount(accountName);
     }
-		
+    
+    
+	// API MENU ----------------------------------------------------------- /api/utente/menu?roleId=2
+    @GetMapping("/menu")
+    public ResponseEntity<Map<String, Object>> getMenuByRole(@RequestParam int roleId) throws IOException {
+        Map<String, Object> jsonData = utenteService.getMenuByRole_OBJ(roleId);
+        return ResponseEntity.ok(jsonData);
+    }
+	
+    
+	// API MENU ----------------------------------------------------------- /api/utente/menu?roleId=2
+    /*@GetMapping("/menu")
+    public ResponseEntity<String> getMenuByID(@RequestParam int roleId) throws IOException {
+		return utenteService.getMenuByRoleWS(roleId);
+	}*/
+    
 }
