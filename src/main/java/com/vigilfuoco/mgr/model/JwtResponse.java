@@ -1,19 +1,20 @@
 package com.vigilfuoco.mgr.model;
 
+import java.util.List;
 import java.util.Map;
 
 public class JwtResponse {
 	
     private Utente utente;
     
-	private Map<String, Object> menu;
+	private List<Object> menu;
     
     private String token;
     
     private String note;
 
 
-    public JwtResponse(Utente utente, Map<String, Object> menu, String token, String note) {
+    public JwtResponse(Utente utente, List<Object> menu, String token, String note) {
         this.utente = utente;
         this.menu = menu;
         this.token = token;
@@ -31,12 +32,12 @@ public class JwtResponse {
 	}
 
 
-	public Map<String, Object> getMenu() {
+	public List<Object> getMenu() {
 		return menu;
 	}
 
 
-	public void setMenu(Map<String, Object> menu) {
+	public void setMenu(List<Object> menu) {
 		this.menu = menu;
 	}
 
@@ -63,9 +64,9 @@ public class JwtResponse {
 
 	@Override
 	public String toString() {
-		return "JwtResponse [utente=" + utente + ", menu=" + menu + ", token=" + token + ", note=" + note
-				+ "]";
+		return "JwtResponse [utente=" + utente + ", menu=" + menu + ", token=" + token + ", note=" + note + "]";
 	}
+
 
     
 }

@@ -13,7 +13,6 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -68,7 +67,7 @@ public class UtenteController {
 		logger.debug("Ingresso api /api/utente/loginCheck?accountName=" +accountName + " lista utenti: " + utentiList);
 		return utenteService.login(utentiList, accountName);
 	}
-    
+	
 	// API Loginout ----------------------------------------------------------- /api/utente/logout
 	@PostMapping("/logout")
 	public ResponseEntity<String> logout(@RequestHeader("Authorization") String authorizationHeader) throws InvalidTokenException, UnsupportedJwtException, IllegalArgumentException, IOException {
@@ -113,9 +112,9 @@ public class UtenteController {
     
     
 	// API MENU ----------------------------------------------------------- /api/utente/menu?roleId=2
-    @GetMapping("/menu")
-    public ResponseEntity<Map<String, Object>> getMenuByRole(@RequestParam int roleId) throws IOException {
-        Map<String, Object> jsonData = utenteService.getMenuByRole_OBJ(roleId);
+   @GetMapping("/menu")
+    public ResponseEntity<List<Object>> getMenuByRole(@RequestParam int roleId) throws IOException {
+         List<Object> jsonData = utenteService.getMenuByRole_OBJ(roleId);
         return ResponseEntity.ok(jsonData);
     }
 	

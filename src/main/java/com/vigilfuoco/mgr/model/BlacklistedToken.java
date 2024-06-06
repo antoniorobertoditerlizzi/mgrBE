@@ -45,5 +45,8 @@ public class BlacklistedToken {
         this.token = token;
     }
 
+    public BlacklistedToken() {
+    }
+
 
 }

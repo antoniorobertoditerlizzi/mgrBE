@@ -5,12 +5,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 
-import com.google.gson.Gson;
-import java.util.Map;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -59,46 +59,41 @@ public class UtenteService {
 		
 	    if (!utentiList.isEmpty()) {
 		    try {
-		    	// genero token di sessione
-		    	//JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
-		     	String token = jwtTokenProvider.generateToken(accountName);
-				//Recupero il menu utente in base al ruolo
-			    int roleId = 1; //WIP savedUser.getRuoloID();
+				// Genero token di sessione
+				String token = jwtTokenProvider.generateToken(accountName);
+				
+				// Recupero il menu utente in base al ruolo
+				int roleId = 1; //WIP savedUser.getRuoloID();
+				
+				// Recupero il menu associato al ruolo utente. Come oggetto dinamico.
+				List<Object> menu = getMenuByRole_OBJ(roleId);
 			    
-			    // Recupero il menu associato al ruolo utente
-			    //JSONObject menuObject = getMenuByRole(roleId, menuResource);
-			    
-			    // Recupero il menu associato al ruolo utente. Come oggetto dinamico.
-			    Map<String, Object> menu = getMenuByRole_OBJ(roleId);
-			    
-		      //Controllo che il token non sia nullo e che l'utente nel DB non è mai stato censito prima
-		      if (token!= null) {
-		    	  if(checkUserFound.isEmpty()) {
-						// scrivo a db l'utente trovato
-						savedUser = utenteWAUC_to_Utente_Service.salvaUtenteTrovato(utentiList.get(0),utenteWAUCRepository);
-
-
-						if (savedUser != null) {
-							// restituisco al WS in output i dati salvati e genero anche il token di sessione
-						try {
-							return ResponseEntity.ok(new JwtResponse(savedUser, menu, token, ""));
-						} catch (Exception e) {
-							e.printStackTrace();
-							logger.error("Errore nella generazione del token: " + e.toString());
-						}
-				      }
-		    	  } else {
-				      logger.debug("Utente " + checkUserFound.get(0).getAccount() + " già censito a DB.");
-				      return ResponseEntity.ok(new JwtResponse(checkUserFound.get(0), menu, token, "Utente " + checkUserFound.get(0).getAccount() +" già censito a DB."));
-		    	  }
-
-		      }
+				// Controllo che il token non sia nullo e che l'utente nel DB non è mai stato censito prima
+				if (token!= null) {
+			    	  if(checkUserFound.isEmpty()) {
+							// Scrivo a db l'utente trovato
+							savedUser = utenteWAUC_to_Utente_Service.salvaUtenteTrovato(utentiList.get(0),utenteWAUCRepository);
+	
+							if (savedUser != null) {
+								// Restituisco al WS in output i dati salvati e genero anche il token di sessione
+							try {
+								return ResponseEntity.ok(new JwtResponse(savedUser, menu, token, ""));
+							} catch (Exception e) {
+								e.printStackTrace();
+								logger.error("Errore nella generazione del token: " + e.toString());
+							}
+					      }
+			    	  } else {
+					      logger.debug("Utente " + checkUserFound.get(0).getAccount() + " già censito a DB.");
+					      return ResponseEntity.ok(new JwtResponse(checkUserFound.get(0), menu, token, "Utente " + checkUserFound.get(0).getAccount() +" già censito a DB."));
+			    	  }
+			      }
 		    } catch (IllegalArgumentException e) {
 		      logger.error("Error saving user: " + e.getMessage());
 		      throw new RichiestaException("Errore durante il salvataggio della richiesta: " + e.getMessage());
 		    }
 		}
-    	// restituisco al WS in output i dati salvati
+    	// Restituisco al WS in output i dati salvati
 		return null;
 	}
 	
@@ -122,13 +117,11 @@ public class UtenteService {
             return new ResponseEntity<>("Account non trovato.", HttpStatus.NOT_FOUND);
         }
 
-        Utente utente = utenti.get(0); // Prendo il primo utente trovato
-
         // Estraggo il ruolo utente
         int roleId = 1; //WIP utente.getRuoloID();
 
         // Recupero dal ruolo utente il menu corrispondente
-        JSONObject menuObject = getMenuByRole(roleId, menuResource);
+         JSONArray menuObject = getMenuByRole(roleId, menuResource);
 
         if (menuObject == null) {
             return new ResponseEntity<>("Menu non trovato per il ruolo dell'utente. RoleID: " + roleId, HttpStatus.NOT_FOUND);
@@ -138,59 +131,69 @@ public class UtenteService {
     }
 
 
-	public JSONObject getMenuByRole(int idRuolo, Resource menuResource) throws IOException {
+    public static JSONArray getMenuByRole(int idRuolo, Resource menuResource) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(menuResource.getInputStream()))) {
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line).append("\n");
+            }
+            String jsonString = sb.toString();
+            logger.debug(jsonString);
 
-	    try (BufferedReader reader = new BufferedReader(new InputStreamReader(menuResource.getInputStream()))) {
-	        StringBuilder sb = new StringBuilder();
-	        String line;
-	        while ((line = reader.readLine()) != null) {
-	            sb.append(line).append("\n");
-	        }
-	        String jsonString = sb.toString();
-	        logger.debug(jsonString);
+            // Decodifica del json
+            JSONObject jsonObject = new JSONObject(jsonString);
 
-	        // Decodifica del JSON e ricerca del menu per RUOLO
-	        JSONObject jsonObject = new JSONObject(jsonString);
+            // Check per chiave "json_menu"
+            if (jsonObject.has("json_menu")) {
 
-	        // Controllo l'esistenza del ramo "json_menu"
-	        if (jsonObject.has("json_menu")) {
+                JSONArray menuArray = jsonObject.getJSONArray("json_menu");
 
-	            // Converto "json_menu" in array
-	            JSONArray menuArray = jsonObject.getJSONArray("json_menu");
+                // Cerco nel menu il menu corrispondente al ruolo in input
+                for (int i = 0; i < menuArray.length(); i++) {
+                    JSONObject menuEntry = menuArray.getJSONObject(i);
 
-	            // Loop nell'array per cercare il ruolo che metcha con il ruolo in input
-	            for (int i = 0; i < menuArray.length(); i++) {
-	                JSONObject menuEntry = menuArray.getJSONObject(i);
+                    if (menuEntry.has("id_ruolo") && menuEntry.get("id_ruolo") instanceof Integer) {
+                        int menuRole = menuEntry.getInt("id_ruolo");
 
-	                // controllo che il campo "id_ruolo" exists ed è di tipo integer
-	                if (menuEntry.get("id_ruolo") instanceof Integer) {
-	                    int menuRole = menuEntry.getInt("id_ruolo");
-	                    if (menuRole == idRuolo) {
-	                        // Accesso al menu del ruolo desiderato
-	                        JSONObject menuObject = menuEntry.getJSONObject("voce_menu");
-	                        return menuObject; // Restituisco l'oggetto "voce_menu" corrispondente al menu del ruolo desiderato
-	                    }
-	                } else {
-	                	logger.error("Manca il campo int id_ruolo: " + i);
-	                }
-	            }
-	            logger.error("Il Menu per il ruolo " + idRuolo + " non è stato trovato");
-	            return null;
-	        } else {
-	        	logger.error("Chiave json_menu non trovata");
-	            return null;
-	        }
-	    } catch (IOException e) {
-	    	logger.error("Eccezione nel caricamento del file");
-	        throw e;
-	    }
-	}
-	
+                        if (menuRole == idRuolo) {
+                            try {
+                                // Accedo al menu in base al ruolo
+                                Object menuObject = menuEntry.get("voci_menu");
+                                if (menuObject instanceof JSONArray) {
+                                    return (JSONArray) menuObject;
+                                } else {
+                                    logger.error("Errore sul tipo di 'voci_menu' per il ruolo " + idRuolo);
+                                    return null;
+                                }
+                            } catch (JSONException e) {
+                                // Handle potential error if "voci_menu" is invalid
+                                logger.error("Invalido campo 'voci_menu' per il ruolo " + idRuolo, e);
+                                return null;
+                            }
+                        }
+                    } else {
+                        logger.error("Campo id_ruolo mancante o invalido " + i);
+                    }
+                }
+
+                logger.error("Menu per il ruolo " + idRuolo + " non trovato");
+                return null;
+            } else {
+                logger.error("'json_menu chiave non trovata nel JSON");
+                return null;
+            }
+        } catch (IOException e) {
+            logger.error("Errore di lettura del file ", e);
+            throw e;
+        }
+    }
+
 	
 	public ResponseEntity<String> getMenuByRoleWS(int idRuolo) throws IOException {
-	       JSONObject strutturaMenu = null;
+	       JSONArray strutturaMenu = null;
 	        //Eventualmente si salva il json al DB e non piu su file
-	        JSONObject menuJson = getMenuByRole(idRuolo, menuResource);
+	         JSONArray menuJson = getMenuByRole(idRuolo, menuResource);
 	        if (menuJson != null) {
 	            if (!menuJson.isEmpty()) {
 	                strutturaMenu = menuJson;
@@ -210,7 +213,7 @@ public class UtenteService {
 	public String getMenuByRoleWSString(int idRuolo) throws IOException {
 	       String strutturaMenu = null;
 	        //Eventualmente si salva il json al DB e non piu su file
-	        JSONObject menuJson = getMenuByRole(idRuolo, menuResource);
+	         JSONArray menuJson = getMenuByRole(idRuolo, menuResource);
 	        if (menuJson != null) {
 	            if (!menuJson.isEmpty()) {
 	                strutturaMenu = menuJson.toString();
@@ -226,11 +229,14 @@ public class UtenteService {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public java.util.Map<String, Object> getMenuByRole_OBJ(int idRuolo) throws IOException {
+	public List<Object> getMenuByRole_OBJ(int idRuolo) throws IOException {
 		String jsonString = getMenuByRoleWSString(idRuolo);
-	    Gson gson = new Gson();
-	    Map<String, Object> jsonData = gson.fromJson(jsonString, Map.class);
-	return jsonData;
+	
+	    ObjectMapper mapper = new ObjectMapper();
+	    List<Object> menuList = mapper.readValue(jsonString, List.class);
+	    //Map<String, Object>W jsonData = new HashMap<>();
+	    //jsonData.put("array", menuList);
+	return menuList;
 	}
 	
 }
