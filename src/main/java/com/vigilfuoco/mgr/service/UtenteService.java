@@ -54,22 +54,26 @@ public class UtenteService {
 
 	public ResponseEntity<JwtResponse> login(List<UtenteWAUC> utentiList, String accountName) throws IOException {
 		Utente savedUser = new Utente();
-
+		
+		List<Utente> checkUserFound = utenteRepository.findByAccount(accountName);
+		
 	    if (!utentiList.isEmpty()) {
 		    try {
 		      // genero token di sessione
 		      //JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
 		      String token = jwtTokenProvider.generateToken(accountName);
 		      
+		      //Controllo che il token non sia nullo e che l'utente nel DB non è mai stato censito prima
 		      if (token!= null) {
-			  	  // scrivo a db l'utente trovato
-			      savedUser = utenteWAUC_to_Utente_Service.salvaUtenteTrovato(utentiList.get(0),utenteWAUCRepository);
+		    	  if(checkUserFound.isEmpty()) {
+		    		  // scrivo a db l'utente trovato
+		    		  savedUser = utenteWAUC_to_Utente_Service.salvaUtenteTrovato(utentiList.get(0),utenteWAUCRepository);
 
 				      if (savedUser != null) {
 				    	// restituisco al WS in output i dati salvati e genero anche il token di sessione
 						try {
 							//Recupero il menu utente in base al ruolo
-						    int roleId = savedUser.getRuoloID();
+						    int roleId = 1; //WIP savedUser.getRuoloID();
 						    
 						    // Recupero il menu associato al ruolo utente
 						    //JSONObject menuObject = getMenuByRole(roleId, menuResource);
@@ -82,7 +86,12 @@ public class UtenteService {
 							e.printStackTrace();
 							logger.error("Errore nella generazione del token: " + e.toString());
 						}
-				      } 
+				      }
+		    	  } else {
+				      logger.error("Utente già censito a DB." + checkUserFound.get(0).getAccount());
+				      return ResponseEntity.ok(new JwtResponse(null, null, "Utente " + checkUserFound.get(0).getAccount() +" già censito a DB."));
+		    	  }
+
 		      }
 		    } catch (IllegalArgumentException e) {
 		      logger.error("Error saving user: " + e.getMessage());
@@ -107,7 +116,7 @@ public class UtenteService {
 	
     public ResponseEntity<String> getMenuByRoleFromAccount(String accountName) throws IOException {
         // Retrieve user information
-        List<Utente> utenti = utenteRepository.findByAccountDipvvf(accountName);
+        List<Utente> utenti = utenteRepository.findByAccount(accountName);
 
         if (utenti.isEmpty()) {
             return new ResponseEntity<>("Account non trovato.", HttpStatus.NOT_FOUND);
@@ -116,7 +125,7 @@ public class UtenteService {
         Utente utente = utenti.get(0); // Prendo il primo utente trovato
 
         // Estraggo il ruolo utente
-        int roleId = utente.getRuoloID();
+        int roleId = 1; //WIP utente.getRuoloID();
 
         // Recupero dal ruolo utente il menu corrispondente
         JSONObject menuObject = getMenuByRole(roleId, menuResource);

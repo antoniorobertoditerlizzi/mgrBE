@@ -2,113 +2,122 @@ package com.vigilfuoco.mgr.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
+import javax.persistence.Table;
 
 
 @Entity
+@Table(name = "tbl_utenti")
 public class Utente {
-    /*@Id
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;*/
-	
-	@Id
-    @Column(nullable = false) 
-    private String accountDipvvf;
-    
-    @Column(nullable = false) 
-    private String emailVigilfuoco;
-    
-    @Column(nullable = false) 
-    private String username;
-    
-    @Column(nullable = false) 
-    private String password;
-    
-    @Column(nullable = false) 
-    private String role;
-    
-    @Column(nullable = false) 
-    private Boolean enabled;
-    
-    @Column(nullable = false) 
-    private int ruoloID;
+    private int idUtente;
 
-    
-	public int getRuoloID() {
-		return ruoloID;
+    @Column(name = "account", nullable = false, length = 50)
+    private String account;
+
+    @Column(name = "nome", nullable = false, length = 50)
+    private String nome;
+
+    @Column(name = "cognome", nullable = false, length = 120)
+    private String cognome;
+
+    @Column(name = "CF", nullable = false, length = 16)
+    private String cf;
+
+    @Column(name = "classificazione_utente_app", nullable = false)
+    private int classificazioneUtenteApp;
+
+    @Column(name = "email_utente", nullable = false, length = 50)
+    private String emailUtente;
+
+    @Column(name = "attivo", nullable = false)
+    private boolean attivo;
+
+	public int getIdUtente() {
+		return idUtente;
 	}
 
-	public void setRuoloID(int ruoloID) {
-		this.ruoloID = ruoloID;
+	public void setIdUtente(int idUtente) {
+		this.idUtente = idUtente;
 	}
 
-	public String getAccountDipvvf() {
-		return accountDipvvf;
+	public String getAccount() {
+		return account;
 	}
 
-	public void setAccountDipvvf(String accountDipvvf) {
-		this.accountDipvvf = accountDipvvf;
+	public void setAccount(String account) {
+		this.account = account;
 	}
 
-	public String getEmailVigilfuoco() {
-		return emailVigilfuoco;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setEmailVigilfuoco(String emailVigilfuoco) {
-		this.emailVigilfuoco = emailVigilfuoco;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getCognome() {
+		return cognome;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setCognome(String cognome) {
+		this.cognome = cognome;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getCf() {
+		return cf;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setCf(String cf) {
+		this.cf = cf;
 	}
 
-	public String getRole() {
-		return role;
+	public int getClassificazioneUtenteApp() {
+		return classificazioneUtenteApp;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
+	public void setClassificazioneUtenteApp(int classificazioneUtenteApp) {
+		this.classificazioneUtenteApp = classificazioneUtenteApp;
 	}
 
-	public Boolean getEnabled() {
-		return enabled;
+	public String getEmailUtente() {
+		return emailUtente;
 	}
 
-	public void setEnabled(Boolean enabled) {
-		this.enabled = enabled;
+	public void setEmailUtente(String emailUtente) {
+		this.emailUtente = emailUtente;
 	}
 
-	
-	
+	public boolean isAttivo() {
+		return attivo;
+	}
+
+	public void setAttivo(boolean attivo) {
+		this.attivo = attivo;
+	}
+
 	public Utente() {
 		super();
-		this.accountDipvvf = accountDipvvf;
-		this.emailVigilfuoco = emailVigilfuoco;
-		this.username = username;
-		this.password = password;
-		this.role = role;
-		this.enabled = enabled;
-		this.ruoloID = ruoloID;
+		this.idUtente = idUtente;
+		this.account = account;
+		this.nome = nome;
+		this.cognome = cognome;
+		this.cf = cf;
+		this.classificazioneUtenteApp = classificazioneUtenteApp;
+		this.emailUtente = emailUtente;
+		this.attivo = attivo;
 	}
 
 	@Override
 	public String toString() {
-		return "Utente [accountDipvvf=" + accountDipvvf + ", emailVigilfuoco=" + emailVigilfuoco + ", username="
-				+ username + ", password=" + password + ", role=" + role + ", enabled=" + enabled + ", ruoloID=" + ruoloID
-				+ "]";
+		return "Utente [idUtente=" + idUtente + ", account=" + account + ", nome=" + nome + ", cognome=" + cognome
+				+ ", cf=" + cf + ", classificazioneUtenteApp=" + classificazioneUtenteApp + ", emailUtente="
+				+ emailUtente + ", attivo=" + attivo + "]";
 	}
 
 

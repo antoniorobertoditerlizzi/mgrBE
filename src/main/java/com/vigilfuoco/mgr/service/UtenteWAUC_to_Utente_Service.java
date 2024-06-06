@@ -44,13 +44,16 @@ import com.vigilfuoco.mgr.wauc.model.UtenteWAUC;
 	    		    throw new IllegalArgumentException("Utente non può essere nullo!");
 	    		  }
 	    		  if (request.getAccountDipvvf() != null) {
-	    			  utente.setAccountDipvvf(request.getAccountDipvvf());
-	    			  utente.setEmailVigilfuoco(request.getEmailVigilfuoco());
-	    			  utente.setUsername(request.getAccountDipvvf());
-	    			  utente.setPassword(bcrypt(request.getAccountDipvvf()));
-	    			  utente.setRole("ROLE_ADMIN"); // Aggiornare quando ci sarà schema DB aggiornato
-	    			  utente.setRuoloID(2); 		// Aggiornare quando ci sarà schema DB aggiornato
-	    			  utente.setEnabled(true); 		// Aggiornare quando ci sarà schema DB aggiornato
+	    			  utente.setAccount(request.getAccountDipvvf());
+	    			  utente.setEmailUtente(request.getEmailVigilfuoco());
+	    			  utente.setNome(request.getNome());
+	    			  utente.setCognome(request.getCognome());
+	    			  //utente.setPassword(bcrypt(request.getAccountDipvvf()));
+	    			  //utente.setRole("ROLE_ADMIN"); // Aggiornare quando ci sarà schema DB aggiornato
+	    			  //utente.setRuoloID(2); 		// Aggiornare quando ci sarà schema DB aggiornato
+	    			  utente.setCf(request.getCodiceFiscale());
+	    			  utente.setClassificazioneUtenteApp(0);
+	    			  utente.setAttivo(false);
 	    		  }
 	    	//Salvo a DB l'utente trovato
 	        return utenteWAUCRepository2.save(utente);

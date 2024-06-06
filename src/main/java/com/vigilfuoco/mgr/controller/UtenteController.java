@@ -87,8 +87,8 @@ public class UtenteController {
 		Iterable<Utente> res = utenteRepository.findAll();
 		
 		for (Utente utente : res) {
-			logger.debug("richiesta.getId():"+utente.getAccountDipvvf());
-			logger.debug("richiesta.getId():"+utente.getEmailVigilfuoco());
+			logger.debug("richiesta.getId():"+utente.getAccount());
+			logger.debug("richiesta.getId():"+utente.getEmailUtente());
 		}
 
 		return new ResponseEntity<Iterable<Utente>>(res, HttpStatus.OK);
@@ -100,7 +100,7 @@ public class UtenteController {
     public ResponseEntity<List<Utente>> getAccount(@PathVariable String accountName) throws IOException, JsonProcessingException {
     	String url = waucBasePath + waucPersonale + "/account/" + accountName;
 		logger.debug("Ingresso api" + url );
-		List<Utente> res = utenteRepository.findByAccountDipvvf(accountName);
+		List<Utente> res = utenteRepository.findByAccount(accountName);
 		return new ResponseEntity<List<Utente>>(res, HttpStatus.OK);
 	}
     
