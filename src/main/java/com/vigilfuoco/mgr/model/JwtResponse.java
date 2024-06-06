@@ -6,16 +6,16 @@ public class JwtResponse {
 	
     private Utente utente;
     
-	private Map<String, Object> menuObject;
+	private Map<String, Object> menu;
     
     private String token;
     
     private String note;
 
 
-    public JwtResponse(Utente utente, Map<String, Object> menuObject, String token, String note) {
+    public JwtResponse(Utente utente, Map<String, Object> menu, String token, String note) {
         this.utente = utente;
-        this.menuObject = menuObject;
+        this.menu = menu;
         this.token = token;
         this.note = note;
     }
@@ -31,13 +31,13 @@ public class JwtResponse {
 	}
 
 
-	public Map<String, Object> getMenuObject() {
-		return menuObject;
+	public Map<String, Object> getMenu() {
+		return menu;
 	}
 
 
-	public void setMenuObject(Map<String, Object> menuObject) {
-		this.menuObject = menuObject;
+	public void setMenu(Map<String, Object> menu) {
+		this.menu = menu;
 	}
 
 
@@ -63,7 +63,7 @@ public class JwtResponse {
 
 	@Override
 	public String toString() {
-		return "JwtResponse [utente=" + utente + ", menuObject=" + menuObject + ", token=" + token + ", note=" + note
+		return "JwtResponse [utente=" + utente + ", menu=" + menu + ", token=" + token + ", note=" + note
 				+ "]";
 	}
 
