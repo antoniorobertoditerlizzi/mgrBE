@@ -77,14 +77,15 @@ public class UtenteService {
 							if (savedUser != null) {
 								// Restituisco al WS in output i dati salvati e genero anche il token di sessione
 							try {
-								return ResponseEntity.ok(new JwtResponse(savedUser, menu, token, ""));
+							    logger.info("Procedura di Importazione Nuovo Utente " + savedUser.getAccount() +" ultimata con successo. Utente correttamente importato nel DB MGR.");
+								return ResponseEntity.ok(new JwtResponse(savedUser, menu, token, "Procedura di Importazione Nuovo Utente " + savedUser.getAccount() +" ultimata con successo. Utente correttamente importato nel DB MGR."));
 							} catch (Exception e) {
 								e.printStackTrace();
 								logger.error("Errore nella generazione del token: " + e.toString());
 							}
 					      }
 			    	  } else {
-					      logger.debug("Utente " + checkUserFound.get(0).getAccount() + " già censito a DB.");
+					      logger.info("Utente " + checkUserFound.get(0).getAccount() + " già censito a DB.");
 					      return ResponseEntity.ok(new JwtResponse(checkUserFound.get(0), menu, token, "Utente " + checkUserFound.get(0).getAccount() +" già censito a DB."));
 			    	  }
 			      }
