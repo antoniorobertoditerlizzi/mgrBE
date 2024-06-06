@@ -8,28 +8,22 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "blacklisted_tokens")
+@Table(name = "tbl_blacklisted_tokens")
 public class BlacklistedToken {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id 
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long idToken;
+	
+	@Column(name = "token", nullable = false, length = 250)
+	private String token;
 
-    @Column(unique = true, nullable = false)
-    private String token;
-
-
-
-    public BlacklistedToken(String token) {
-        this.token = token;
-    }
-
-	public Long getId() {
-		return id;
+    public Long getIdToken() {
+		return idToken;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setIdToken(Long idToken) {
+		this.idToken = idToken;
 	}
 
 	public String getToken() {
@@ -43,13 +37,13 @@ public class BlacklistedToken {
 
 	@Override
 	public String toString() {
-		return "BlacklistedToken [id=" + id + ", token=" + token + " ]";
+		return "BlacklistedToken [idToken=" + idToken + ", token=" + token + "]";
 	}
 
-    public BlacklistedToken() {
-        // Optional: Initialize member variables with default values here
+	
+    public BlacklistedToken(String token) {
+        this.token = token;
     }
 
-	
 
 }

@@ -59,37 +59,37 @@ public class UtenteService {
 		
 	    if (!utentiList.isEmpty()) {
 		    try {
-		      // genero token di sessione
-		      //JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
-		      String token = jwtTokenProvider.generateToken(accountName);
-		      
+		    	// genero token di sessione
+		    	//JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
+		     	String token = jwtTokenProvider.generateToken(accountName);
+				//Recupero il menu utente in base al ruolo
+			    int roleId = 1; //WIP savedUser.getRuoloID();
+			    
+			    // Recupero il menu associato al ruolo utente
+			    //JSONObject menuObject = getMenuByRole(roleId, menuResource);
+			    
+			    // Recupero il menu associato al ruolo utente. Come oggetto dinamico.
+			    Map<String, Object> menuObject = getMenuByRole_OBJ(roleId);
+			    
 		      //Controllo che il token non sia nullo e che l'utente nel DB non è mai stato censito prima
 		      if (token!= null) {
 		    	  if(checkUserFound.isEmpty()) {
-		    		  // scrivo a db l'utente trovato
-		    		  savedUser = utenteWAUC_to_Utente_Service.salvaUtenteTrovato(utentiList.get(0),utenteWAUCRepository);
+						// scrivo a db l'utente trovato
+						savedUser = utenteWAUC_to_Utente_Service.salvaUtenteTrovato(utentiList.get(0),utenteWAUCRepository);
 
-				      if (savedUser != null) {
-				    	// restituisco al WS in output i dati salvati e genero anche il token di sessione
+
+						if (savedUser != null) {
+							// restituisco al WS in output i dati salvati e genero anche il token di sessione
 						try {
-							//Recupero il menu utente in base al ruolo
-						    int roleId = 1; //WIP savedUser.getRuoloID();
-						    
-						    // Recupero il menu associato al ruolo utente
-						    //JSONObject menuObject = getMenuByRole(roleId, menuResource);
-						    
-						    // Recupero il menu associato al ruolo utente. Come oggetto dinamico.
-						    Map<String, Object> menuObject = getMenuByRole_OBJ(roleId);
-
-					    	return ResponseEntity.ok(new JwtResponse(savedUser, menuObject, token));
+							return ResponseEntity.ok(new JwtResponse(savedUser, menuObject, token, ""));
 						} catch (Exception e) {
 							e.printStackTrace();
 							logger.error("Errore nella generazione del token: " + e.toString());
 						}
 				      }
 		    	  } else {
-				      logger.error("Utente già censito a DB." + checkUserFound.get(0).getAccount());
-				      return ResponseEntity.ok(new JwtResponse(null, null, "Utente " + checkUserFound.get(0).getAccount() +" già censito a DB."));
+				      logger.debug("Utente già censito a DB." + checkUserFound.get(0).getAccount());
+				      return ResponseEntity.ok(new JwtResponse(checkUserFound.get(0), menuObject, token, "Utente " + checkUserFound.get(0).getAccount() +" già censito a DB."));
 		    	  }
 
 		      }

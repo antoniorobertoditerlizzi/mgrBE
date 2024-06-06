@@ -46,7 +46,7 @@ public class JwtTokenProvider {
         
 
 
-        logger.debug("Timeout del token impostaot a: " + expirationTokenTime);
+        logger.debug("Timeout del token impostato a: " + expirationTokenTime);
         Claims claims = Jwts.claims()
                 .setSubject(username)
                 .setIssuedAt(new Date());
