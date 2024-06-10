@@ -1,91 +1,113 @@
 {
-  "id_menu": 1,
-  "json_menu": [
-    {
-      "id_ruolo": 1,
-      "voci_menu": [
+    "id_menu": 1,
+    "json_menu": [
         {
-          "titolo": "Voce Menu 2",
-          "sottovoci": [
-            {
-              "titolo": "Sottovoce 2.1",
-              "url": "/voce_menu2/sottovoce2.1"
-            },
-            {
-              "titolo": "Sottovoce 2.2",
-              "url": "/voce_menu2/sottovoce2.2"
-            },
-            {
-              "titolo": "Sottovoce 2.3",
-              "url": "/voce_menu2/sottovoce2.3"
-            }
-          ]
+            "id_ruolo": 1,
+            "voci_menu": [
+                {
+                    "titolo": "Dashboard",
+                    "url": "/"
+                },
+                {
+                    "titolo": "Inserisci Richiesta",
+                    "sottovoci": [
+                        {
+                            "titolo": "Acquisto",
+                            "url": "/voce_menu2/sottovoce2.1"
+                        },
+                        {
+                            "titolo": "Assegnazione Materiale Informatico",
+                            "url": "/voce_menu2/sottovoce2.1"
+                        },
+                        {
+                            "titolo": "Assegnazione Materiale Operativo",
+                            "url": "/voce_menu2/sottovoce2.2"
+                        },
+                        {
+                            "titolo": "Assegnazione Materiale Logistico",
+                            "url": "/voce_menu2/sottovoce2.3"
+                        },
+                        {
+                            "titolo": "Corsi",
+                            "url": "/voce_menu2/sottovoce2.3"
+                        },
+                        {
+                            "titolo": "DPI",
+                            "url": "/voce_menu2/sottovoce2.3"
+                        }
+                    ]
+                },
+                {
+                    "titolo": "Gestione Richieste"
+                },
+				{
+                    "titolo": "Storico Richieste"
+                },                
+                {
+                    "titolo": "Amministrazione",
+                    "sottovoci": [
+                        {
+                            "titolo": "Inserisci Tipologia Richiesta",
+                            "url": "/voce_menu1/sottovoce1.1"
+                        },
+                        {
+                            "titolo": "Gestione Tipolgia Richiesta",
+                            "url": "/voce_menu1/sottovoce1.2"
+                        },
+                        {
+                            "titolo": "Inserisci Settore di Competenza",
+                            "url": "/voce_menu1/sottovoce1.3"
+                        },
+                        {
+                            "titolo": "Gestione Settori di Competenza",
+                            "url": "/voce_menu1/sottovoce1.3"
+                        }
+                    ]
+                }
+            ]
         },
         {
-          "titolo": "Voce Menu 1",
-          "sottovoci": [
-            {
-              "titolo": "Sottovoce 1.1",
-              "url": "/voce_menu1/sottovoce1.1"
-            },
-            {
-              "titolo": "Sottovoce 1.2",
-              "url": "/voce_menu1/sottovoce1.2"
-            },
-            {
-              "titolo": "Sottovoce 1.3",
-              "url": "/voce_menu1/sottovoce1.3"
-            }
-          ]
-        },
-        {
-          "titolo": "Home", 
-          "url": "/"
+            "id_ruolo": 2,
+            "voci_menu": [
+                {
+                    "titolo": "Voce Menu 3",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 3.1",
+                            "url": "/voce_menu2/sottovoce3.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 3.2",
+                            "url": "/voce_menu2/sottovoce3.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 3.3",
+                            "url": "/voce_menu2/sottovoce3.3"
+                        }
+                    ]
+                },
+                {
+                    "titolo": "Voce Menu 2",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 2.1",
+                            "url": "/voce_menu1/sottovoce2.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 2.2",
+                            "url": "/voce_menu1/sottovoce2.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 2.3",
+                            "url": "/voce_menu1/sottovoce2.3"
+                        }
+                    ]
+                },
+                {
+                    "titolo": "Home",
+                    "url": "/"
+                }
+            ]
         }
-      ]
-    },
-	{
-      "id_ruolo": 2,
-      "voci_menu": [
-        {
-          "titolo": "Voce Menu 3",
-          "sottovoci": [
-            {
-              "titolo": "Sottovoce 3.1",
-              "url": "/voce_menu2/sottovoce3.1"
-            },
-            {
-              "titolo": "Sottovoce 3.2",
-              "url": "/voce_menu2/sottovoce3.2"
-            },
-            {
-              "titolo": "Sottovoce 3.3",
-              "url": "/voce_menu2/sottovoce3.3"
-            }
-          ]
-        },
-        {
-          "titolo": "Voce Menu 2",
-          "sottovoci": [
-            {
-              "titolo": "Sottovoce 2.1",
-              "url": "/voce_menu1/sottovoce2.1"
-            },
-            {
-              "titolo": "Sottovoce 2.2",
-              "url": "/voce_menu1/sottovoce2.2"
-            },
-            {
-              "titolo": "Sottovoce 2.3",
-              "url": "/voce_menu1/sottovoce2.3"
-            }
-          ]
-        },
-        {
-          "titolo": "Home", 
-          "url": "/"
-        }
-      ]
-    }
-  ]
+    ]
 }
