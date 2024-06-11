@@ -113,30 +113,30 @@ public class RichiestaController {
     /*JSON DI ESEMPIO
 		{
 		  "idRichiesta": null,
-		  "numeroRichiesta": "RCH-2024-06-11-001",
+		  "numeroRichiesta": "123",
 		  "statoRichiesta": {
 		    "idStatoRichiesta": 1,
 		    "descrizioneStatoRichiesta": "Inserita"
 		  },
 		  "tipologiaRichiesta": {
-		    "idTipologiaRichiesta": 2,
-		    "descrizioneTipologiaRichiesta": "Assistenza Tecnica"
+		    "idTipologiaRichiesta": 1,
+		    "descrizioneTipologiaRichiesta": "Acquisti"
 		  },
 		  "richiestaPersonale": false,
 		  "priorita": {
-		    "idPriorita": 3,
+		    "idPriorita": 1,
 		    "descrizionePriorita": "Alta"
 		  },
 		  "dataInserimentoRichiesta": "2024-06-11T07:38:00.000Z",
 		  "dataUltimoStatoRichiesta": "2024-06-11T07:38:00.000Z",
 		  "utenteUfficioRuoloStatoCorrente": {
-		    "idUtenteUfficioRuolo": 4
+		    "idUtenteUfficioRuolo": 1
 		  },
 		  "utenteUfficioRuoloStatoIniziale": {
-		    "idUtenteUfficioRuolo": 5
+		    "idUtenteUfficioRuolo": 1
 		  },
 		  "settoreUfficio": {
-		    "idSettoreUfficio": 6
+		    "idSettoreUfficio": 1
 		  }
 		}
     }*/
