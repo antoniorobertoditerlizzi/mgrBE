@@ -1,7 +1,6 @@
 package com.vigilfuoco.mgr.model;
 
 import java.util.List;
-import java.util.Map;
 
 public class JwtResponse {
 	

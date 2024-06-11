@@ -22,10 +22,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RichiestaRepository extends JpaRepository<Richiesta, Long> {
 
-	List<Richiesta> findByDescrizione(String descrizione);
+	//List<Richiesta> findByDescrizione(String descrizione);
     
 	Richiesta findById(long id);
-
+	
     //Query
 	@Query(value = "SELECT * FROM RICHIESTA WHERE descrizione LIKE :ds", nativeQuery = true)
 	List<Richiesta> SelByDescrizioneLike(@Param("ds") String ds);

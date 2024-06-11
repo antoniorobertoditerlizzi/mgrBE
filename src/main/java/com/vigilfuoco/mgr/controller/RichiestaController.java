@@ -1,10 +1,12 @@
 package com.vigilfuoco.mgr.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.vigilfuoco.mgr.model.ModelloConJson;
 import com.vigilfuoco.mgr.model.Richiesta;
+import com.vigilfuoco.mgr.model.Utente;
 import com.vigilfuoco.mgr.repository.RichiestaRepository;
-import com.vigilfuoco.mgr.service.BlacklistServiceImpl;
 import com.vigilfuoco.mgr.service.RichiestaService;
-import com.vigilfuoco.mgr.token.JwtTokenProvider;
 
 import java.io.IOException;
 import java.util.List;
@@ -30,19 +32,20 @@ public class RichiestaController {
     private static final Logger logger = LogManager.getLogger(RichiestaController.class);
 
     @Autowired
-    private RichiestaRepository repository;
+    private RichiestaRepository repositoryRichiesta;
     
+    private final RichiestaService richiestaService;
+
     @Autowired
-    private BlacklistServiceImpl blacklistService;
-    
-    @Autowired 
-    private JwtTokenProvider jwtTokenProvider;
+    public RichiestaController(RichiestaService richiestaService) {
+        this.richiestaService = richiestaService;
+    }
     
 	// API Ricerca per id richiesta ------------------------------------ /api/richiesta/cerca?id=2
     @GetMapping("/cerca")
     public ResponseEntity<Richiesta> ricercaPerId(@RequestParam long id) throws IOException {
 		logger.debug("Ingresso api /api/richiesta/cerca?id=" + id);
-		Richiesta res = repository.findById(id);
+		Richiesta res = repositoryRichiesta.findById(id);
 		return new ResponseEntity<Richiesta>(res, HttpStatus.OK);
 	}
     
@@ -56,18 +59,18 @@ public class RichiestaController {
 	
 	
 	// API Ricerca per descrizione ------------------------------------ /api/richiesta/cerca/prima richiesta
-	@RequestMapping(value = "/cerca/{descrizione}", method = RequestMethod.GET, produces = "application/json")
+	/*@RequestMapping(value = "/cerca/{descrizione}", method = RequestMethod.GET, produces = "application/json")
 	@PreAuthorize("isAuthenticated()") 
 	public ResponseEntity<List<Richiesta>> ricercaDescrizione(@PathVariable("descrizione") String descrizione, Authentication authentication)
 	
 	{
 		// Controlli autorizzativi
-		checkAuthorization(authentication);
+		RichiestaService.checkAuthorization(authentication);
 	    
 		logger.debug("Ingresso api /api/richiesta/cerca/{descrizione}" + "descrizione:"+ descrizione);
-		List<Richiesta> res = repository.findByDescrizione(descrizione);
+		List<Richiesta> res = repositoryRichiesta.findByDescrizione(descrizione);
 		return new ResponseEntity<List<Richiesta>>(res, HttpStatus.OK);
-	}
+	}*/
 
 	
 	
@@ -77,12 +80,12 @@ public class RichiestaController {
 	public ResponseEntity<Iterable<Richiesta>> listaCompleta(Authentication authentication)
 	{
 		// Controlli autorizzativi
-		checkAuthorization(authentication);
+		RichiestaService.checkAuthorization(authentication);
 		
-		Iterable<Richiesta> res = repository.findAll();
+		Iterable<Richiesta> res = repositoryRichiesta.findAll();
 		for (Richiesta richiesta : res) {
-			System.out.println("richiesta.getId():"+richiesta.getId());
-			System.out.println("richiesta.getDescrizione():"+richiesta.getDescrizione());
+			System.out.println("richiesta.getIdRichiesta(): " + richiesta.getIdRichiesta());
+			System.out.println("richiesta.getTipologiaRichiesta(): " + richiesta.getTipologiaRichiesta());
 		}
 		return new ResponseEntity<Iterable<Richiesta>>(res, HttpStatus.OK);
 	}
@@ -91,9 +94,14 @@ public class RichiestaController {
 
 	// API Salva Richiesta a DB ---------------- /api/richiesta/save
     @PostMapping("/save")
-    public Richiesta createRequest(@RequestBody Richiesta request) {
+    public Richiesta save(@RequestBody Richiesta request) {
 		logger.debug("Ingresso api /api/richiesta/save");
-        RichiestaService richiestaService = new RichiestaService(repository);
+        RichiestaService richiestaService = new RichiestaService(repositoryRichiesta, null);
+        Utente utente = new Utente();
+        utente.setNome("Antonio");
+        utente.setCognome("Di Terlizzi");
+        request.getUtenteUfficioRuoloStatoIniziale().setUtente(utente);
+        request.getUtenteUfficioRuoloStatoCorrente().setUtente(utente);
         Richiesta savedRichiesta = richiestaService.salvaRichiesta(request);
         if (savedRichiesta != null) {
             return savedRichiesta;
@@ -103,19 +111,34 @@ public class RichiestaController {
     }
     
     /*JSON DI ESEMPIO
-     {
-        "nome": "Richiesta di esempio",
-        "descrizione": "Questa è una richiesta di esempio per il testing",
-        "tipologia": "MANUTENZIONE",
-        "priorità": "ALTA",
-        "dataInizio": "2024-05-10",
-        "dataFine": "2024-05-15",
-        "stato": "APERTA",
-        "utente": {
-            "id": 1,
-            "nome": "Mario Rossi",
-            "email": "mariorossi@vigilfuoco.com"
-        }
+		{
+		  "idRichiesta": null,
+		  "numeroRichiesta": "RCH-2024-06-11-001",
+		  "statoRichiesta": {
+		    "idStatoRichiesta": 1,
+		    "descrizioneStatoRichiesta": "Inserita"
+		  },
+		  "tipologiaRichiesta": {
+		    "idTipologiaRichiesta": 2,
+		    "descrizioneTipologiaRichiesta": "Assistenza Tecnica"
+		  },
+		  "richiestaPersonale": false,
+		  "priorita": {
+		    "idPriorita": 3,
+		    "descrizionePriorita": "Alta"
+		  },
+		  "dataInserimentoRichiesta": "2024-06-11T07:38:00.000Z",
+		  "dataUltimoStatoRichiesta": "2024-06-11T07:38:00.000Z",
+		  "utenteUfficioRuoloStatoCorrente": {
+		    "idUtenteUfficioRuolo": 4
+		  },
+		  "utenteUfficioRuoloStatoIniziale": {
+		    "idUtenteUfficioRuolo": 5
+		  },
+		  "settoreUfficio": {
+		    "idSettoreUfficio": 6
+		  }
+		}
     }*/
 	
     
@@ -135,24 +158,15 @@ public class RichiestaController {
     }
     
 
-    private ResponseEntity<Object> checkAuthorization(Authentication authentication) {
-    	// Controllo se l'utente ha effettuato il login e quindi è autenticato,
-	    if (authentication == null || !authentication.isAuthenticated()) {
-	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-	    }
-    	// Recupero il token di sessione di quell'utente
-		String token = jwtTokenProvider.getToken(authentication.getPrincipal().toString()); 
-		logger.debug("Ingresso checkAuthorization - Bearer Token:" + token);
-		
-    	// Controllo se ha gia effettuato il logout con quel token e quindi è un token blacklisted
-	    if (blacklistService.isTokenBlacklisted(token)) {
-	        logger.warn("Token rifiutato in quanto già inserito in blacklist. ", token);
-	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-	    }
-	    // Permetto di procedere nella richiesta desiderata
-		return null;
-    }
-
+   
+	// API Ricerca per descrizione ------------------------------------ /api/richiesta/visualizzaFormRichiesta/2
+	@RequestMapping(value = "/visualizzaFormRichiesta/{idModello}", method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("isAuthenticated()") 
+	public ResponseEntity<ModelloConJson> visualizzaFormRichiesta(@PathVariable("idModello") Long idModello, Authentication authentication) throws JsonMappingException, JsonProcessingException{
+		logger.debug("Ingresso api /api/richiesta/visualizzaFormRichiesta" + " idModello: " + idModello);
+		return richiestaService.formModelloByIDModello(idModello);
+	}
+	
     
     
 }

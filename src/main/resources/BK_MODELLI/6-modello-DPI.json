@@ -1,0 +1,32 @@
+{
+    "Destinatario": {
+        "NomeDestinatario": "",
+        "RecapitiPEC": [
+            ""
+        ],
+        "RecapitiTelefonico": [
+            ""
+        ],
+        "Indirizzo": [
+            ""
+        ]
+    },
+    "TipologiaModello": "con tabella o con corpo del testo",
+    "Note": "",
+    "Oggetto": "DPI",
+    "Sezioni": [
+        {
+            "DescrizioneSezione": "",
+            "TipologiaSezione": "Dipartimento|Direzione|Comando"
+        }
+    ],
+    "SottoSezioneComando": {
+        "DescrizioneSottoSezione": "",
+        "ElencoCampi": []
+    },
+    "Firma": {
+        "Firmatario": [
+            ""
+        ]
+    }
+}
