@@ -1,32 +1,123 @@
 {
-    "Destinatario": {
-        "NomeDestinatario": "",
-        "RecapitiPEC": [
-            ""
-        ],
-        "RecapitiTelefonico": [
-            ""
-        ],
-        "Indirizzo": [
-            ""
-        ]
-    },
-    "TipologiaModello": "con tabella o con corpo del testo",
-    "Note": "",
-    "Oggetto": "DPI",
-    "Sezioni": [
+    "data": [
         {
-            "DescrizioneSezione": "",
-            "TipologiaSezione": "Dipartimento|Direzione|Comando"
+            "name": "grouped_product_type",
+            "label": "Campi raggruppati",
+            "type": "grouped",
+            "required": true,
+            "multiple": true,
+            "value": [
+                {
+                    "name": "product_type",
+                    "label": "Prodotto",
+                    "type": "text",
+                    "required": true,
+                    "regex": "",
+                    "value": ""
+                },
+                {
+                    "name": "quantity_type",
+                    "label": "Quantità",
+                    "type": "number",
+                    "required": true,
+                    "regex": "",
+                    "value": ""
+                },
+                {
+                    "name": "Descrizione",
+                    "type": "textarea",
+                    "required": true,
+                    "regex": "",
+                    "value": ""
+                },
+                {
+                    "name": "Campo select ?",
+                    "type": "select",
+                    "subitem": [
+                        {
+                            "name": "type1",
+                            "value": "Tipologia 1"
+                        },
+                        {
+                            "name": "type2",
+                            "value": "Tipologia 2"
+                        },
+                        {
+                            "name": "type3",
+                            "value": "Tipologia 3"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Note",
+            "type": "textarea",
+            "multiple": true,
+            "value": ""
+        },
+        {
+            "name": "Tipologia",
+            "type": "select",
+            "subitem": [
+                {
+                    "name": "type1",
+                    "value": "Tipologia 1"
+                },
+                {
+                    "name": "type2",
+                    "value": "Tipologia 2"
+                },
+                {
+                    "name": "type3",
+                    "value": "Tipologia 3"
+                }
+            ],
+            "value": ""
+        },
+        {
+            "name": "Tipologia",
+            "type": "radio",
+            "subitem": [
+                {
+                    "name": "nome1",
+                    "value": "Tipologia 1"
+                },
+                {
+                    "name": "nam2",
+                    "value": "Tipologia 2"
+                },
+                {
+                    "name": "type3",
+                    "value": "Tipologia 3"
+                }
+            ]
+        },
+        {
+            "name": "Tipologia",
+            "type": "checkbox",
+            "subitem": [
+                {
+                    "name": "nome1",
+                    "value": "Tipologia 1"
+                },
+                {
+                    "name": "type2",
+                    "value": "Tipologia 2"
+                },
+                {
+                    "name": "type3",
+                    "value": "Tipologia 3"
+                }
+            ]
+        },
+        {
+            "name": "Data",
+            "type": "date",
+            "value": "timestamp",
+            "required": true,
+            "regex": "",
+            "multiple": true
         }
-    ],
-    "SottoSezioneComando": {
-        "DescrizioneSottoSezione": "",
-        "ElencoCampi": []
-    },
-    "Firma": {
-        "Firmatario": [
-            ""
-        ]
-    }
+    ]
 }

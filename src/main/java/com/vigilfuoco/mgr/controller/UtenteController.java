@@ -96,11 +96,11 @@ public class UtenteController {
 
 	// API Ricerca utente per accountName --------------------------------- /api/utente/account/antonioroberto.diterlizzi
     @GetMapping("account/{accountName}")
-    public ResponseEntity<List<Utente>> getAccount(@PathVariable String accountName) throws IOException, JsonProcessingException {
+    public ResponseEntity<Utente> getAccount(@PathVariable String accountName) throws IOException, JsonProcessingException {
     	String url = waucBasePath + waucPersonale + "/account/" + accountName;
 		logger.debug("Ingresso api" + url );
-		List<Utente> res = utenteRepository.findByAccount(accountName);
-		return new ResponseEntity<List<Utente>>(res, HttpStatus.OK);
+		Utente res = utenteRepository.findByAccount(accountName);
+		return new ResponseEntity<Utente>(res, HttpStatus.OK);
 	}
     
     

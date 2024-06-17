@@ -20,7 +20,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UtenteRepository extends JpaRepository<Utente, Long> {
 
-	List<Utente> findByAccount(String accountDipvvf);
+	Utente findByAccount(String accountDipvvf);
+	//List<Utente> findByAccount(String accountDipvvf);
 	    
     //Query
 	/*@Query(value = "SELECT * FROM Utente WHERE accountDipvvf LIKE :ds", nativeQuery = true)

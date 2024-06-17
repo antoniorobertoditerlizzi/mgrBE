@@ -9,7 +9,6 @@ import com.vigilfuoco.mgr.repository.RichiestaRepository;
 import com.vigilfuoco.mgr.service.RichiestaService;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -80,7 +79,7 @@ public class RichiestaController {
 	public ResponseEntity<Iterable<Richiesta>> listaCompleta(Authentication authentication)
 	{
 		// Controlli autorizzativi
-		RichiestaService.checkAuthorization(authentication);
+		// RichiestaService.checkAuthorization(authentication);
 		
 		Iterable<Richiesta> res = repositoryRichiesta.findAll();
 		for (Richiesta richiesta : res) {
@@ -90,19 +89,21 @@ public class RichiestaController {
 		return new ResponseEntity<Iterable<Richiesta>>(res, HttpStatus.OK);
 	}
 
-
-
-	// API Salva Richiesta a DB ---------------- /api/richiesta/save
+	
+	// API Visualizza Form Modello ------------------------------------ /api/richiesta/visualizzaFormModello/2
+	@RequestMapping(value = "/visualizzaFormModello/{idModello}", method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("isAuthenticated()") 
+	public ResponseEntity<ModelloConJson> visualizzaFormRichiesta(@PathVariable("idModello") Long idModello, Authentication authentication) throws JsonMappingException, JsonProcessingException{
+		logger.debug("Ingresso api /api/richiesta/visualizzaFormModello/" + " idModello: " + idModello);
+		return richiestaService.formModelloByIDModello(idModello);
+	}
+	
+	
+	// API Salva Richiesta a DB ---------------------------------------- /api/richiesta/save
     @PostMapping("/save")
-    public Richiesta save(@RequestBody Richiesta request) {
+    public Richiesta save(@RequestBody Richiesta request, @RequestParam String accountname) {
 		logger.debug("Ingresso api /api/richiesta/save");
-        RichiestaService richiestaService = new RichiestaService(repositoryRichiesta, null);
-        Utente utente = new Utente();
-        utente.setNome("Antonio");
-        utente.setCognome("Di Terlizzi");
-        request.getUtenteUfficioRuoloStatoIniziale().setUtente(utente);
-        request.getUtenteUfficioRuoloStatoCorrente().setUtente(utente);
-        Richiesta savedRichiesta = richiestaService.salvaRichiesta(request);
+        Richiesta savedRichiesta = richiestaService.salvaRichiesta(request,accountname);
         if (savedRichiesta != null) {
             return savedRichiesta;
         } else {
@@ -159,13 +160,7 @@ public class RichiestaController {
     
 
    
-	// API Ricerca per descrizione ------------------------------------ /api/richiesta/visualizzaFormRichiesta/2
-	@RequestMapping(value = "/visualizzaFormRichiesta/{idModello}", method = RequestMethod.GET, produces = "application/json")
-	@PreAuthorize("isAuthenticated()") 
-	public ResponseEntity<ModelloConJson> visualizzaFormRichiesta(@PathVariable("idModello") Long idModello, Authentication authentication) throws JsonMappingException, JsonProcessingException{
-		logger.debug("Ingresso api /api/richiesta/visualizzaFormRichiesta" + " idModello: " + idModello);
-		return richiestaService.formModelloByIDModello(idModello);
-	}
+
 	
     
     

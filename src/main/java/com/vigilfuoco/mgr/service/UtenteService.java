@@ -52,10 +52,11 @@ public class UtenteService {
 
 	private UtenteWAUC_to_Utente_Service utenteWAUC_to_Utente_Service = new UtenteWAUC_to_Utente_Service();
 
+	@SuppressWarnings("null")
 	public ResponseEntity<JwtResponse> login(List<UtenteWAUC> utentiList, String accountName) throws IOException {
 		Utente savedUser = new Utente();
 		
-		List<Utente> checkUserFound = utenteRepository.findByAccount(accountName);
+		Utente checkUserFound = utenteRepository.findByAccount(accountName);
 		
 	    if (!utentiList.isEmpty()) {
 		    try {
@@ -70,7 +71,7 @@ public class UtenteService {
 			    
 				// Controllo che il token non sia nullo e che l'utente nel DB non è mai stato censito prima
 				if (token!= null) {
-			    	  if(checkUserFound.isEmpty()) {
+			    	  if(checkUserFound == null) {
 							// Scrivo a db l'utente trovato
 							savedUser = utenteWAUC_to_Utente_Service.salvaUtenteTrovato(utentiList.get(0),utenteWAUCRepository);
 	
@@ -85,8 +86,8 @@ public class UtenteService {
 							}
 					      }
 			    	  } else {
-					      logger.info("Utente " + checkUserFound.get(0).getAccount() + " già censito a DB.");
-					      return ResponseEntity.ok(new JwtResponse(checkUserFound.get(0), menu, token, "Utente " + checkUserFound.get(0).getAccount() +" già censito a DB."));
+					      logger.info("Utente " + checkUserFound.getAccount() + " già censito a DB.");
+					      return ResponseEntity.ok(new JwtResponse(checkUserFound, menu, token, "Utente " + checkUserFound.getAccount() +" già censito a DB."));
 			    	  }
 			      }
 		    } catch (IllegalArgumentException e) {
@@ -112,9 +113,9 @@ public class UtenteService {
 	
     public ResponseEntity<String> getMenuByRoleFromAccount(String accountName) throws IOException {
         // Retrieve user information
-        List<Utente> utenti = utenteRepository.findByAccount(accountName);
+        Utente utenti = utenteRepository.findByAccount(accountName);
 
-        if (utenti.isEmpty()) {
+        if (utenti != null) {
             return new ResponseEntity<>("Account non trovato.", HttpStatus.NOT_FOUND);
         }
 

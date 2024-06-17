@@ -17,8 +17,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vigilfuoco.mgr.model.Modello;
 import com.vigilfuoco.mgr.model.ModelloConJson;
 import com.vigilfuoco.mgr.model.Richiesta;
+import com.vigilfuoco.mgr.model.Utente;
 import com.vigilfuoco.mgr.repository.ModelloRepository;
 import com.vigilfuoco.mgr.repository.RichiestaRepository;
+import com.vigilfuoco.mgr.repository.UtenteRepository;
 import com.vigilfuoco.mgr.token.JwtTokenProvider;
 
 /* 
@@ -28,9 +30,11 @@ import com.vigilfuoco.mgr.token.JwtTokenProvider;
 
 	@Service
 	public class RichiestaService {
+	    @Autowired
+	    private final UtenteRepository repositoryUtente;
 
 	    @Autowired
-	    private final RichiestaRepository repository;
+	    private final RichiestaRepository repositoryRichiesta;
 	    
 	    @Autowired
 	    private final ModelloRepository repositoryModello;
@@ -47,18 +51,26 @@ import com.vigilfuoco.mgr.token.JwtTokenProvider;
 	    private static final Logger logger = LogManager.getLogger(RichiestaService.class);
 
 	    // Costruttore con iniezione di entrambi i repository
-	    public RichiestaService(RichiestaRepository repository, ModelloRepository repositoryModello) {
-	        this.repository = repository;
+	    public RichiestaService(RichiestaRepository repositoryRichiesta, ModelloRepository repositoryModello, UtenteRepository repositoryUtente) {
+	        this.repositoryUtente = repositoryUtente;
+			this.repositoryRichiesta = repositoryRichiesta;
 	        this.repositoryModello = repositoryModello;
 	    }
 	    
 	    //Salva Richiesta
-		public Richiesta salvaRichiesta(Richiesta request) {
-	        return repository.save(request);
+		public Richiesta salvaRichiesta(Richiesta request, String accountname) {
+			//Cerco per accountname
+		 	Utente resUtente = repositoryUtente.findByAccount(accountname);
+		 	
+			if (resUtente != null) {
+		        request.getUtenteUfficioRuoloStatoIniziale().setUtente(resUtente);
+		        request.getUtenteUfficioRuoloStatoCorrente().setUtente(resUtente);	
+		        return repositoryRichiesta.save(request);
+			}
+	        return null;
 	    }
 		
-		
-		//VALIDAZIONE AUTORIZZAZIONE DEPRECATA NON PIU USATA
+		 //VALIDAZIONE AUTORIZZAZIONE DEPRECATA NON PIU USATA
 		 public static ResponseEntity<Object> checkAuthorization(Authentication authentication) {
 		    	// Controllo se l'utente ha effettuato il login e quindi è autenticato,
 			    if (authentication == null || !authentication.isAuthenticated()) {
