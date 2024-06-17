@@ -5,8 +5,6 @@ import com.vigilfuoco.mgr.model.JwtResponse;
 import com.vigilfuoco.mgr.model.Utente;
 import com.vigilfuoco.mgr.repository.UtenteRepository;
 import com.vigilfuoco.mgr.service.UtenteService;
-import com.vigilfuoco.mgr.service.UtenteWAUC_to_Utente_Service;
-import com.vigilfuoco.mgr.wauc.model.UtenteWAUC;
 
 import io.jsonwebtoken.UnsupportedJwtException;
 
@@ -54,7 +52,6 @@ public class UtenteController {
     
 	private static final Logger logger = LogManager.getLogger(UtenteController.class);
 
-	private UtenteWAUC_to_Utente_Service utenteWAUC_to_Utente_Service = new UtenteWAUC_to_Utente_Service();
 	
 
 	// API LoginCheck ----------------------------------------------------------- /api/utente/login?accountName=antonioroberto.diterlizzi
@@ -62,10 +59,8 @@ public class UtenteController {
 	public ResponseEntity<JwtResponse> login(@RequestParam String accountName) throws IllegalArgumentException, IOException, JsonProcessingException {
     	String decodedAccountName = URLEncoder.encode(accountName, "UTF-8");
 		String url = waucBasePath + waucPersonale + "?accountName=" + decodedAccountName;
-		// recupero i dati dell'utente da salvare nella tabella Utente
-		List<UtenteWAUC> utentiList = utenteWAUC_to_Utente_Service.parsingResponseWAUC(url);
-		logger.debug("Ingresso api /api/utente/loginCheck?accountName=" +accountName + " lista utenti: " + utentiList);
-		return utenteService.login(utentiList, accountName);
+		logger.debug("Ingresso api /api/utente/loginCheck?accountName=" +accountName);
+		return utenteService.login(accountName, url);
 	}
 	
 	// API Loginout ----------------------------------------------------------- /api/utente/logout

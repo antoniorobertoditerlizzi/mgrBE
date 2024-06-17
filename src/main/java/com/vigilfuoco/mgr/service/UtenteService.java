@@ -53,49 +53,54 @@ public class UtenteService {
 	private UtenteWAUC_to_Utente_Service utenteWAUC_to_Utente_Service = new UtenteWAUC_to_Utente_Service();
 
 	@SuppressWarnings("null")
-	public ResponseEntity<JwtResponse> login(List<UtenteWAUC> utentiList, String accountName) throws IOException {
+	public ResponseEntity<JwtResponse> login(String accountName, String url) throws IOException {
 		Utente savedUser = new Utente();
 		
 		Utente checkUserFound = utenteRepository.findByAccount(accountName);
+
 		
-	    if (!utentiList.isEmpty()) {
-		    try {
-				// Genero token di sessione
-				String token = jwtTokenProvider.generateToken(accountName);
-				
-				// Recupero il menu utente in base al ruolo
-				int roleId = 1; //WIP savedUser.getRuoloID();
-				
-				// Recupero il menu associato al ruolo utente. Come oggetto dinamico.
-				List<Object> menu = getMenuByRole_OBJ(roleId);
-			    
-				// Controllo che il token non sia nullo e che l'utente nel DB non è mai stato censito prima
-				if (token!= null) {
-			    	  if(checkUserFound == null) {
-							// Scrivo a db l'utente trovato
-							savedUser = utenteWAUC_to_Utente_Service.salvaUtenteTrovato(utentiList.get(0),utenteWAUCRepository);
-	
-							if (savedUser != null) {
-								// Restituisco al WS in output i dati salvati e genero anche il token di sessione
-							try {
-							    logger.info("Procedura di Importazione Nuovo Utente " + savedUser.getAccount() +" ultimata con successo. Utente correttamente importato nel DB MGR.");
-								return ResponseEntity.ok(new JwtResponse(savedUser, menu, token, "Procedura di Importazione Nuovo Utente " + savedUser.getAccount() +" ultimata con successo. Utente correttamente importato nel DB MGR."));
-							} catch (Exception e) {
-								e.printStackTrace();
-								logger.error("Errore nella generazione del token: " + e.toString());
-							}
-					      }
-			    	  } else {
-					      logger.info("Utente " + checkUserFound.getAccount() + " già censito a DB.");
-					      return ResponseEntity.ok(new JwtResponse(checkUserFound, menu, token, "Utente " + checkUserFound.getAccount() +" già censito a DB."));
-			    	  }
-			      }
-		    } catch (IllegalArgumentException e) {
-		      logger.error("Error saving user: " + e.getMessage());
-		      throw new RichiestaException("Errore durante il salvataggio della richiesta: " + e.getMessage());
-		    }
-		}
-    	// Restituisco al WS in output i dati salvati
+	    try {
+			// Genero token di sessione
+			String token = jwtTokenProvider.generateToken(accountName);
+			
+			// Recupero il menu utente in base al ruolo
+			int roleId = 1; //WIP savedUser.getRuoloID();
+			
+			// Recupero il menu associato al ruolo utente. Come oggetto dinamico.
+			List<Object> menu = getMenuByRole_OBJ(roleId);
+		    
+			// Controllo che il token non sia nullo e che l'utente nel DB non è mai stato censito prima
+			if (token!= null) {
+		    	  if(checkUserFound == null) {
+		    			
+		    		    // Recupero i dati dell'utente da WAUC da salvare nella tabella Utente MGR
+		    			List<UtenteWAUC> utentiList = utenteWAUC_to_Utente_Service.parsingResponseWAUC(url);
+		    			if (!utentiList.isEmpty()) {
+			
+								// Scrivo a db l'utente trovato
+								savedUser = utenteWAUC_to_Utente_Service.salvaUtenteTrovato(utentiList.get(0),utenteWAUCRepository);
+		
+								if (savedUser != null) {
+									// Restituisco al WS in output i dati salvati e genero anche il token di sessione
+								try {
+								    logger.info("Procedura di Importazione Nuovo Utente " + savedUser.getAccount() +" ultimata con successo. Utente correttamente importato nel DB MGR.");
+									return ResponseEntity.ok(new JwtResponse(savedUser, menu, token, "Procedura di Importazione Nuovo Utente " + savedUser.getAccount() +" ultimata con successo. Utente correttamente importato nel DB MGR."));
+								} catch (Exception e) {
+									e.printStackTrace();
+									logger.error("Errore nella generazione del token: " + e.toString());
+								}
+						}
+				      }
+		    	  } else {
+				      logger.info("Utente " + checkUserFound.getAccount() + " già censito a DB.");
+				      return ResponseEntity.ok(new JwtResponse(checkUserFound, menu, token, "Utente " + checkUserFound.getAccount() +" già censito a DB."));
+		    	  }
+		      }
+	    } catch (IllegalArgumentException e) {
+	      logger.error("Error saving user: " + e.getMessage());
+	      throw new RichiestaException("Errore durante il salvataggio della richiesta: " + e.getMessage());
+	    }
+	    
 		return null;
 	}
 	
