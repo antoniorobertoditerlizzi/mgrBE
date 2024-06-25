@@ -1,6 +1,7 @@
 package com.vigilfuoco.mgr.service;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
@@ -17,9 +18,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vigilfuoco.mgr.model.Modello;
 import com.vigilfuoco.mgr.model.ModelloConJson;
 import com.vigilfuoco.mgr.model.Richiesta;
+import com.vigilfuoco.mgr.model.TipologiaRichiesta;
 import com.vigilfuoco.mgr.model.Utente;
 import com.vigilfuoco.mgr.repository.ModelloRepository;
 import com.vigilfuoco.mgr.repository.RichiestaRepository;
+import com.vigilfuoco.mgr.repository.TipologiaRichiestaRepository;
 import com.vigilfuoco.mgr.repository.UtenteRepository;
 import com.vigilfuoco.mgr.token.JwtTokenProvider;
 
@@ -32,13 +35,15 @@ import com.vigilfuoco.mgr.token.JwtTokenProvider;
 	public class RichiestaService {
 	    @Autowired
 	    private final UtenteRepository repositoryUtente;
-
+	    
 	    @Autowired
 	    private final RichiestaRepository repositoryRichiesta;
 	    
 	    @Autowired
 	    private final ModelloRepository repositoryModello;
-
+	    
+	    @Autowired
+	    private final TipologiaRichiestaRepository repositoryTipologiaRichiesta;
 	    
 	    @Autowired 
 	    private static JwtTokenProvider jwtTokenProvider;
@@ -46,15 +51,21 @@ import com.vigilfuoco.mgr.token.JwtTokenProvider;
 	    @Autowired
 	    private static BlacklistServiceImpl blacklistService;
 	    
+	    
+
 
 	    
 	    private static final Logger logger = LogManager.getLogger(RichiestaService.class);
 
-	    // Costruttore con iniezione di entrambi i repository
-	    public RichiestaService(RichiestaRepository repositoryRichiesta, ModelloRepository repositoryModello, UtenteRepository repositoryUtente) {
+	    // Costruttore con iniezione dei repository
+	    public RichiestaService(RichiestaRepository repositoryRichiesta, 
+					    		ModelloRepository repositoryModello, 
+					    		UtenteRepository repositoryUtente, 
+					    		TipologiaRichiestaRepository repositoryTipologiaRichiesta) {
 	        this.repositoryUtente = repositoryUtente;
 			this.repositoryRichiesta = repositoryRichiesta;
 	        this.repositoryModello = repositoryModello;
+	        this.repositoryTipologiaRichiesta = repositoryTipologiaRichiesta;
 	    }
 	    
 	    //Salva Richiesta
@@ -92,7 +103,7 @@ import com.vigilfuoco.mgr.token.JwtTokenProvider;
 		 //TRANSCODIFICA MODELLI JSON
 		 @SuppressWarnings("unchecked")
 		 public ResponseEntity<ModelloConJson> formModelloByIDModello(Long idModello) throws JsonMappingException, JsonProcessingException {
-			 
+			 	
 			 	Modello res = repositoryModello.findByidModello(idModello);
 			 	
 			 	if (res!=null) {
@@ -100,6 +111,7 @@ import com.vigilfuoco.mgr.token.JwtTokenProvider;
 			        String jsonModello = new String(res.getTranscodificaModello(), StandardCharsets.UTF_8);
 			        ObjectMapper mapper = new ObjectMapper();
 			        
+			        //DATABIND STRING-OBJ GENERICO
 					Map<String, Object> modelloMap = mapper.readValue(jsonModello, Map.class);
 					
 			        // Creazione di un nuovo oggetto ModelloConJson
@@ -110,6 +122,17 @@ import com.vigilfuoco.mgr.token.JwtTokenProvider;
 			        return ResponseEntity.ok(modelloConJson);	
 			 	}
 			 	return ResponseEntity.ok(null);	
+		 }
+		 
+		 
+		 //LISTA TIPOLOGIE RICHIESTE
+		 public ResponseEntity<List<TipologiaRichiesta>> tipologieRichieste() {
+			 return ResponseEntity.ok(repositoryTipologiaRichiesta.findAll());	
+		 }
+		 
+		 // TIPOLOGIA RICHIESTA
+		 public ResponseEntity<TipologiaRichiesta> tipologiaRichiesta(Short idTipologiaRichiesta) {
+			 return ResponseEntity.ok(repositoryTipologiaRichiesta.findByIdTipologiaRichiesta(idTipologiaRichiesta));	
 		 }
 		 
 		 

@@ -4,11 +4,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.vigilfuoco.mgr.model.ModelloConJson;
 import com.vigilfuoco.mgr.model.Richiesta;
+import com.vigilfuoco.mgr.model.TipologiaRichiesta;
 import com.vigilfuoco.mgr.model.Utente;
 import com.vigilfuoco.mgr.repository.RichiestaRepository;
 import com.vigilfuoco.mgr.service.RichiestaService;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -98,6 +100,21 @@ public class RichiestaController {
 		return richiestaService.formModelloByIDModello(idModello);
 	}
 	
+	// API Tipologie Richieste ---------------------------------------- /api/richiesta/tipologieRichieste/
+	@RequestMapping(value = "/tipologieRichieste/", method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("isAuthenticated()") 
+	public ResponseEntity<List<TipologiaRichiesta>> tiploigieRichieste(Authentication authentication) throws JsonMappingException, JsonProcessingException{
+		logger.debug("Ingresso api /api/richiesta/tipologieRichieste/");
+		return richiestaService.tipologieRichieste();
+	}
+	
+	// API Tipologia Richiesta ---------------------------------------- /api/richiesta/tipologiaRichiesta/?idTipologiaRichiesta=1
+	@RequestMapping(value = "/tipologiaRichiesta/", method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("isAuthenticated()") 
+	public ResponseEntity<TipologiaRichiesta> tiploigiaRichiesta(@RequestParam("idTipologiaRichiesta") Short idTipologiaRichiesta, Authentication authentication) throws JsonMappingException, JsonProcessingException{
+		logger.debug("Ingresso api /api/richiesta/tipologieRichieste/");
+		return richiestaService.tipologiaRichiesta(idTipologiaRichiesta);
+	}
 	
 	// API Salva Richiesta a DB ---------------------------------------- /api/richiesta/save
     @PostMapping("/save")

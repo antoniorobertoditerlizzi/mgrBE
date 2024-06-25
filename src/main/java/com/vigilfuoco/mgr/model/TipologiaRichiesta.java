@@ -21,9 +21,9 @@ public class TipologiaRichiesta {
     @Column(nullable = false, length = 120)
     private String descrizioneTipologiaRichiesta;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_stato_richiesta_partenza")
-    private StatoRichiesta statoRichiestaPartenza;
+    //@ManyToOne(fetch = FetchType.LAZY)
+    //@JoinColumn(name = "id_stato_richiesta_partenza")
+    //private StatoRichiesta statoRichiestaPartenza;
 
     @Column(nullable = false)
     private Boolean attivo;
@@ -44,13 +44,13 @@ public class TipologiaRichiesta {
 		this.descrizioneTipologiaRichiesta = descrizioneTipologiaRichiesta;
 	}
 
-	public StatoRichiesta getStatoRichiestaPartenza() {
+	/*public StatoRichiesta getStatoRichiestaPartenza() {
 		return statoRichiestaPartenza;
 	}
 
 	public void setStatoRichiestaPartenza(StatoRichiesta statoRichiestaPartenza) {
 		this.statoRichiestaPartenza = statoRichiestaPartenza;
-	}
+	}*/
 
 	public Boolean getAttivo() {
 		return attivo;
@@ -63,10 +63,16 @@ public class TipologiaRichiesta {
 	@Override
 	public String toString() {
 		return "TipologiaRichiesta [idTipologiaRichiesta=" + idTipologiaRichiesta + ", descrizioneTipologiaRichiesta="
-				+ descrizioneTipologiaRichiesta + ", statoRichiestaPartenza=" + statoRichiestaPartenza + ", attivo="
+				+ descrizioneTipologiaRichiesta + ", attivo="
 				+ attivo + "]";
 	}
 
+	/*@Override
+	public String toString() {
+		return "TipologiaRichiesta [idTipologiaRichiesta=" + idTipologiaRichiesta + ", descrizioneTipologiaRichiesta="
+				+ descrizioneTipologiaRichiesta + ", statoRichiestaPartenza=" + statoRichiestaPartenza + ", attivo="
+				+ attivo + "]";
+	}*/
     
 
 }
