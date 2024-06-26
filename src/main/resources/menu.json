@@ -27,7 +27,6 @@
             "url": "/api/utente/logout"
         }
     ],
-    "id_menu": 1,
     "json_menu": [
         {
             "id_ruolo": 1,
