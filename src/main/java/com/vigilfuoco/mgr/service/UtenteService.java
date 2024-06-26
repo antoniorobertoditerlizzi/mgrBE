@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.vigilfuoco.mgr.controller.RichiestaException;
@@ -52,7 +53,7 @@ public class UtenteService {
 
 	private UtenteWAUC_to_Utente_Service utenteWAUC_to_Utente_Service = new UtenteWAUC_to_Utente_Service();
 
-	@SuppressWarnings("null")
+
 	public ResponseEntity<JwtResponse> login(String accountName, String url) throws IOException {
 		Utente savedUser = new Utente();
 		
@@ -137,7 +138,7 @@ public class UtenteService {
         return new ResponseEntity<>(menuObject.toString(), HttpStatus.OK);
     }
 
-
+    // GENERAZIONE MENU UTENTE LOGGATO PER ID RUOLO
     public static JSONArray getMenuByRole(int idRuolo, Resource menuResource) throws IOException {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(menuResource.getInputStream()))) {
             StringBuilder sb = new StringBuilder();
@@ -195,7 +196,41 @@ public class UtenteService {
             throw e;
         }
     }
-
+    
+    // GENERAZIONE MENU PER UTENTE NON LOGGATO E PER SMALL MENU USER LOGGED
+    public static JSONArray getSecondaryMenus(String menuType, Resource menuResource) throws IOException {
+	  	  try (BufferedReader reader = new BufferedReader(new InputStreamReader(menuResource.getInputStream()))) {
+	  	    StringBuilder sb = new StringBuilder();
+	  	    String line;
+	  	    while ((line = reader.readLine()) != null) {
+	  	      sb.append(line).append("\n");
+	  	    }
+	  	    String jsonString = sb.toString();
+	
+	  	    // Decodifica del json
+	  	    JSONObject jsonObject = new JSONObject(jsonString);
+	  	   
+	  	    // Check for chiave "not_logged_user_menu" (adjusted key name)
+	  	    if (jsonObject.has(menuType)) {
+	
+	  	      JSONArray menuArray = jsonObject.getJSONArray(menuType);
+	
+	  	      // Return the entire "not_logged_user_menu" array (adjusted logic)
+	  	      return menuArray;
+	
+	  	    } else {
+	  	      logger.error("JSON utente non loggato, non trovato.");
+	  	      return null;
+	  	    }
+	  	  } catch (IOException e) {
+	  	    logger.error("Error reading file", e);
+	  	    throw e;
+	  	  } catch (JSONException e) {
+	  	    logger.error("Error parsing JSON", e);
+	  	    return null;
+	  	  }
+    }
+    
 	
 	public ResponseEntity<String> getMenuByRoleWS(int idRuolo) throws IOException {
 	       JSONArray strutturaMenu = null;
@@ -217,27 +252,68 @@ public class UtenteService {
 	
 	
 	
-	public String getMenuByRoleWSString(int idRuolo) throws IOException {
+	public String getMenuByRoleWSString(String menuType, int idRuolo) throws IOException {
 	       String strutturaMenu = null;
-	        //Eventualmente si salva il json al DB e non piu su file
-	         JSONArray menuJson = getMenuByRole(idRuolo, menuResource);
-	        if (menuJson != null) {
-	            if (!menuJson.isEmpty()) {
-	                strutturaMenu = menuJson.toString();
-	            } else {
-	            	logger.error("Menu vuoto");
-	            }
-	        } else {
-	        	logger.error("Nessun Menu trovato appartenente al ruolo " + idRuolo + " richiesto");
-	        }
-	        
-	        logger.debug(menuJson);
-			return strutturaMenu;
+	       
+	       // GENERAZIONE JSON MENU UTENTE NON LOGGATO
+	       if (menuType.equals("not_logged_user_menu")) {
+	    	   //Eventualmente si salva il json al DB e non piu su file
+		        JSONArray menuJson = getSecondaryMenus(menuType, menuResource);
+		        if (menuJson != null) {
+		            if (!menuJson.isEmpty()) {
+		                strutturaMenu = menuJson.toString();
+		            } else {
+		            	logger.error("Menu vuoto");
+		            }
+		        } else {
+		        	logger.error("Nessun Menu trovato appartenente al ruolo " + idRuolo + " richiesto");
+		        }
+		        
+		        logger.debug(menuJson);
+	       }
+	       
+	       
+	       // GENERAZIONE SMALL JSON MENU UTENTE LOGGATO
+	       if (menuType.equals("small_user_menu")) {
+	    	   //Eventualmente si salva il json al DB e non piu su file
+		        JSONArray menuJson = getSecondaryMenus(menuType, menuResource);
+		        if (menuJson != null) {
+		            if (!menuJson.isEmpty()) {
+		                strutturaMenu = menuJson.toString();
+		            } else {
+		            	logger.error("Menu vuoto");
+		            }
+		        } else {
+		        	logger.error("Nessun Menu trovato appartenente al ruolo " + idRuolo + " richiesto");
+		        }
+		        
+		        logger.debug(menuJson);
+	       }
+	       
+	       
+	       // GENERAZIONE JSON MENU PER ID RUOLO UTENTE LOGGATO
+	       if (menuType.equals("")) {
+		        //Eventualmente si salva il json al DB e non piu su file
+		        JSONArray menuJson = getMenuByRole(idRuolo, menuResource);
+		        if (menuJson != null) {
+		            if (!menuJson.isEmpty()) {
+		                strutturaMenu = menuJson.toString();
+		            } else {
+		            	logger.error("Menu vuoto");
+		            }
+		        } else {
+		        	logger.error("Nessun Menu trovato appartenente al ruolo " + idRuolo + " richiesto");
+		        }
+		        
+		        logger.debug(menuJson);
+	       }
+		return strutturaMenu;
 	}
 	
+	// MENU UTENTE LOGGATO
 	@SuppressWarnings("unchecked")
 	public List<Object> getMenuByRole_OBJ(int idRuolo) throws IOException {
-		String jsonString = getMenuByRoleWSString(idRuolo);
+		String jsonString = getMenuByRoleWSString("", idRuolo);
 	
 	    ObjectMapper mapper = new ObjectMapper();
 	    List<Object> menuList = mapper.readValue(jsonString, List.class);
@@ -246,4 +322,56 @@ public class UtenteService {
 	return menuList;
 	}
 	
+	// SMALL MENU UTENTE LOGGATO
+	@SuppressWarnings("unchecked")
+	public List<Object> getMenuUser() throws IOException {
+		String jsonString = getMenuByRoleWSString("small_user_menu", 0);
+	
+	    ObjectMapper mapper = new ObjectMapper();
+	    List<Object> menuList = mapper.readValue(jsonString, List.class);
+	    //Map<String, Object>W jsonData = new HashMap<>();
+	    //jsonData.put("array", menuList);
+	return menuList;
+	}
+	
+	// MENU UTENTE NON LOGGATO
+	@SuppressWarnings("unchecked")
+	public List<Object> getMenuUserNotLogged() throws IOException {
+		String jsonString = getMenuByRoleWSString("not_logged_user_menu", 0);
+	
+	    ObjectMapper mapper = new ObjectMapper();
+	    List<Object> menuList = mapper.readValue(jsonString, List.class);
+	    //Map<String, Object>W jsonData = new HashMap<>();
+	    //jsonData.put("array", menuList);
+	return menuList;
+	}
+	/*
+	// MENU UTENTE NON LOGGATO
+	@SuppressWarnings("unchecked")
+	private String getMenuNotLoggedORSmallUserMenu(String string) throws IOException {
+		 try {
+	         // Accedo al menu in base al ruolo
+	         Object menuObject = menuEntry.get("voci_menu");
+	         if (menuObject instanceof JSONArray) {
+	             return (JSONArray) menuObject;
+	         } else {
+	             logger.error("Errore sul tipo di 'voci_menu' per il ruolo " + idRuolo);
+	             return null;
+	         }
+	     } catch (JSONException e) {
+	         // Handle potential error if "voci_menu" is invalid
+	         logger.error("Invalido campo 'voci_menu' per il ruolo " + idRuolo, e);
+	         return null;
+	     }	
+		 return null;
+	}*/
+	
+	 
+	
+	
+
+	// DA TESTARE!!
+    public boolean isLoggedIn() {
+        return SecurityContextHolder.getContext().getAuthentication() != null;
+    }
 }

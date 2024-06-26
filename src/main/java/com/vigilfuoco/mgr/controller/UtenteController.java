@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -99,20 +100,36 @@ public class UtenteController {
 	}
     
     
-    // API MENU ----------------------------------------------------------- /api/utente/menuByAccountName?accountName=antonioroberto.diterlizzi
+    // API MENU PER ACCOUNT NAME ----------------------------------------- /api/utente/menuByAccountName?accountName=antonioroberto.diterlizzi
     @GetMapping("/menuByAccountName")
+    @PreAuthorize("isAuthenticated()") 
     public ResponseEntity<String> getMenuByAccountName(@RequestParam String accountName) throws IOException {
         return utenteService.getMenuByRoleFromAccount(accountName);
     }
     
     
-	// API MENU ----------------------------------------------------------- /api/utente/menu?roleId=2
+	// API MENU PER ID---------------------------------------------------- /api/utente/menu?roleId=2
    @GetMapping("/menu")
-    public ResponseEntity<List<Object>> getMenuByRole(@RequestParam int roleId) throws IOException {
-         List<Object> jsonData = utenteService.getMenuByRole_OBJ(roleId);
-        return ResponseEntity.ok(jsonData);
-    }
+   @PreAuthorize("isAuthenticated()") 
+   public ResponseEntity<List<Object>> getMenuByRole(@RequestParam int roleId) throws IOException {
+	     List<Object> jsonData = utenteService.getMenuByRole_OBJ(roleId);
+	    return ResponseEntity.ok(jsonData);
+   }
 	
+	// API MENU UTENTE LOGGATO ------------------------------------------- /api/utente/menuUser
+   @GetMapping("/menuUser")
+   @PreAuthorize("isAuthenticated()") 
+   public ResponseEntity<List<Object>> getMenuUser() throws IOException {
+	     List<Object> jsonData = utenteService.getMenuUser();
+	    return ResponseEntity.ok(jsonData);
+   }
+   
+	// API MENU UTENTE NON LOGGATO ---------------------------------------- /api/utente/menuUserNotLogged
+   @GetMapping("/menuUserNotLogged")
+   public ResponseEntity<List<Object>> getMenuUserNotLogged() throws IOException {
+	     List<Object> jsonData = utenteService.getMenuUserNotLogged();
+	    return ResponseEntity.ok(jsonData);
+   }
     
 	// API MENU ----------------------------------------------------------- /api/utente/menu?roleId=2
     /*@GetMapping("/menu")

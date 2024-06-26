@@ -1,4 +1,32 @@
 {
+    "not_logged_user_menu": [
+        {
+            "titolo": "Novità software",
+            "url": "/"
+        },
+        {
+            "titolo": "Documentazione",
+            "url": "/"
+        },
+        {
+            "titolo": "Link utili",
+            "url": "/"
+        }
+    ],
+    "small_user_menu": [
+        {
+            "titolo": "Dettaglio Utente",
+            "url": "/api/utente/dettaglioUtente"
+        },
+        {
+            "titolo": "Help",
+            "url": "/api/utente/help"
+        },
+        {
+            "titolo": "Logout",
+            "url": "/api/utente/logout"
+        }
+    ],
     "id_menu": 1,
     "json_menu": [
         {
@@ -40,9 +68,9 @@
                 {
                     "titolo": "Gestione Richieste"
                 },
-				{
+                {
                     "titolo": "Storico Richieste"
-                },                
+                },
                 {
                     "titolo": "Amministrazione",
                     "sottovoci": [
