@@ -100,7 +100,7 @@ public class UtenteController {
 	}
     
     
-    // API MENU PER ACCOUNT NAME ----------------------------------------- /api/utente/menuByAccountName?accountName=antonioroberto.diterlizzi
+    // API MENU PER ACCOUNT NAME [MENU SX] ------------------------------- /api/utente/menuByAccountName?accountName=antonioroberto.diterlizzi
     @GetMapping("/menuByAccountName")
     @PreAuthorize("isAuthenticated()") 
     public ResponseEntity<String> getMenuByAccountName(@RequestParam String accountName) throws IOException {
@@ -108,7 +108,7 @@ public class UtenteController {
     }
     
     
-	// API MENU PER ID---------------------------------------------------- /api/utente/menu?roleId=2
+	// API MENU PER ID [MENU SX] ------------------------------------------ /api/utente/menu?roleId=2
    @GetMapping("/menu")
    @PreAuthorize("isAuthenticated()") 
    public ResponseEntity<List<Object>> getMenuByRole(@RequestParam int roleId) throws IOException {
@@ -116,7 +116,7 @@ public class UtenteController {
 	    return ResponseEntity.ok(jsonData);
    }
 	
-	// API MENU UTENTE LOGGATO ------------------------------------------- /api/utente/menuUser
+	// API MENU UTENTE LOGGATO [SMALL MENU DX] ---------------------------- /api/utente/menuUser
    @GetMapping("/menuUser")
    @PreAuthorize("isAuthenticated()") 
    public ResponseEntity<List<Object>> getMenuUser() throws IOException {
