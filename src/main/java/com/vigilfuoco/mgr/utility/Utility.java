@@ -44,11 +44,6 @@ public class Utility {
     
     public static String generaNumeroRichiesta(String tipoRichiesta, Long idUtente, Long idUfficio) {
     	
-    	// Check che il tipoRichiesta e idUtente siano lunghi abbastanza
-        /*if (tipoRichiesta.length() > 2 || idUtente.toString().length() > USER_ID_LENGTH || idUfficio.toString().length() > UFF_ID_LENGTH) {
-            throw new IllegalArgumentException("Tipo richiesta, ID utente o ID ufficio troppo lunghi");
-        }*/
-    	
         // Data corrente
         SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");
         String data = sdf.format(new Date());
