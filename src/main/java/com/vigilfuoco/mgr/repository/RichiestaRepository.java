@@ -6,6 +6,7 @@ import com.vigilfuoco.mgr.model.Richiesta;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -20,17 +21,19 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository
-public interface RichiestaRepository extends JpaRepository<Richiesta, Long> {
+public interface RichiestaRepository extends JpaRepository<Richiesta, Long>, JpaSpecificationExecutor<Richiesta> {
 
 	//List<Richiesta> findByDescrizione(String descrizione);
     
 	Richiesta findById(long id);
 	
+    boolean existsByNumeroRichiesta(String numeroRichiesta);
+
     //Query
 	@Query(value = "SELECT * FROM RICHIESTA WHERE descrizione LIKE :ds", nativeQuery = true)
 	List<Richiesta> SelByDescrizioneLike(@Param("ds") String ds);
 	
-	
+	 
 	//Query JPQL
 	/*@Query(value = "FROM RICHIESTA WHERE descrizione LIKE :ds")
 	List<Richiesta> SelByDescrizioneLikeJPQL(@Param("ds") String ds);

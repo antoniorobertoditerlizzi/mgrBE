@@ -135,5 +135,9 @@ import com.vigilfuoco.mgr.token.JwtTokenProvider;
 			 return ResponseEntity.ok(repositoryTipologiaRichiesta.findByIdTipologiaRichiesta(idTipologiaRichiesta));	
 		 }
 		 
+		// Check per verificare se il numero richiesta esiste a DB
+		public boolean existsByNumeroRichiesta(String numeroRichiesta) {
+		    return repositoryRichiesta.existsByNumeroRichiesta(numeroRichiesta);
+		}
 		 
 	}

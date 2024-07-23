@@ -1,6 +1,6 @@
 package com.vigilfuoco.mgr.model;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,8 +12,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "tbl_richieste")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Richiesta {
 
     @Id
@@ -39,10 +42,10 @@ public class Richiesta {
     private Priorita priorita;
 
     @Column(nullable = false)
-    private Date dataInserimentoRichiesta;
+    private LocalDateTime  dataInserimentoRichiesta;
 
     @Column(nullable = false)
-    private Date dataUltimoStatoRichiesta;
+    private LocalDateTime  dataUltimoStatoRichiesta;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_utente_ufficio_ruolo_stato_corrente")
@@ -104,19 +107,19 @@ public class Richiesta {
 		this.priorita = priorita;
 	}
 
-	public Date getDataInserimentoRichiesta() {
+	public LocalDateTime  getDataInserimentoRichiesta() {
 		return dataInserimentoRichiesta;
 	}
 
-	public void setDataInserimentoRichiesta(Date dataInserimentoRichiesta) {
+	public void setDataInserimentoRichiesta(LocalDateTime  dataInserimentoRichiesta) {
 		this.dataInserimentoRichiesta = dataInserimentoRichiesta;
 	}
 
-	public Date getDataUltimoStatoRichiesta() {
+	public LocalDateTime  getDataUltimoStatoRichiesta() {
 		return dataUltimoStatoRichiesta;
 	}
 
-	public void setDataUltimoStatoRichiesta(Date dataUltimoStatoRichiesta) {
+	public void setDataUltimoStatoRichiesta(LocalDateTime  dataUltimoStatoRichiesta) {
 		this.dataUltimoStatoRichiesta = dataUltimoStatoRichiesta;
 	}
 

@@ -139,6 +139,18 @@
 		    <artifactId>gson</artifactId>
 		</dependency>
 
+		<!-- Dipendenza aggiunta per mappare i risultati delle ricerche evitnado trasfromare la Entity in DTO -->
+		<dependency>
+		    <groupId>com.fasterxml.jackson.datatype</groupId>
+		    <artifactId>jackson-datatype-hibernate5</artifactId>
+		</dependency>
+		
+		<!-- Gestire i formati LocalDataTime trmite jackson -->
+		<dependency>
+		    <groupId>com.fasterxml.jackson.datatype</groupId>
+		    <artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
+		
 	</dependencies>
 
 	<build>

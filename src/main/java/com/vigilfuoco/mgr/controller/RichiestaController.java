@@ -2,17 +2,26 @@ package com.vigilfuoco.mgr.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.vigilfuoco.mgr.Specification.RichiestaSpecification;
 import com.vigilfuoco.mgr.model.ModelloConJson;
 import com.vigilfuoco.mgr.model.Richiesta;
+import com.vigilfuoco.mgr.model.SettoreUfficio;
+import com.vigilfuoco.mgr.model.StatoRichiesta;
 import com.vigilfuoco.mgr.model.TipologiaRichiesta;
-import com.vigilfuoco.mgr.model.Utente;
 import com.vigilfuoco.mgr.repository.RichiestaRepository;
 import com.vigilfuoco.mgr.service.RichiestaService;
+import com.vigilfuoco.mgr.utility.DateUtil;
+import com.vigilfuoco.mgr.utility.Utility;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,6 +34,7 @@ import org.apache.logging.log4j.Logger;
  * Definizione di tutte le API che contraddistinguono la Richiesta
  * 
  */
+
 
 @RestController
 @RequestMapping("/api/richiesta/")
@@ -41,15 +51,39 @@ public class RichiestaController {
     public RichiestaController(RichiestaService richiestaService) {
         this.richiestaService = richiestaService;
     }
-    
-	// API Ricerca per id richiesta ------------------------------------ /api/richiesta/cerca?id=2
+  
+
+    // API Ricerca Richiesta -------------------------------- es. /api/richiesta/cerca?idSettoreUfficio=2&idUfficio=1
     @GetMapping("/cerca")
-    public ResponseEntity<Richiesta> ricercaPerId(@RequestParam long id) throws IOException {
-		logger.debug("Ingresso api /api/richiesta/cerca?id=" + id);
-		Richiesta res = repositoryRichiesta.findById(id);
-		return new ResponseEntity<Richiesta>(res, HttpStatus.OK);
-	}
+    public ResponseEntity<List<Richiesta>> ricerca(
+            @RequestParam(required = false) Long id,
+            @RequestParam(required = false) String numeroRichiesta,
+            @RequestParam(required = false) Long idStatoRichiesta,
+            @RequestParam(required = false) String descrizioneStatoRichiesta,
+            @RequestParam(required = false) Boolean attivo,
+            @RequestParam(required = false) Long idSettoreUfficio,
+            @RequestParam(required = false) Long idSettore,
+            @RequestParam(required = false) Long idUfficio,
+            @RequestParam(required = false) String descrizioneUfficio) throws IOException {
+    	
+    	logger.debug("Ingresso api /api/richiesta/cerca");
+    	
+        List<Richiesta> results = repositoryRichiesta.findAll(Specification
+                .where(RichiestaSpecification.hasId(id))
+                .and(RichiestaSpecification.hasNumeroRichiesta(numeroRichiesta))
+                .and(RichiestaSpecification.hasIdStatoRichiesta(idStatoRichiesta))
+                .and(RichiestaSpecification.hasDescrizioneStatoRichiesta(descrizioneStatoRichiesta))
+                .and(RichiestaSpecification.isAttivo(attivo))
+                .and(RichiestaSpecification.hasIdSettoreUfficio(idSettoreUfficio))
+                .and(RichiestaSpecification.hasIdSettore(idSettore))
+                .and(RichiestaSpecification.hasIdUfficio(idUfficio))
+                .and(RichiestaSpecification.hasDescrizioneUfficio(descrizioneUfficio))
+        );
+
+        return ResponseEntity.ok(results);
+    }
     
+
 
     /*TEST
     @GetMapping("/cerca")
@@ -75,7 +109,7 @@ public class RichiestaController {
 
 	
 	
-	// API Ricerca tutte le richieste ------------------------------------ /api/richiesta/all
+	// DEPRECATO - API Ricerca tutte le richieste ------------------------------------ /api/richiesta/all
 	@RequestMapping(value = "/all", method = RequestMethod.GET, produces = "application/json")
 	@PreAuthorize("isAuthenticated()") 
 	public ResponseEntity<Iterable<Richiesta>> listaCompleta(Authentication authentication)
@@ -117,18 +151,90 @@ public class RichiestaController {
 	}
 	
 	// API Salva Richiesta a DB ---------------------------------------- /api/richiesta/save
-    @PostMapping("/save")
-    public Richiesta save(@RequestBody Richiesta request, @RequestParam String accountname) {
-		logger.debug("Ingresso api /api/richiesta/save");
-        Richiesta savedRichiesta = richiestaService.salvaRichiesta(request,accountname);
-        if (savedRichiesta != null) {
-            return savedRichiesta;
-        } else {
-            throw new RichiestaException("Errore durante il salvataggio della richiesta");
-        }
-    }
+	@PostMapping("/save")
+	public Richiesta save(@RequestBody Richiesta request, @RequestParam String accountname) {
+	    logger.debug("Ingresso api /api/richiesta/save");
+	    
+	    // Check Stato Richiesta // Controllo su id richiesta se già censita allora modifico altrimenti imposto su inserita
+	    if (request.getStatoRichiesta() == null) { //|| request.getStatoRichiesta().getIdStatoRichiesta() == 1) {
+		    StatoRichiesta statoInserita = new StatoRichiesta();
+		    statoInserita.setIdStatoRichiesta(1L); // Es. 1 Inserita **********
+		    request.setStatoRichiesta(statoInserita);
+	    
+		    // Verifico che TipologiaRichiesta e SettoreUfficio non siano null
+		    TipologiaRichiesta tipoRichiesta = request.getTipologiaRichiesta();
+		    SettoreUfficio settoreUfficio = request.getSettoreUfficio();
+		    if (tipoRichiesta == null || settoreUfficio == null || settoreUfficio.getUfficio() == null) {
+		        throw new RichiestaException("TipologiaRichiesta, SettoreUfficio, o Ufficio non possono essere null");
+		    }
+	
+		    // Genero codice ISBN Richiesta
+		    Long idUtente = request.getUtenteUfficioRuoloStatoCorrente().getIdUtenteUfficioRuolo();
+		    Long idUfficio = settoreUfficio.getUfficio().getIdUfficio();
+		    String numeroRichiesta = Utility.generaNumeroRichiesta(
+		            tipoRichiesta.getDescrizioneTipologiaRichiesta(),
+		            idUtente,
+		            idUfficio
+		    );
+
+		    // Se numero richiesta esiste a DB genero eccezione
+		    if (richiestaService.existsByNumeroRichiesta(numeroRichiesta)) {
+		        throw new NumeroRichiestaDuplicatoException("Il numero richiesta esiste già: " + numeroRichiesta);
+		    }
+		    
+		    request.setNumeroRichiesta(numeroRichiesta);
+		    
+		    // Ricavo l'ora corrente nel fuso orario locale
+		    LocalDateTime now = LocalDateTime.now(ZoneId.of("Europe/Rome"));
+		    //LocalDateTime now = LocalDateTime.now();
+		    request.setDataInserimentoRichiesta(now);
+		    request.setDataUltimoStatoRichiesta(now);
+		    
+		    // STAMPO DATA ATTUALE
+		    String formattedDate = DateUtil.format(now);
+		    System.out.println("Formatted Date: " + formattedDate);
+		    
+		    // Salvataggio richiesta
+		    Richiesta savedRichiesta = richiestaService.salvaRichiesta(request, accountname);
+		    if (savedRichiesta != null) {
+		        return savedRichiesta;
+		    } else {
+		        throw new RichiestaException("Errore durante il salvataggio della richiesta");
+		    }
+	    }
+		return null;
+	}
+
     
     /*JSON DI ESEMPIO
+		{
+		  "tipologiaRichiesta": {
+		    "idTipologiaRichiesta": 1,
+		  },
+		  "richiestaPersonale": false,
+		  "priorita": {
+		    "idPriorita": 1,
+		  },
+		  "utenteUfficioRuoloStatoCorrente": {
+		    "idUtenteUfficioRuolo": 1
+		  },
+		  "utenteUfficioRuoloStatoIniziale": {
+		    "idUtenteUfficioRuolo": 1
+		  },
+	      "settoreUfficio": {
+		    "idSettoreUfficio": 1,
+		    "settore": {
+		      "idSettore": 1
+		    },
+		    "ufficio": {
+		      "idUfficio": 1
+		    }
+		  }
+    }*/
+    
+    
+    
+    /* DEPRECATO JSON DI ESEMPIO
 		{
 		  "idRichiesta": null,
 		  "numeroRichiesta": "123",
