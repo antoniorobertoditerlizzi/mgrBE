@@ -22,7 +22,9 @@ import org.springframework.stereotype.Service;
 
 import com.vigilfuoco.mgr.controller.RichiestaException;
 import com.vigilfuoco.mgr.model.JwtResponse;
+import com.vigilfuoco.mgr.model.Ufficio;
 import com.vigilfuoco.mgr.model.Utente;
+import com.vigilfuoco.mgr.repository.UfficioRepository;
 import com.vigilfuoco.mgr.repository.UtenteRepository;
 import com.vigilfuoco.mgr.repository.UtenteWAUCRepository;
 import com.vigilfuoco.mgr.token.JwtTokenProvider;
@@ -42,6 +44,9 @@ public class UtenteService {
 	    this.menuResource = menuResource;
 	}
 	
+    @Autowired
+    private UfficioRepository ufficioRepository;
+    
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
     
@@ -366,8 +371,10 @@ public class UtenteService {
 		 return null;
 	}*/
 	
-	 
-	
+	//Lista utenti appartenenti ad un ufficio
+    public List<Ufficio> getUfficiUtente(int idUtente) {
+        return ufficioRepository.findUfficiByUtenteId(idUtente);
+    }
 	
 
 	// DA TESTARE!!

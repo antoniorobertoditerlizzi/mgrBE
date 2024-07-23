@@ -1,4 +1,4 @@
-package com.vigilfuoco.mgr.Specification;
+package com.vigilfuoco.mgr.specification;
 
 import com.vigilfuoco.mgr.model.Richiesta;
 

@@ -2,6 +2,7 @@ package com.vigilfuoco.mgr.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.vigilfuoco.mgr.model.JwtResponse;
+import com.vigilfuoco.mgr.model.Ufficio;
 import com.vigilfuoco.mgr.model.Utente;
 import com.vigilfuoco.mgr.repository.UtenteRepository;
 import com.vigilfuoco.mgr.service.UtenteService;
@@ -131,6 +132,15 @@ public class UtenteController {
 	    return ResponseEntity.ok(jsonData);
    }
     
+   // API LISTA UFFICI UTENTE -------------------------------------------- /api/utente/getUfficiUtente?idUtente=1
+   @GetMapping("/getUfficiUtente")
+   public ResponseEntity<List<Ufficio>> getUfficiUtente(
+           @RequestParam(required = false) int idUtente) throws IOException {
+	   		//Tabelle impattate: tbl_utenti, tbl_utenti_uffici_ruoli, tbl_settori_uffici, tbl_settori, tbl_uffici
+	     List<Ufficio> uffici = utenteService.getUfficiUtente(idUtente);
+	    return ResponseEntity.ok(uffici);
+   }
+   
 	// API MENU ----------------------------------------------------------- /api/utente/menu?roleId=2
     /*@GetMapping("/menu")
     public ResponseEntity<String> getMenuByID(@RequestParam int roleId) throws IOException {

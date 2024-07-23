@@ -2,14 +2,15 @@ package com.vigilfuoco.mgr.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.vigilfuoco.mgr.Specification.RichiestaSpecification;
 import com.vigilfuoco.mgr.model.ModelloConJson;
+import com.vigilfuoco.mgr.model.Priorita;
 import com.vigilfuoco.mgr.model.Richiesta;
 import com.vigilfuoco.mgr.model.SettoreUfficio;
 import com.vigilfuoco.mgr.model.StatoRichiesta;
 import com.vigilfuoco.mgr.model.TipologiaRichiesta;
 import com.vigilfuoco.mgr.repository.RichiestaRepository;
 import com.vigilfuoco.mgr.service.RichiestaService;
+import com.vigilfuoco.mgr.specification.RichiestaSpecification;
 import com.vigilfuoco.mgr.utility.DateUtil;
 import com.vigilfuoco.mgr.utility.Utility;
 
@@ -150,13 +151,21 @@ public class RichiestaController {
 		return richiestaService.tipologiaRichiesta(idTipologiaRichiesta);
 	}
 	
+	// API Lista Priorita ---------------------------------------- /api/richiesta/getPriorityList/
+	@RequestMapping(value = "/getPriorityList/", method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("isAuthenticated()") 
+	public ResponseEntity<List<Priorita>> getPriorityList(Authentication authentication) throws JsonMappingException, JsonProcessingException{
+		logger.debug("Ingresso api /api/richiesta/getPriorityList/");
+		return richiestaService.getPriorityList();
+	}
+	
 	// API Salva Richiesta a DB ---------------------------------------- /api/richiesta/save
 	@PostMapping("/save")
 	public Richiesta save(@RequestBody Richiesta request, @RequestParam String accountname) {
 	    logger.debug("Ingresso api /api/richiesta/save");
 	    
 	    // Check Stato Richiesta // Controllo su id richiesta se già censita allora modifico altrimenti imposto su inserita
-	    if (request.getStatoRichiesta() == null) { //|| request.getStatoRichiesta().getIdStatoRichiesta() == 1) {
+	    if (request.getStatoRichiesta() == null) { // || request.getStatoRichiesta().getIdStatoRichiesta() == 1) {
 		    StatoRichiesta statoInserita = new StatoRichiesta();
 		    statoInserita.setIdStatoRichiesta(1L); // Es. 1 Inserita **********
 		    request.setStatoRichiesta(statoInserita);
@@ -170,7 +179,7 @@ public class RichiestaController {
 	
 		    // Genero codice ISBN Richiesta
 		    Long idUtente = request.getUtenteUfficioRuoloStatoCorrente().getIdUtenteUfficioRuolo();
-		    Long idUfficio = settoreUfficio.getUfficio().getIdUfficio();
+		    Long idUfficio = settoreUfficio.getUfficio().getIdUfficio(); // ????????
 		    String numeroRichiesta = Utility.generaNumeroRichiesta(
 		            tipoRichiesta.getDescrizioneTipologiaRichiesta(),
 		            idUtente,
@@ -207,13 +216,17 @@ public class RichiestaController {
 
     
     /*JSON DI ESEMPIO
-		{
+     * 
+     * {
+    
 		  "tipologiaRichiesta": {
 		    "idTipologiaRichiesta": 1,
+		    "descrizioneTipologiaRichiesta": "Acquisti"
 		  },
 		  "richiestaPersonale": false,
 		  "priorita": {
 		    "idPriorita": 1,
+		    "descrizionePriorita": "Alta"
 		  },
 		  "utenteUfficioRuoloStatoCorrente": {
 		    "idUtenteUfficioRuolo": 1
@@ -230,7 +243,8 @@ public class RichiestaController {
 		      "idUfficio": 1
 		    }
 		  }
-    }*/
+    }
+		*/
     
     
     

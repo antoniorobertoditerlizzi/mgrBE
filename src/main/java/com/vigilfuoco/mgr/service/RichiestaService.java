@@ -17,10 +17,12 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vigilfuoco.mgr.model.Modello;
 import com.vigilfuoco.mgr.model.ModelloConJson;
+import com.vigilfuoco.mgr.model.Priorita;
 import com.vigilfuoco.mgr.model.Richiesta;
 import com.vigilfuoco.mgr.model.TipologiaRichiesta;
 import com.vigilfuoco.mgr.model.Utente;
 import com.vigilfuoco.mgr.repository.ModelloRepository;
+import com.vigilfuoco.mgr.repository.PrioritaRepository;
 import com.vigilfuoco.mgr.repository.RichiestaRepository;
 import com.vigilfuoco.mgr.repository.TipologiaRichiestaRepository;
 import com.vigilfuoco.mgr.repository.UtenteRepository;
@@ -45,6 +47,9 @@ import com.vigilfuoco.mgr.token.JwtTokenProvider;
 	    @Autowired
 	    private final TipologiaRichiestaRepository repositoryTipologiaRichiesta;
 	    
+	    @Autowired
+	    private final PrioritaRepository repositoryPriorita;
+	    
 	    @Autowired 
 	    private static JwtTokenProvider jwtTokenProvider;
 	    
@@ -61,11 +66,13 @@ import com.vigilfuoco.mgr.token.JwtTokenProvider;
 	    public RichiestaService(RichiestaRepository repositoryRichiesta, 
 					    		ModelloRepository repositoryModello, 
 					    		UtenteRepository repositoryUtente, 
-					    		TipologiaRichiestaRepository repositoryTipologiaRichiesta) {
+					    		TipologiaRichiestaRepository repositoryTipologiaRichiesta,
+					    		PrioritaRepository repositoryPriorita) {
 	        this.repositoryUtente = repositoryUtente;
 			this.repositoryRichiesta = repositoryRichiesta;
 	        this.repositoryModello = repositoryModello;
 	        this.repositoryTipologiaRichiesta = repositoryTipologiaRichiesta;
+	        this.repositoryPriorita = repositoryPriorita;
 	    }
 	    
 	    //Salva Richiesta
@@ -130,14 +137,19 @@ import com.vigilfuoco.mgr.token.JwtTokenProvider;
 			 return ResponseEntity.ok(repositoryTipologiaRichiesta.findAll());	
 		 }
 		 
-		 // TIPOLOGIA RICHIESTA
+		 //TIPOLOGIA RICHIESTA
 		 public ResponseEntity<TipologiaRichiesta> tipologiaRichiesta(Short idTipologiaRichiesta) {
 			 return ResponseEntity.ok(repositoryTipologiaRichiesta.findByIdTipologiaRichiesta(idTipologiaRichiesta));	
 		 }
 		 
-		// Check per verificare se il numero richiesta esiste a DB
+		//Check per verificare se il numero richiesta esiste a DB
 		public boolean existsByNumeroRichiesta(String numeroRichiesta) {
 		    return repositoryRichiesta.existsByNumeroRichiesta(numeroRichiesta);
 		}
+		
+		 //LISTA PRIORITA
+		 public ResponseEntity<List<Priorita>> getPriorityList() {
+			 return ResponseEntity.ok(repositoryPriorita.findAll());	
+		 }
 		 
 	}
