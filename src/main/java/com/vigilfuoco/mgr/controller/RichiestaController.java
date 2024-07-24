@@ -17,8 +17,6 @@ import com.vigilfuoco.mgr.utility.Utility;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -161,7 +159,7 @@ public class RichiestaController {
 	
 	// API Salva Richiesta a DB ---------------------------------------- /api/richiesta/save
 	@PostMapping("/save")
-	public Richiesta save(@RequestBody Richiesta request, @RequestParam String accountname) {
+	public Richiesta save(@RequestBody Richiesta request, @RequestParam String accountname ) {
 	    logger.debug("Ingresso api /api/richiesta/save");
 	    
 	    // Check Stato Richiesta // Controllo su id richiesta se già censita allora modifico altrimenti imposto su inserita
@@ -204,7 +202,8 @@ public class RichiestaController {
 		    System.out.println("Formatted Date: " + formattedDate);
 		    
 		    // Salvataggio richiesta
-		    Richiesta savedRichiesta = richiestaService.salvaRichiesta(request, accountname);
+        	String oggetto = "Salvataggio Richiesta";
+		    Richiesta savedRichiesta = richiestaService.salvaRichiesta(request, accountname, numeroRichiesta, oggetto);
 		    if (savedRichiesta != null) {
 		        return savedRichiesta;
 		    } else {
@@ -213,7 +212,53 @@ public class RichiestaController {
 	    }
 		return null;
 	}
+	
+	// API Modifica Richiesta a DB ---------------------------------------- /api/richiesta/update/1?accountname=antonioroberto.diterlizzi
+    @PutMapping("/update/{id}")
+    public Richiesta update(@PathVariable Long id, @RequestBody Richiesta updatedRequest, @RequestParam String accountname ) {
+        logger.debug("Ingresso api /api/richiesta/update");
 
+        // Trova la richiesta esistente per ID
+        Richiesta existingRequest = richiestaService.findById(id)
+                .orElseThrow(() -> new RichiestaNotFoundException("Richiesta non trovata con ID: " + id));
+
+        // Aggiorna i campi della richiesta esistente con i nuovi dati
+        existingRequest.setTipologiaRichiesta(updatedRequest.getTipologiaRichiesta());
+        existingRequest.setSettoreUfficio(updatedRequest.getSettoreUfficio());
+        existingRequest.setDataUltimoStatoRichiesta(LocalDateTime.now(ZoneId.of("Europe/Rome")));
+        
+        // Capire gli altri campi...
+        
+        // Salva la richiesta aggiornata
+    	String oggetto = "Modifica Richiesta";
+        Richiesta savedRequest = richiestaService.salvaRichiesta(existingRequest, accountname, existingRequest.getNumeroRichiesta(), oggetto);
+        
+        if (savedRequest != null) {
+            return savedRequest;
+        } else {
+            throw new RichiestaException("Errore durante l'aggiornamento della richiesta");
+        }
+    }
+    
+    // API Cancellazione Fisica Richiesta solo se id_stato_richiesta = 1
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteRichiesta(@PathVariable Long id) {
+        logger.debug("Ingresso api /api/richiesta/delete");
+
+        // Verifica che la richiesta esista
+        Richiesta richiesta = repositoryRichiesta.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Richiesta non trovata con id: " + id));
+
+        // Controlla se lo stato della richiesta è 1
+        if (richiesta.getStatoRichiesta().getIdStatoRichiesta() != 1) {
+            throw new InvalidRequestStateException("La richiesta non può essere cancellata perché non ha lo stato di bozza ovvero 'Inserita'.");
+        }
+
+        // Cancella la richiesta
+        repositoryRichiesta.delete(richiesta);
+
+        return ResponseEntity.ok("Richiesta cancellata con successo.");
+    }
     
     /*JSON DI ESEMPIO
      * 

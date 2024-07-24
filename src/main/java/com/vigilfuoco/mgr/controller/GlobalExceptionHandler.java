@@ -16,8 +16,40 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NumeroRichiestaDuplicatoException.class)
     public ResponseEntity<String> handleNumeroRichiestaDuplicatoException(NumeroRichiestaDuplicatoException ex) {
-    	logger.error(ex.getMessage());
+        logger.error(ex.getMessage());
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+    }
+
+    // PER MODIFICA RICHIESTA
+    @ExceptionHandler(RichiestaNotFoundException.class)
+    public ResponseEntity<String> handleRichiestaNotFoundException(RichiestaNotFoundException ex) {
+        logger.error(ex.getMessage());
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(RichiestaException.class)
+    public ResponseEntity<String> handleRichiestaException(RichiestaException ex) {
+        logger.error(ex.getMessage());
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleGeneralException(Exception ex) {
+        logger.error("An unexpected error occurred", ex);
+        return new ResponseEntity<>("An unexpected error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    
+    //PER CANCELLAZIONE RICHIESTA
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException ex) {
+        logger.error(ex.getMessage());
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(InvalidRequestStateException.class)
+    public ResponseEntity<String> handleInvalidRequestStateException(InvalidRequestStateException ex) {
+        logger.error(ex.getMessage());
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
 }

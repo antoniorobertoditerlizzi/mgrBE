@@ -3,6 +3,7 @@ package com.vigilfuoco.mgr.service;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vigilfuoco.mgr.controller.RichiestaException;
 import com.vigilfuoco.mgr.model.Modello;
 import com.vigilfuoco.mgr.model.ModelloConJson;
 import com.vigilfuoco.mgr.model.Priorita;
@@ -27,6 +29,7 @@ import com.vigilfuoco.mgr.repository.RichiestaRepository;
 import com.vigilfuoco.mgr.repository.TipologiaRichiestaRepository;
 import com.vigilfuoco.mgr.repository.UtenteRepository;
 import com.vigilfuoco.mgr.token.JwtTokenProvider;
+import com.vigilfuoco.mgr.utility.Utility;
 
 /* 
  * Logica di Business. Dettaglio della logica del singolo servizio.
@@ -75,15 +78,27 @@ import com.vigilfuoco.mgr.token.JwtTokenProvider;
 	        this.repositoryPriorita = repositoryPriorita;
 	    }
 	    
-	    //Salva Richiesta
-		public Richiesta salvaRichiesta(Richiesta request, String accountname) {
+	    //Salva/Modifica Richiesta
+		public Richiesta salvaRichiesta(Richiesta request, String accountname, String numeroRichiesta, String oggetto) {
 			//Cerco per accountname
 		 	Utente resUtente = repositoryUtente.findByAccount(accountname);
 		 	
-			if (resUtente != null) {
+		 	if (resUtente != null) {
 		        request.getUtenteUfficioRuoloStatoIniziale().setUtente(resUtente);
 		        request.getUtenteUfficioRuoloStatoCorrente().setUtente(resUtente);	
-		        return repositoryRichiesta.save(request);
+		        //Se l'oggetto ha un ID nullo o non esistente nel database, verrà eseguita un'operazione di salvataggio.
+		        //Se l'oggetto ha un ID che esiste nel database, verrà eseguita un'operazione di aggiornamento.
+				
+		        // Salva Richiesta
+		        Richiesta res = repositoryRichiesta.save(request);
+                
+		        // Invio Email
+		        if (res != null) {
+		        	Utility.invioEmailRichiesta(numeroRichiesta, resUtente.getEmailUtente(), oggetto);
+			        return res;
+		        } else {
+			        throw new RichiestaException("Errore durante il salvataggio della richiesta");
+			    }
 			}
 	        return null;
 	    }
@@ -147,6 +162,10 @@ import com.vigilfuoco.mgr.token.JwtTokenProvider;
 		    return repositoryRichiesta.existsByNumeroRichiesta(numeroRichiesta);
 		}
 		
+		//Dettaglio Richiesta per ID
+	    public Optional<Richiesta> findById(Long id) {
+	        return repositoryRichiesta.findById(id);
+	    }
 		 //LISTA PRIORITA
 		 public ResponseEntity<List<Priorita>> getPriorityList() {
 			 return ResponseEntity.ok(repositoryPriorita.findAll());	
