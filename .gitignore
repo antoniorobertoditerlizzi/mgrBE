@@ -1,17 +1,22 @@
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+
+# Ignora tutto nella cartella target
+target/*
+
+# Tranne il file mgr-0.0.1-SNAPSHOT.war
+!target/mgr-0.0.1-SNAPSHOT.war
+
+# Per la prima commit: git add -f target/mgr-0.0.1-SNAPSHOT.war
+
 
 # Ignora tutti i file .log
 logs/
 logs/*
 *.log
 *.gz
-app.log
-!**/logs/*
-!**/logs/
+
 
 # Ignora le directory build e dist
 build/
