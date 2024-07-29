@@ -57,3 +57,6 @@ logs/app.log
 *.log
 logs/app.log
 /logs
+/logs
+logs/app.log
+*.log
