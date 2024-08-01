@@ -17,7 +17,7 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import com.vigilfuoco.mgr.controller.InvalidTokenException;
+import com.vigilfuoco.mgr.exception.InvalidTokenException;
 import com.vigilfuoco.mgr.service.BlacklistService;
 
 import io.jsonwebtoken.Claims;

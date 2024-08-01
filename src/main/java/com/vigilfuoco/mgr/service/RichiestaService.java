@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vigilfuoco.mgr.controller.RichiestaException;
+import com.vigilfuoco.mgr.exception.RichiestaException;
 import com.vigilfuoco.mgr.model.Modello;
 import com.vigilfuoco.mgr.model.ModelloConJson;
 import com.vigilfuoco.mgr.model.Priorita;

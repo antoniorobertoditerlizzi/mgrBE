@@ -7,6 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.vigilfuoco.mgr.exception.InvalidRequestStateException;
+import com.vigilfuoco.mgr.exception.MenuException;
+import com.vigilfuoco.mgr.exception.NumeroRichiestaDuplicatoException;
+import com.vigilfuoco.mgr.exception.ResourceNotFoundException;
+import com.vigilfuoco.mgr.exception.RichiestaException;
+import com.vigilfuoco.mgr.exception.RichiestaNotFoundException;
+
 //Per gestire l'eccezione e restituire una risposta appropriata al client. 
 //Gestore di eccezioni nel controller.
 
@@ -52,4 +59,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(MenuException.class)
+    public ResponseEntity<String> handleMenuException(MenuException ex) {
+        logger.error(ex.getMessage());
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }

@@ -20,7 +20,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import com.vigilfuoco.mgr.controller.RichiestaException;
+import com.vigilfuoco.mgr.exception.MenuException;
+import com.vigilfuoco.mgr.exception.NumeroRichiestaDuplicatoException;
+import com.vigilfuoco.mgr.exception.RichiestaException;
 import com.vigilfuoco.mgr.model.JwtResponse;
 import com.vigilfuoco.mgr.model.Ufficio;
 import com.vigilfuoco.mgr.model.Utente;
@@ -121,13 +123,14 @@ public class UtenteService {
         return ResponseEntity.ok("Logout effettuato con successo"); 
 	}
 	
-	
-    public ResponseEntity<String> getMenuByRoleFromAccount(String accountName) throws IOException {
+	// GENERAZIONE MENU UTENTE LOGGATO PER ACCOUNTNAME
+    public List<Object> getMenuByRoleFromAccount(String accountName) throws IOException {
         // Retrieve user information
         Utente utenti = utenteRepository.findByAccount(accountName);
 
-        if (utenti != null) {
-            return new ResponseEntity<>("Account non trovato.", HttpStatus.NOT_FOUND);
+        if (utenti == null) {
+            //return new ResponseEntity<>("Account non trovato.", HttpStatus.NOT_FOUND);
+        	throw new MenuException("Account non trovato.");
         }
 
         // Estraggo il ruolo utente
@@ -137,10 +140,15 @@ public class UtenteService {
          JSONArray menuObject = getMenuByRole(roleId, menuResource);
 
         if (menuObject == null) {
-            return new ResponseEntity<>("Menu non trovato per il ruolo dell'utente. RoleID: " + roleId, HttpStatus.NOT_FOUND);
+        	throw new MenuException("Menu non trovato per il ruolo dell'utente. RoleID: " + roleId);
+            //return new ResponseEntity<>("Menu non trovato per il ruolo dell'utente. RoleID: " + roleId, HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(menuObject.toString(), HttpStatus.OK);
+	    ObjectMapper mapper = new ObjectMapper();
+	    @SuppressWarnings("unchecked")
+		List<Object> menuList = mapper.readValue(menuObject.toString(), List.class);
+	    return menuList;
+        //return new ResponseEntity<>(menuObject.toString(), HttpStatus.OK);
     }
 
     // GENERAZIONE MENU UTENTE LOGGATO PER ID RUOLO

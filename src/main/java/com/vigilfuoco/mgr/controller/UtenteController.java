@@ -1,6 +1,7 @@
 package com.vigilfuoco.mgr.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.vigilfuoco.mgr.exception.InvalidTokenException;
 import com.vigilfuoco.mgr.model.JwtResponse;
 import com.vigilfuoco.mgr.model.Ufficio;
 import com.vigilfuoco.mgr.model.Utente;
@@ -104,8 +105,9 @@ public class UtenteController {
     // API MENU PER ACCOUNT NAME [MENU SX] ------------------------------- /api/utente/menuByAccountName?accountName=antonioroberto.diterlizzi
     @GetMapping("/menuByAccountName")
     @PreAuthorize("isAuthenticated()") 
-    public ResponseEntity<String> getMenuByAccountName(@RequestParam String accountName) throws IOException {
-        return utenteService.getMenuByRoleFromAccount(accountName);
+    public ResponseEntity<List<Object>> getMenuByAccountName(@RequestParam String accountName) throws IOException {
+    	List<Object> jsonData = utenteService.getMenuByRoleFromAccount(accountName);
+    	return ResponseEntity.ok(jsonData);
     }
     
     
