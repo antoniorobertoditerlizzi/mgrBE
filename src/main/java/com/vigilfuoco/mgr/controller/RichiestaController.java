@@ -175,6 +175,11 @@ public class RichiestaController {
 	    
 		    // Verifico che TipologiaRichiesta e SettoreUfficio non siano null
 		    TipologiaRichiesta tipoRichiesta = request.getTipologiaRichiesta();
+		    Short idTipologiaRichiesta = tipoRichiesta.getIdTipologiaRichiesta();
+		    
+		    // Recupero la descrizione associata all'idTipologia
+		    String descrizioneTipologiaRichiesta = richiestaService.descTipologiaRichiesta(idTipologiaRichiesta);
+		    
 		    SettoreUfficio settoreUfficio = request.getSettoreUfficio();
 		    if (tipoRichiesta == null || settoreUfficio == null || settoreUfficio.getUfficio() == null) {
 		        throw new RichiestaException("TipologiaRichiesta, SettoreUfficio, o Ufficio non possono essere null");
@@ -184,7 +189,7 @@ public class RichiestaController {
 		    Long idUtente = request.getUtenteUfficioRuoloStatoCorrente().getIdUtenteUfficioRuolo();
 		    Long idUfficio = settoreUfficio.getUfficio().getIdUfficio(); // ????????
 		    String numeroRichiesta = Utility.generaNumeroRichiesta(
-		            tipoRichiesta.getDescrizioneTipologiaRichiesta(),
+		    		descrizioneTipologiaRichiesta,
 		            idUtente,
 		            idUfficio
 		    );

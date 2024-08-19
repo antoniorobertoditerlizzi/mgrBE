@@ -157,6 +157,11 @@ import com.vigilfuoco.mgr.utility.Utility;
 			 return ResponseEntity.ok(repositoryTipologiaRichiesta.findByIdTipologiaRichiesta(idTipologiaRichiesta));	
 		 }
 		 
+		//TIPOLOGIA RICHIESTA GET DESCRIZIONE TIPOLOGIA
+		 public String descTipologiaRichiesta(Short idTipologiaRichiesta) {
+			 return repositoryTipologiaRichiesta.findByIdTipologiaRichiesta(idTipologiaRichiesta).getDescrizioneTipologiaRichiesta();	
+		 }
+		 
 		//Check per verificare se il numero richiesta esiste a DB
 		public boolean existsByNumeroRichiesta(String numeroRichiesta) {
 		    return repositoryRichiesta.existsByNumeroRichiesta(numeroRichiesta);
