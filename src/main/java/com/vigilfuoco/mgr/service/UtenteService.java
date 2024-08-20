@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.vigilfuoco.mgr.exception.InvalidTokenException;
 import com.vigilfuoco.mgr.exception.MenuException;
 import com.vigilfuoco.mgr.exception.NumeroRichiestaDuplicatoException;
 import com.vigilfuoco.mgr.exception.RichiestaException;
@@ -68,8 +69,9 @@ public class UtenteService {
 
 		
 	    try {
-			// Genero token di sessione
-			String token = jwtTokenProvider.generateToken(accountName);
+	        // Genera il token di accesso e il refresh token
+	        String accessToken = jwtTokenProvider.generateToken(accountName);
+	        String refreshToken = jwtTokenProvider.generateRefreshToken(accountName);
 			
 			// Recupero il menu utente in base al ruolo
 			int roleId = 1; //WIP savedUser.getRuoloID();
@@ -78,7 +80,7 @@ public class UtenteService {
 			List<Object> menu = getMenuByRole_OBJ(roleId);
 		    
 			// Controllo che il token non sia nullo e che l'utente nel DB non è mai stato censito prima
-			if (token!= null) {
+			if (accessToken!= null) {
 		    	  if(checkUserFound == null) {
 		    			
 		    		    // Recupero i dati dell'utente da WAUC da salvare nella tabella Utente MGR
@@ -92,7 +94,7 @@ public class UtenteService {
 									// Restituisco al WS in output i dati salvati e genero anche il token di sessione
 								try {
 								    logger.info("Procedura di Importazione Nuovo Utente " + savedUser.getAccount() +" ultimata con successo. Utente correttamente importato nel DB MGR.");
-									return ResponseEntity.ok(new JwtResponse(savedUser, menu, token, "Procedura di Importazione Nuovo Utente " + savedUser.getAccount() +" ultimata con successo. Utente correttamente importato nel DB MGR."));
+									return ResponseEntity.ok(new JwtResponse(savedUser, menu, accessToken, refreshToken, "Procedura di Importazione Nuovo Utente " + savedUser.getAccount() +" ultimata con successo. Utente correttamente importato nel DB MGR."));
 								} catch (Exception e) {
 									e.printStackTrace();
 									logger.error("Errore nella generazione del token: " + e.toString());
@@ -101,7 +103,7 @@ public class UtenteService {
 				      }
 		    	  } else {
 				      logger.info("Utente " + checkUserFound.getAccount() + " già censito a DB.");
-				      return ResponseEntity.ok(new JwtResponse(checkUserFound, menu, token, "Utente " + checkUserFound.getAccount() +" già censito a DB."));
+				      return ResponseEntity.ok(new JwtResponse(checkUserFound, menu, accessToken, refreshToken, "Utente " + checkUserFound.getAccount() +" già censito a DB."));
 		    	  }
 		      }
 	    } catch (IllegalArgumentException e) {
@@ -112,7 +114,25 @@ public class UtenteService {
 		return null;
 	}
 	
-	
+    // Metodo per gestire il refresh token e restituire un nuovo access token
+    public ResponseEntity<JwtResponse> refreshToken(String refreshToken) throws InvalidTokenException, IOException {
+        if (!jwtTokenProvider.validateRefreshToken(refreshToken)) {
+            throw new InvalidTokenException("Refresh token non valido");
+        }
+
+        // Ottieni l'username dal refresh token
+        String accountName = jwtTokenProvider.getUsernameFromToken(refreshToken);
+
+        // Genera un nuovo access token che sostituirà il vecchio ottenuto nella login e poi scaduto 
+        String newAccessToken = jwtTokenProvider.generateToken(accountName);
+
+        // Opzionale: possibilita di generare un nuovo refresh token
+        String newRefreshToken = jwtTokenProvider.generateRefreshToken(accountName);
+
+        // Restituisci i nuovi token e nelle successive invocazioni delle API dell'applicativo usare il "newAccessToken"
+        return ResponseEntity.ok(new JwtResponse(null, null, newAccessToken, newRefreshToken, "Token rinnovato con successo per l'utente " + accountName));
+    }
+    
 	public ResponseEntity<String> logout(String token) {
         if (blacklistService.isTokenBlacklisted(token)) {
             logger.warn("Token presente nella Blacklist. ", token);

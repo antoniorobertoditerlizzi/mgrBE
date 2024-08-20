@@ -104,7 +104,7 @@ import com.vigilfuoco.mgr.utility.Utility;
 	    }
 		
 		 //VALIDAZIONE AUTORIZZAZIONE DEPRECATA NON PIU USATA
-		 public static ResponseEntity<Object> checkAuthorization(Authentication authentication) {
+		 /*public static ResponseEntity<Object> checkAuthorization(Authentication authentication) {
 		    	// Controllo se l'utente ha effettuato il login e quindi è autenticato,
 			    if (authentication == null || !authentication.isAuthenticated()) {
 			        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -120,7 +120,7 @@ import com.vigilfuoco.mgr.utility.Utility;
 			    }
 			    // Permetto di procedere nella richiesta desiderata
 				return null;
-		 }
+		 }*/
 		 
 		 //TRANSCODIFICA MODELLI JSON
 		 @SuppressWarnings("unchecked")

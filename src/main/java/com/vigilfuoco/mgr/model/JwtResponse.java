@@ -10,13 +10,16 @@ public class JwtResponse {
     
     private String token;
     
+    private String refreshToken;
+    
     private String note;
 
 
-    public JwtResponse(Utente utente, List<Object> menu, String token, String note) {
+    public JwtResponse(Utente utente, List<Object> menu, String token, String refreshToken, String note) {
         this.utente = utente;
         this.menu = menu;
         this.token = token;
+        this.refreshToken = refreshToken;
         this.note = note;
     }
 
@@ -51,6 +54,16 @@ public class JwtResponse {
 	}
 
 
+	public String getRefreshToken() {
+		return refreshToken;
+	}
+
+
+	public void setRefreshToken(String refreshToken) {
+		this.refreshToken = refreshToken;
+	}
+
+
 	public String getNote() {
 		return note;
 	}
@@ -63,7 +76,8 @@ public class JwtResponse {
 
 	@Override
 	public String toString() {
-		return "JwtResponse [utente=" + utente + ", menu=" + menu + ", token=" + token + ", note=" + note + "]";
+		return "JwtResponse [utente=" + utente + ", menu=" + menu + ", token=" + token + ", refreshToken="
+				+ refreshToken + ", note=" + note + "]";
 	}
 
 
