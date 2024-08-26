@@ -34,13 +34,7 @@
                 {
             "titolo": "About",
             "url": "/about"
-        },
-        
-        {
-            "titolo": "About",
-            "url": "/about"
-        },
-        
+        },       
         {
             "titolo": "Logout",
             "url": "/logout"
