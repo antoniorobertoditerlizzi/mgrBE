@@ -66,6 +66,14 @@ public class UtenteController {
 		return utenteService.login(accountName, url);
 	}
 	
+	// API Refresh Token --------------------------------------------------- /api/utente/refresh-token
+	@PostMapping("/refresh-token")
+	public ResponseEntity<JwtResponse> refresh(@RequestHeader("Authorization") String authorizationHeader) throws InvalidTokenException, IOException {
+	    String refreshToken = authorizationHeader.split(" ")[1];
+	    logger.debug("Rinnovo del token con refresh token: " + refreshToken);
+	    return utenteService.refreshToken(refreshToken);
+	}
+	
 	// API Loginout ----------------------------------------------------------- /api/utente/logout
 	@PostMapping("/logout")
 	public ResponseEntity<String> logout(@RequestHeader("Authorization") String authorizationHeader) throws InvalidTokenException, UnsupportedJwtException, IllegalArgumentException, IOException {

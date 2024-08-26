@@ -104,7 +104,7 @@ import com.vigilfuoco.mgr.utility.Utility;
 	    }
 		
 		 //VALIDAZIONE AUTORIZZAZIONE DEPRECATA NON PIU USATA
-		 public static ResponseEntity<Object> checkAuthorization(Authentication authentication) {
+		 /*public static ResponseEntity<Object> checkAuthorization(Authentication authentication) {
 		    	// Controllo se l'utente ha effettuato il login e quindi è autenticato,
 			    if (authentication == null || !authentication.isAuthenticated()) {
 			        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -120,7 +120,7 @@ import com.vigilfuoco.mgr.utility.Utility;
 			    }
 			    // Permetto di procedere nella richiesta desiderata
 				return null;
-		 }
+		 }*/
 		 
 		 //TRANSCODIFICA MODELLI JSON
 		 @SuppressWarnings("unchecked")
@@ -155,6 +155,11 @@ import com.vigilfuoco.mgr.utility.Utility;
 		 //TIPOLOGIA RICHIESTA
 		 public ResponseEntity<TipologiaRichiesta> tipologiaRichiesta(Short idTipologiaRichiesta) {
 			 return ResponseEntity.ok(repositoryTipologiaRichiesta.findByIdTipologiaRichiesta(idTipologiaRichiesta));	
+		 }
+		 
+		//TIPOLOGIA RICHIESTA GET DESCRIZIONE TIPOLOGIA
+		 public String descTipologiaRichiesta(Short idTipologiaRichiesta) {
+			 return repositoryTipologiaRichiesta.findByIdTipologiaRichiesta(idTipologiaRichiesta).getDescrizioneTipologiaRichiesta();	
 		 }
 		 
 		//Check per verificare se il numero richiesta esiste a DB

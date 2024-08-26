@@ -8,13 +8,10 @@ import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import com.vigilfuoco.mgr.exception.InvalidTokenException;
@@ -30,93 +27,101 @@ import io.jsonwebtoken.UnsupportedJwtException;
 
 @Component
 public class JwtTokenProvider {
-	
+
+	/* Tempo di scadenza del tokenJWT (JSON Web Token) staccato in fase di Login. Dopo che il token scade l'utente deve riloggarsi*/
     @Value("${expirationTokenTime}")
     private long expirationTokenTime;
-    
-	private static final Logger logger = LogManager.getLogger(JwtTokenProvider.class);
+
+    /* Tempo di scadenza del refresh token. Il refresh token viene utilizzato per ottenere nuovi token di accesso 
+     senza dover re-autenticare l'utente. La durata del refresh token è tipicamente più lunga rispetto al token di accesso. 
+     Quando il token di accesso scade, il refresh token può essere usato per richiederne uno nuovo, 
+     una volta che anche il refresh token scade, l'utente deve effettuare nuovamente l'accesso.*/
+    @Value("${refreshTokenExpirationTime}")
+    private long refreshTokenExpirationTime;
 
     private final BlacklistService blacklistService;
 
-    // Metodo per generare un token JWT per un determinato username
+    public JwtTokenProvider(BlacklistService blacklistService) {
+        this.blacklistService = blacklistService;
+    }
+
+    // Metodo per generare un access token JWT per un determinato username
     public String generateToken(String accountName) throws IOException {
-        logger.debug("Secret Key: " + getResources("secret.token.key"));
-        // Generazone del JWT token
-        String username = accountName; // Username attuale
-        
+        Claims claims = Jwts.claims().setSubject(accountName).setIssuedAt(new Date());
 
-
-        logger.debug("Timeout del token impostato a: " + expirationTokenTime);
-        Claims claims = Jwts.claims()
-                .setSubject(username)
-                .setIssuedAt(new Date());
-
-        String token = Jwts.builder()
+        return Jwts.builder()
                 .setClaims(claims)
                 .signWith(SignatureAlgorithm.HS512, getResources("secret.token.key"))
                 .setExpiration(new Date(System.currentTimeMillis() + expirationTokenTime))
                 .compact();
-        
-        logger.debug("Il nuovo token generato e': " + token);
-        
-        return token;
+    }
+
+    // Metodo per generare un refresh token JWT per un determinato username
+    public String generateRefreshToken(String accountName) throws IOException {
+        Claims claims = Jwts.claims().setSubject(accountName).setIssuedAt(new Date());
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .signWith(SignatureAlgorithm.HS512, getResources("secret.token.key"))
+                .setExpiration(new Date(System.currentTimeMillis() + refreshTokenExpirationTime))
+                .compact();
     }
 
     // Metodo per la validazione del JWT token
-    public boolean validateToken(HttpServletRequest request) throws InvalidTokenException, UnsupportedJwtException, IllegalArgumentException, IOException {
+    public boolean validateToken(HttpServletRequest request) throws InvalidTokenException, IOException {
+        String token = extractToken(request);
         try {
-            String token = request.getHeader("Authorization").split(" ")[1];
             Claims claims = Jwts.parser()
                     .setSigningKey(getResources("secret.token.key"))
                     .parseClaimsJws(token)
                     .getBody();
 
             // Controllo se il token è valido (non scaduto)
-            Date expirationDate = claims.getExpiration();
-            if (expirationDate.before(new Date())) {
+            if (claims.getExpiration().before(new Date())) {
                 throw new InvalidTokenException("Token scaduto");
             }
 
-            // Estraggo le user information dal claims
-            String username = claims.getSubject();
-
-            // Token validato con successo
-            logger.debug("Token valido per l'utente: " + username);
-            
             return true;
         } catch (ExpiredJwtException e) {
-            SecurityContextHolder.getContext().setAuthentication(null);
             throw new InvalidTokenException("Token scaduto");
-        } catch (SignatureException e) {
-            SecurityContextHolder.getContext().setAuthentication(null);
-            throw new InvalidTokenException("Firma del token non valida");
-        } catch (MalformedJwtException e) {
-            SecurityContextHolder.getContext().setAuthentication(null);
+        } catch (SignatureException | MalformedJwtException e) {
             throw new InvalidTokenException("Token non valido");
-        } catch (InvalidTokenException e) {
-            throw e; 
         }
     }
 
-    public String getResources(String key) throws IOException {
-    	Resource resource = new ClassPathResource("/application.properties");
-    	Properties props = PropertiesLoaderUtils.loadProperties(resource);
-    	String keyVaule=props.getProperty(key);
-	return keyVaule;
-    }
-    
+    // Metodo per validare il refresh token
+    public boolean validateRefreshToken(String token) throws InvalidTokenException, IOException {
+        try {
+            Claims claims = Jwts.parser()
+                    .setSigningKey(getResources("secret.token.key"))
+                    .parseClaimsJws(token)
+                    .getBody();
 
-    public JwtTokenProvider(BlacklistService blacklistService) {
-        this.blacklistService = blacklistService;
+            if (claims.getExpiration().before(new Date())) {
+                throw new InvalidTokenException("Refresh token scaduto");
+            }
+
+            return true;
+        } catch (ExpiredJwtException e) {
+            throw new InvalidTokenException("Refresh token scaduto");
+        } catch (SignatureException | MalformedJwtException e) {
+            throw new InvalidTokenException("Refresh token non valido");
+        }
+    }
+
+    // Metodo per estrarre il token dalla richiesta
+    private String extractToken(HttpServletRequest request) {
+        return request.getHeader("Authorization").split(" ")[1];
+    }
+
+    public String getResources(String key) throws IOException {
+        Resource resource = new ClassPathResource("/application.properties");
+        Properties props = PropertiesLoaderUtils.loadProperties(resource);
+        return props.getProperty(key);
     }
 
     public void invalidateToken(String token) {
         blacklistService.addToBlacklist(token);
-    }
-    
-    // Estraggo l'accountdipvvf(username) da un valido JWT token
-    public String getToken(String token) {
-		return token;
     }
     
     public String getUsernameFromToken(String token) throws ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, SignatureException, IllegalArgumentException, IOException {
@@ -132,5 +137,4 @@ public class JwtTokenProvider {
 	  // Restituisco l'username
 	  return username;
 	}
-
 }
