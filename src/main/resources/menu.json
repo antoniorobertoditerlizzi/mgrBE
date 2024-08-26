@@ -1,30 +1,44 @@
 {
     "not_logged_user_menu": [
         {
-            "titolo": "Novità software",
-            "url": "/"
+            "label": "Novità software",
+            "content": "Testo Novità software BE",
+            "value": "1",
+            "color": "green",
+            "url": ""
         },
         {
-            "titolo": "Documentazione",
-            "url": "/"
+            "label": "Documentazione",
+            "content": "Testo Documentazione",
+            "value": "2",
+            "color": "white",
+            "url": ""
         },
         {
-            "titolo": "Link utili",
-            "url": "/"
+            "label": "Link utili",
+            "content": "Testo Link utili",
+            "value": "3",
+            "color": "red",
+            "url": ""
         }
     ],
     "small_user_menu": [
         {
             "titolo": "Dettaglio Utente",
-            "url": "/api/utente/dettaglioUtente"
+            "url": "/utente"
         },
         {
             "titolo": "Help",
-            "url": "/api/utente/help"
+            "url": "/help"
         },
         {
+            "titolo": "About",
+            "url": "/about"
+        },
+        
+        {
             "titolo": "Logout",
-            "url": "/api/utente/logout"
+            "url": "/logout"
         }
     ],
     "json_menu": [
@@ -37,59 +51,36 @@
                 },
                 {
                     "titolo": "Inserisci Richiesta",
-                    "sottovoci": [
-                        {
-                            "titolo": "Acquisto",
-                            "url": "/voce_menu2/sottovoce2.1"
-                        },
-                        {
-                            "titolo": "Assegnazione Materiale Informatico",
-                            "url": "/voce_menu2/sottovoce2.1"
-                        },
-                        {
-                            "titolo": "Assegnazione Materiale Operativo",
-                            "url": "/voce_menu2/sottovoce2.2"
-                        },
-                        {
-                            "titolo": "Assegnazione Materiale Logistico",
-                            "url": "/voce_menu2/sottovoce2.3"
-                        },
-                        {
-                            "titolo": "Corsi",
-                            "url": "/voce_menu2/sottovoce2.3"
-                        },
-                        {
-                            "titolo": "DPI",
-                            "url": "/voce_menu2/sottovoce2.3"
-                        }
-                    ]
+                    "url": "/richiesta/add"
                 },
                 {
-                    "titolo": "Gestione Richieste"
-                },
-                {
-                    "titolo": "Storico Richieste"
+                    "titolo": "Elenco Richieste",
+                    "url": "/richiesta/list"
                 },
                 {
                     "titolo": "Amministrazione",
                     "sottovoci": [
                         {
                             "titolo": "Inserisci Tipologia Richiesta",
-                            "url": "/voce_menu1/sottovoce1.1"
+                            "url": "/tipologia/add"
                         },
                         {
                             "titolo": "Gestione Tipolgia Richiesta",
-                            "url": "/voce_menu1/sottovoce1.2"
+                            "url": "/tipologia/list"
                         },
                         {
                             "titolo": "Inserisci Settore di Competenza",
-                            "url": "/voce_menu1/sottovoce1.3"
+                            "url": "/settore/add"
                         },
                         {
                             "titolo": "Gestione Settori di Competenza",
-                            "url": "/voce_menu1/sottovoce1.3"
+                            "url": "/settore/list"
                         }
                     ]
+                },
+                {
+                    "titolo": "Logout",
+                    "url": "/logout"
                 }
             ]
         },
@@ -133,6 +124,10 @@
                 {
                     "titolo": "Home",
                     "url": "/"
+                },
+                {
+                    "titolo": "Logout",
+                    "url": "/logout"
                 }
             ]
         }
