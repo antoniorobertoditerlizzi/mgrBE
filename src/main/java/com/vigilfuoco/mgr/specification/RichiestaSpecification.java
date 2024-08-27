@@ -42,12 +42,20 @@ public class RichiestaSpecification {
                 idSettoreUfficio == null ? builder.conjunction() : builder.equal(root.get("settoreUfficio").get("idSettoreUfficio"), idSettoreUfficio);
     }
 
-
     public static Specification<Richiesta> hasIdUfficio(Long idUfficio) {
         return (root, query, builder) ->
                 idUfficio == null ? builder.conjunction() : builder.equal(root.get("settoreUfficio").get("ufficio").get("idUfficio"), idUfficio);
     }
     
+    public static Specification<Richiesta> hasIdUtenteUfficioRuoloStatoCorrente(Long idUtenteUfficioRuoloStatoCorrente) {
+        return (root, query, builder) -> 
+            idUtenteUfficioRuoloStatoCorrente == null ? builder.conjunction() : builder.equal(root.get("utenteUfficioRuoloStatoCorrente").get("idUtenteUfficioRuolo"), idUtenteUfficioRuoloStatoCorrente);
+    }
+
+    public static Specification<Richiesta> hasIdUtenteUfficioRuoloStatoIniziale(Long idUtenteUfficioRuoloStatoIniziale) {
+        return (root, query, builder) -> 
+            idUtenteUfficioRuoloStatoIniziale == null ? builder.conjunction() : builder.equal(root.get("utenteUfficioRuoloStatoIniziale").get("idUtenteUfficioRuolo"), idUtenteUfficioRuoloStatoIniziale);
+    }
     
     // Join con la tabella SettoreUfficio e successivo Join con Ufficio
     public static Specification<Richiesta> hasDescrizioneUfficio(String descrizioneUfficio) {
