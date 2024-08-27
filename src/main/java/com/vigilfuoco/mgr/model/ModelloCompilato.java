@@ -25,11 +25,11 @@ public class ModelloCompilato {
     @Lob
     private byte[] fileModello;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_modello")
     private Modello modello;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_richiesta")
     private Richiesta richiesta;
 

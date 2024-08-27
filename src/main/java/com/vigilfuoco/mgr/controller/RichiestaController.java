@@ -7,12 +7,16 @@ import com.vigilfuoco.mgr.exception.NumeroRichiestaDuplicatoException;
 import com.vigilfuoco.mgr.exception.ResourceNotFoundException;
 import com.vigilfuoco.mgr.exception.RichiestaException;
 import com.vigilfuoco.mgr.exception.RichiestaNotFoundException;
+import com.vigilfuoco.mgr.model.Modello;
+import com.vigilfuoco.mgr.model.ModelloCompilato;
 import com.vigilfuoco.mgr.model.ModelloConJson;
 import com.vigilfuoco.mgr.model.Priorita;
 import com.vigilfuoco.mgr.model.Richiesta;
 import com.vigilfuoco.mgr.model.SettoreUfficio;
 import com.vigilfuoco.mgr.model.StatoRichiesta;
 import com.vigilfuoco.mgr.model.TipologiaRichiesta;
+import com.vigilfuoco.mgr.repository.ModelloCompilatoRepository;
+import com.vigilfuoco.mgr.repository.ModelloRepository;
 import com.vigilfuoco.mgr.repository.RichiestaRepository;
 import com.vigilfuoco.mgr.service.RichiestaService;
 import com.vigilfuoco.mgr.specification.RichiestaSpecification;
@@ -31,6 +35,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -50,12 +55,17 @@ public class RichiestaController {
     private RichiestaRepository repositoryRichiesta;
     
     private final RichiestaService richiestaService;
+    
+    @Autowired
+    private ModelloRepository modelloRepository;
 
     @Autowired
     public RichiestaController(RichiestaService richiestaService) {
         this.richiestaService = richiestaService;
     }
-  
+    
+    @Autowired
+    private ModelloCompilatoRepository modelloCompilatoRepository;
 
     // API Ricerca Richiesta -------------------------------- es. /api/richiesta/cerca?idSettoreUfficio=2&idUfficio=1
     @GetMapping("/cerca")
@@ -142,6 +152,82 @@ public class RichiestaController {
 		return richiestaService.formModelloByIDModello(idModello);
 	}
 	
+	// Salva Form Modello ----------------------------------- http://localhost:8080/api/richiesta/modello/salva
+    @PostMapping("/modello/salva")
+    public ResponseEntity<Modello> salvaModello(
+            @RequestParam("descrizioneModello") String descrizioneModello,
+            @RequestParam("transcodificaModello") MultipartFile file,
+            @RequestParam("attivo") Boolean attivo) {
+        try {
+            // Creare una nuova entità Modello
+            Modello modello = new Modello();
+            modello.setDescrizioneModello(descrizioneModello);
+            modello.setTranscodificaModello(file.getBytes());
+            modello.setAttivo(attivo);
+
+            // Salvare l'entità nel database
+            Modello nuovoModello = modelloRepository.save(modello);
+
+            // Restituire l'entità salvata come risposta
+            return ResponseEntity.ok(nuovoModello);
+        } catch (IOException e) {
+            return ResponseEntity.status(500).build();  // Gestione dell'errore
+        }
+    }
+    
+    //SALVA Modello COMPILATO -------------------------------------- {{baseUrl}}/api/richiesta/modellocompilato/salva
+    @PostMapping("/modellocompilato/salva")
+    public ResponseEntity<ModelloCompilato> salvaModelloCompilato(
+            @RequestParam("fileModello") MultipartFile fileModello,
+            @RequestParam("idModello") Long idModello,
+            @RequestParam("idRichiesta") Long idRichiesta,
+            @RequestParam("transcodificaModelloCompilato") MultipartFile transcodificaFile) {
+        try {
+            // Carico l'entità Modello dal DB
+            Modello modello = modelloRepository.findById(idModello)
+                    .orElseThrow(() -> new RuntimeException("Modello non trovato"));
+
+            // Carico l'entità Richiesta dal DB
+            Richiesta richiesta = repositoryRichiesta.findById(idRichiesta)
+                    .orElseThrow(() -> new RuntimeException("Richiesta non trovata"));
+
+            // Creo e popolo l'entità ModelloCompilato
+            ModelloCompilato modelloCompilato = new ModelloCompilato();
+            modelloCompilato.setFileModello(fileModello.getBytes());
+            modelloCompilato.setModello(modello);
+            modelloCompilato.setRichiesta(richiesta);
+            modelloCompilato.setTranscodificaModelloCompilato(transcodificaFile.getBytes());
+
+            // Salvo l'entità ModelloCompilato nel DB
+            ModelloCompilato nuovoModelloCompilato = modelloCompilatoRepository.save(modelloCompilato);
+            return ResponseEntity.ok(nuovoModelloCompilato);
+        } catch (IOException e) {
+            return ResponseEntity.status(500).build();
+        }
+    }
+    
+    /*	Tipo Body: form-data
+		Parametri Body:
+		fileModello (tipo: file)
+		idModello (tipo: text)
+		idRichiesta (tipo: text)
+		transcodificaModelloCompilato (tipo: file)*/
+    
+    //Leggo tutti i Modelli COMPILATI
+    @GetMapping("/modellocompilato/list")
+    public ResponseEntity<List<ModelloCompilato>> getModelliCompilati() {
+        List<ModelloCompilato> modelliCompilati = modelloCompilatoRepository.findAll();
+        return ResponseEntity.ok(modelliCompilati);
+    }
+
+    //Leggo il Modello COMPILATO by ID
+    @GetMapping("/modellocompilato/{id}")
+    public ResponseEntity<ModelloCompilato> getModelloCompilatoById(@PathVariable Long id) {
+        return modelloCompilatoRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+    
 	// API Tipologie Richieste ---------------------------------------- /api/richiesta/tipologieRichieste/
 	@RequestMapping(value = "/tipologieRichieste/", method = RequestMethod.GET, produces = "application/json")
 	@PreAuthorize("isAuthenticated()") 
