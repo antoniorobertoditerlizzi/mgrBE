@@ -152,6 +152,13 @@ public class RichiestaController {
 		return richiestaService.formModelloByIDModello(idModello);
 	}
 	
+    //Leggo tutti i Modelli ------------------------------------ {{baseUrl}}/api/richiesta/modello/list
+    @GetMapping("/modello/list")
+    public ResponseEntity<List<Modello>> getModelli() {
+        List<Modello> modelli = modelloRepository.findAll();
+        return ResponseEntity.ok(modelli);
+    }
+    
 	// Salva Form Modello ----------------------------------- http://localhost:8080/api/richiesta/modello/salva
     @PostMapping("/modello/salva")
     public ResponseEntity<Modello> salvaModello(
