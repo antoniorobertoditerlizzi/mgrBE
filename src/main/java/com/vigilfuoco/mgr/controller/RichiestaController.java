@@ -66,8 +66,8 @@ public class RichiestaController {
             @RequestParam(required = false) String descrizioneStatoRichiesta,
             @RequestParam(required = false) Boolean attivo,
             @RequestParam(required = false) Long idSettoreUfficio,
-            @RequestParam(required = false) Long idSettore,
             @RequestParam(required = false) Long idUfficio,
+            @RequestParam(required = false) Long idUtente,
             @RequestParam(required = false) String descrizioneUfficio) throws IOException {
     	
     	logger.debug("Ingresso api /api/richiesta/cerca");
@@ -79,8 +79,8 @@ public class RichiestaController {
                 .and(RichiestaSpecification.hasDescrizioneStatoRichiesta(descrizioneStatoRichiesta))
                 .and(RichiestaSpecification.isAttivo(attivo))
                 .and(RichiestaSpecification.hasIdSettoreUfficio(idSettoreUfficio))
-                .and(RichiestaSpecification.hasIdSettore(idSettore))
                 .and(RichiestaSpecification.hasIdUfficio(idUfficio))
+                .and(RichiestaSpecification.hasIdUtente(idUtente))
                 .and(RichiestaSpecification.hasDescrizioneUfficio(descrizioneUfficio))
         );
 

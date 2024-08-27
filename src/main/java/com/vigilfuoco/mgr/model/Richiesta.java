@@ -26,18 +26,18 @@ public class Richiesta {
     @Column(nullable = false, length = 14)
     private String numeroRichiesta;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_stato_richiesta")
     private StatoRichiesta statoRichiesta;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipologia_richiesta")
     private TipologiaRichiesta tipologiaRichiesta;
 
     @Column(nullable = false)
     private Boolean richiestaPersonale;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_priorita")
     private Priorita priorita;
 
@@ -47,15 +47,15 @@ public class Richiesta {
     @Column(nullable = false)
     private LocalDateTime  dataUltimoStatoRichiesta;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_utente_ufficio_ruolo_stato_corrente")
     private UtenteUfficioRuolo utenteUfficioRuoloStatoCorrente;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_utente_ufficio_ruolo_stato_iniziale")
     private UtenteUfficioRuolo utenteUfficioRuoloStatoIniziale;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_settore_ufficio")
     private SettoreUfficio settoreUfficio; //SettoreUfficioEvasione cambiare in settore ufficio
 

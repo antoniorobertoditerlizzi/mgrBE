@@ -23,15 +23,15 @@ public class UtenteUfficioRuolo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idUtenteUfficioRuolo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_utente")
     private Utente utente;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_ruolo")
     private Ruolo ruolo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_settore_ufficio")
     private SettoreUfficio settoreUfficio;
 

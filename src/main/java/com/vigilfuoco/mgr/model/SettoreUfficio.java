@@ -18,11 +18,11 @@ public class SettoreUfficio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Short idSettoreUfficio;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_settore")
     private Settore settore;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_ufficio")
     private Ufficio ufficio;
 

@@ -2,6 +2,8 @@ package com.vigilfuoco.mgr.specification;
 
 import com.vigilfuoco.mgr.model.Richiesta;
 
+import javax.persistence.criteria.JoinType;
+
 import org.springframework.data.jpa.domain.Specification;
 
 public class RichiestaSpecification {
@@ -40,23 +42,39 @@ public class RichiestaSpecification {
                 idSettoreUfficio == null ? builder.conjunction() : builder.equal(root.get("settoreUfficio").get("idSettoreUfficio"), idSettoreUfficio);
     }
 
-    public static Specification<Richiesta> hasIdSettore(Long idSettore) {
-        return (root, query, builder) ->
-                idSettore == null ? builder.conjunction() : builder.equal(root.get("settoreUfficio").get("settore").get("idSettore"), idSettore);
-    }
 
     public static Specification<Richiesta> hasIdUfficio(Long idUfficio) {
         return (root, query, builder) ->
                 idUfficio == null ? builder.conjunction() : builder.equal(root.get("settoreUfficio").get("ufficio").get("idUfficio"), idUfficio);
     }
     
+    
+    // Join con la tabella SettoreUfficio e successivo Join con Ufficio
     public static Specification<Richiesta> hasDescrizioneUfficio(String descrizioneUfficio) {
         return (root, query, builder) -> {
             if (descrizioneUfficio == null) {
                 return builder.conjunction();
             }
-            // Join con la tabella SettoreUfficio e successivo Join con Ufficio
+            // Eseguo join con la tabella SettoreUfficio e successivo Join con Ufficio
             return builder.like(root.join("settoreUfficio").join("ufficio").get("descrizioneUfficio"), "%" + descrizioneUfficio + "%");
         };
     }
+    
+    // Join con tbl_utenti_uffici_ruoli e successivamente con tbl_utenti
+    public static Specification<Richiesta> hasIdUtente(Long idUtente) {
+        return (root, query, builder) -> {
+            if (idUtente == null) {
+                return builder.conjunction();
+            }
+            // Usa LEFT JOIN per utente
+            return builder.equal(
+                root.join("utenteUfficioRuoloStatoCorrente", JoinType.LEFT)  // Usa LEFT JOIN per evitare che vengano esclusi record
+                    .join("utente", JoinType.LEFT)  // Usa LEFT JOIN su tbl_utenti
+                    .get("idUtente"), idUtente
+            );
+        };
+    }
+    
+    
+    
 }
