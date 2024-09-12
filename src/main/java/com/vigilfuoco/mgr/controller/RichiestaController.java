@@ -10,6 +10,7 @@ import com.vigilfuoco.mgr.exception.RichiestaNotFoundException;
 import com.vigilfuoco.mgr.model.Modello;
 import com.vigilfuoco.mgr.model.ModelloCompilato;
 import com.vigilfuoco.mgr.model.ModelloConJson;
+import com.vigilfuoco.mgr.model.ModelloTipologiaRichiesta;
 import com.vigilfuoco.mgr.model.Priorita;
 import com.vigilfuoco.mgr.model.Richiesta;
 import com.vigilfuoco.mgr.model.SettoreUfficio;
@@ -251,6 +252,60 @@ public class RichiestaController {
 		return richiestaService.tipologiaRichiesta(idTipologiaRichiesta);
 	}
 	
+	// API SALVA Tipologia Richiesta ---------------------------------- /api/richiesta/tipologiaRichiesta/save
+    @PostMapping(value = "/tipologiaRichiesta/save", consumes = "application/json", produces = "application/json")
+	@PreAuthorize("isAuthenticated()") 
+	public ResponseEntity<TipologiaRichiesta> saveTiploigiaRichiesta(
+		@RequestBody TipologiaRichiesta tipologiaRichiesta,
+		Authentication authentication) throws JsonMappingException, JsonProcessingException{
+		logger.debug("Ingresso api SAVE /api/richiesta/tipologieRichieste/save");
+		return richiestaService.saveTipologiaRichiesta(tipologiaRichiesta);
+	}
+	
+    /*  RAW  * {
+	   "descrizioneTipologiaRichiesta": "Automezzo",
+	   "attivo": true,
+	   "statoRichiestaPartenza": {
+	       "idStatoRichiesta": 999
+	   }
+	}*/
+	
+	// API SALVA Modelli Tipologia Richiesta --------------------------- /api/richiesta/modelliTipologiaRichiesta/save
+    @PostMapping(value = "/modelliTipologiaRichiesta/save", consumes = "application/json", produces = "application/json")
+	@PreAuthorize("isAuthenticated()") 
+	public ResponseEntity<ModelloTipologiaRichiesta> saveModelliTipologieRichieste(
+		@RequestBody ModelloTipologiaRichiesta modelloTipologiaRichiesta,
+		Authentication authentication) throws JsonMappingException, JsonProcessingException{
+		logger.debug("Ingresso api SAVE /api/richiesta/modelliTipologiaRichiesta/save");
+		return richiestaService.saveModelliTipologiaRichiesta(modelloTipologiaRichiesta);
+	}
+	
+    /*  RAW  * {
+	   "descrizioneTipologiaRichiesta": "Automezzo",
+	   "attivo": true,
+	   "statoRichiestaPartenza": {
+	       "idStatoRichiesta": 999
+	   }
+	}*/
+    
+    
+    // DATO ID TIPOLOGIA RESTITUISCE LA LISTA DEI MODELLI ASSOCIATI ---------------------------- /api/richiesta/modelli?idTipologiaRichiesta=20
+    @GetMapping("/modelli")
+    public ResponseEntity<List<Modello>> getModelliByTipologia(
+            @RequestParam Short idTipologiaRichiesta) {
+        List<Modello> modelli = richiestaService.getModelliByTipologia(idTipologiaRichiesta);
+        return ResponseEntity.ok(modelli);
+    }
+    
+    // DATO ID MODELLO RESTITUISCE LA LISTA TIPOLOGIE ASSOCIATE -------------------------------------- /api/richiesta/tipologia?idModello=0
+    @GetMapping("/tipologia")
+    public ResponseEntity<List<TipologiaRichiesta>> getTipologieByModello(
+            @RequestParam Long idModello) {
+        List<TipologiaRichiesta> tipologie = richiestaService.getTipologieByModello(idModello);
+        return ResponseEntity.ok(tipologie);
+    }
+    
+
 	// API Lista Priorita ---------------------------------------- /api/richiesta/getPriorityList/
 	@RequestMapping(value = "/getPriorityList/", method = RequestMethod.GET, produces = "application/json")
 	@PreAuthorize("isAuthenticated()") 

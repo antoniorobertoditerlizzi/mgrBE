@@ -13,7 +13,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TipologiaRichiestaRepository extends JpaRepository<TipologiaRichiesta, Long> {
 
-	Richiesta findById(long id);
+	//Richiesta findById(long id);
+	
+	//TipologiaRichiestaRepository findById(long id);
 	
 	TipologiaRichiesta findByIdTipologiaRichiesta(Short idTipologiaRichiesta);
 	

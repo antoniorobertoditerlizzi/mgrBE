@@ -1,0 +1,26 @@
+{
+    "data": [
+        {
+            "name": "forms_all_offices",
+            "type": "select",
+            "get_data": {
+                "api": "getUserOffices"
+            },
+            "attributes": {
+                "required": true,
+                "multiple": false
+            }
+        },
+        {
+            "name": "forms_all_priority",
+            "type": "select",
+            "get_data": {
+                "api": "getPriorities"
+            },
+            "attributes": {
+                "required": true,
+                "multiple": false
+            }
+        }
+    ]
+}

@@ -3,14 +3,17 @@ package com.vigilfuoco.mgr.service;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import javax.persistence.EntityNotFoundException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -19,16 +22,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vigilfuoco.mgr.exception.RichiestaException;
 import com.vigilfuoco.mgr.model.Modello;
 import com.vigilfuoco.mgr.model.ModelloConJson;
+import com.vigilfuoco.mgr.model.ModelloTipologiaRichiesta;
 import com.vigilfuoco.mgr.model.Priorita;
 import com.vigilfuoco.mgr.model.Richiesta;
+import com.vigilfuoco.mgr.model.StatoRichiesta;
 import com.vigilfuoco.mgr.model.TipologiaRichiesta;
 import com.vigilfuoco.mgr.model.Utente;
+import com.vigilfuoco.mgr.repository.ModelliTipologiaRichiestaRepository;
 import com.vigilfuoco.mgr.repository.ModelloRepository;
 import com.vigilfuoco.mgr.repository.PrioritaRepository;
 import com.vigilfuoco.mgr.repository.RichiestaRepository;
+import com.vigilfuoco.mgr.repository.StatoRichiestaRepository;
 import com.vigilfuoco.mgr.repository.TipologiaRichiestaRepository;
 import com.vigilfuoco.mgr.repository.UtenteRepository;
-import com.vigilfuoco.mgr.token.JwtTokenProvider;
 import com.vigilfuoco.mgr.utility.Utility;
 
 /* 
@@ -54,10 +60,11 @@ import com.vigilfuoco.mgr.utility.Utility;
 	    private final PrioritaRepository repositoryPriorita;
 	    
 	    @Autowired 
-	    private static JwtTokenProvider jwtTokenProvider;
+	    private final StatoRichiestaRepository repositoryStatoRichiesta;
 	    
-	    @Autowired
-	    private static BlacklistServiceImpl blacklistService;
+	    @Autowired 
+	    private final ModelliTipologiaRichiestaRepository repositoryModelliTipologiaRichiesta;
+
 	    
 	    
 
@@ -70,12 +77,17 @@ import com.vigilfuoco.mgr.utility.Utility;
 					    		ModelloRepository repositoryModello, 
 					    		UtenteRepository repositoryUtente, 
 					    		TipologiaRichiestaRepository repositoryTipologiaRichiesta,
-					    		PrioritaRepository repositoryPriorita) {
+					    		PrioritaRepository repositoryPriorita,
+					    		StatoRichiestaRepository repositoryStatoRichiesta,
+					    		ModelliTipologiaRichiestaRepository repositoryModelliTipologiaRichiesta) {
 	        this.repositoryUtente = repositoryUtente;
 			this.repositoryRichiesta = repositoryRichiesta;
 	        this.repositoryModello = repositoryModello;
 	        this.repositoryTipologiaRichiesta = repositoryTipologiaRichiesta;
 	        this.repositoryPriorita = repositoryPriorita;
+	        this.repositoryStatoRichiesta = repositoryStatoRichiesta;
+	        this.repositoryModelliTipologiaRichiesta = repositoryModelliTipologiaRichiesta;
+
 	    }
 	    
 	    //Salva/Modifica Richiesta
@@ -162,6 +174,60 @@ import com.vigilfuoco.mgr.utility.Utility;
 			 return repositoryTipologiaRichiesta.findByIdTipologiaRichiesta(idTipologiaRichiesta).getDescrizioneTipologiaRichiesta();	
 		 }
 		 
+		 //SALVA TIPOLOGIA RICHIESTA
+		 public ResponseEntity<TipologiaRichiesta> saveTipologiaRichiesta(TipologiaRichiesta tipologiaRichiesta) {
+			
+			    // Se viene passato solo l'ID dello stato della richiesta, recupera l'intera entità
+			    if (tipologiaRichiesta.getStatoRichiestaPartenza() != null) {
+			        Long statoRichiestaId = tipologiaRichiesta.getStatoRichiestaPartenza().getIdStatoRichiesta();
+			        StatoRichiesta statoRichiesta = repositoryStatoRichiesta.findById(statoRichiestaId)
+			            .orElseThrow(() -> new EntityNotFoundException("StatoRichiesta non trovato con ID: " + statoRichiestaId));
+			        tipologiaRichiesta.setStatoRichiestaPartenza(statoRichiesta);
+			    }
+			 return ResponseEntity.ok(repositoryTipologiaRichiesta.save(tipologiaRichiesta));	
+		 }
+		 
+		 //SALVA MODELLI TIPOLOGIA RICHIESTA
+		    public ResponseEntity<ModelloTipologiaRichiesta> saveModelliTipologiaRichiesta(ModelloTipologiaRichiesta modelliTipologieRichieste) {
+		        
+		    	// Se viene passato solo l'ID del modello, recupera l'intera entità
+		        if (modelliTipologieRichieste.getModello() != null) {
+		            Long modelloId = modelliTipologieRichieste.getModello().getIdModello();
+		            Modello modello = repositoryModello.findById(modelloId)
+		                .orElseThrow(() -> new EntityNotFoundException("Modello non trovato con ID: " + modelloId));
+		            modelliTipologieRichieste.setModello(modello);
+		        }
+
+		        // Se viene passato solo l'ID della tipologia di richiesta, recupera l'intera entità
+		        if (modelliTipologieRichieste.getTipologiaRichiesta() != null) {
+		            Short tipologiaRichiestaId = modelliTipologieRichieste.getTipologiaRichiesta().getIdTipologiaRichiesta();
+		            TipologiaRichiesta tipologiaRichiesta = repositoryTipologiaRichiesta.findByIdTipologiaRichiesta(tipologiaRichiestaId);
+		            if (tipologiaRichiesta == null) {
+		                throw new EntityNotFoundException("TipologiaRichiesta non trovata con ID: " + tipologiaRichiestaId);
+		            }
+		            modelliTipologieRichieste.setTipologiaRichiesta(tipologiaRichiesta);
+		        }
+
+		        // Verifica se esiste già una combinazione di id_modello e id_tipologia_richiesta con attivo = true
+		        List<ModelloTipologiaRichiesta> esistenti = repositoryModelliTipologiaRichiesta
+		            .findByModello_IdModelloAndTipologiaRichiesta_IdTipologiaRichiestaAndAttivo(
+		                modelliTipologieRichieste.getModello().getIdModello(),
+		                modelliTipologieRichieste.getTipologiaRichiesta().getIdTipologiaRichiesta(),
+		                true);
+
+		        // Se esistono record già attivi, non salvare
+		        if (!esistenti.isEmpty()) {
+					logger.warn("Esiste già una combinazione di id_modello e id_tipologia_richiesta con attivo = true");
+		            return ResponseEntity.status(HttpStatus.CONFLICT)
+		                .body(null); // Restituisce uno stato di conflitto (409)
+		        }
+		        
+		        // Salva e ritorna l'entità
+		        return ResponseEntity.ok(repositoryModelliTipologiaRichiesta.save(modelliTipologieRichieste));
+		    }
+
+		 
+		 
 		//Check per verificare se il numero richiesta esiste a DB
 		public boolean existsByNumeroRichiesta(String numeroRichiesta) {
 		    return repositoryRichiesta.existsByNumeroRichiesta(numeroRichiesta);
@@ -176,4 +242,37 @@ import com.vigilfuoco.mgr.utility.Utility;
 			 return ResponseEntity.ok(repositoryPriorita.findAll());	
 		 }
 		 
+		 // Lista Modelli BY Tipologia
+		 public List<Modello> getModelliByTipologia(Short idTipologiaRichiesta) {
+		        List<ModelloTipologiaRichiesta> relazioni = repositoryModelliTipologiaRichiesta.findByTipologiaRichiesta_IdTipologiaRichiesta(idTipologiaRichiesta);
+		        
+		        // Debug
+		        logger.debug("Relazioni trovate: " + relazioni.size());
+		        for (ModelloTipologiaRichiesta relazione : relazioni) {
+		        	logger.debug("Relazione: " + relazione);
+		        	logger.debug("Modello: " + relazione.getModello());
+		        }
+
+		        return relazioni.stream()
+		                .map(ModelloTipologiaRichiesta::getModello)
+		                .filter(Objects::nonNull) // Filtra eventuali null
+		                .collect(Collectors.toList());
+		    }
+		 
+		 	// Lista Tipologie BY Modello
+		    public List<TipologiaRichiesta> getTipologieByModello(Long idModello) {
+		        List<ModelloTipologiaRichiesta> relazioni = repositoryModelliTipologiaRichiesta.findByModello_IdModello(idModello);
+		        
+		        // Debug
+		        logger.debug("Relazioni trovate: " + relazioni.size());
+		        for (ModelloTipologiaRichiesta relazione : relazioni) {
+		        	logger.debug("Relazione: " + relazione);
+		        	logger.debug("Tipologia Richiesta: " + relazione.getTipologiaRichiesta());
+		        }
+
+		        return relazioni.stream()
+		                .map(ModelloTipologiaRichiesta::getTipologiaRichiesta)
+		                .filter(Objects::nonNull) // Filtra eventuali null
+		                .collect(Collectors.toList());
+		    }
 	}
