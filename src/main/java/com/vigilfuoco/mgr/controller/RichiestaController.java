@@ -112,13 +112,13 @@ public class RichiestaController {
     }
     
 
-   /* @GetMapping("/utente/uffici/richeste")
+    @GetMapping("/utente/uffici/richeste")
     public ResponseEntity<List<UfficioRichieste>> getUfficiRichieste(@RequestParam Long idUtente) {
         logger.debug("/utente/uffici/richeste/", idUtente);
         
         List<UtenteUfficioRuolo> utentiUfficiRuoli = utenteUfficioRuoloRepository.findByUtenteIdUtente(idUtente);
         
-        if (utentiUfficiRuoli.isEmpty()) {
+       /* if (utentiUfficiRuoli.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
@@ -141,8 +141,9 @@ public class RichiestaController {
             result.add(dto);
         }
 
-        return ResponseEntity.ok(result);
-    }*/
+        return ResponseEntity.ok(result);*/
+        return null;
+    }
 
     
 

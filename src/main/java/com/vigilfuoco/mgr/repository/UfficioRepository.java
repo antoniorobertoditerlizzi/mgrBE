@@ -25,7 +25,7 @@ public interface UfficioRepository extends JpaRepository<Ufficio, Long> {
     List<Ufficio> findUfficiByUtenteId(int idUtente);
     
     
-    List<Ufficio> findByUtenteId(Long idUtente);
+    //List<Ufficio> findByUtenteId(Long idUtente);
 
 
 }

@@ -656,3 +656,180 @@
 2024-09-18 12:15:05,626 INFO c.v.m.MgrApplication [restartedMain] Starting MgrApplication using Java 17.0.10 on Notebook-DiTerlizzi with PID 10800 (C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE\target\classes started by Antonio Di Terlizzi in C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE)
 2024-09-18 12:15:05,639 DEBUG c.v.m.MgrApplication [restartedMain] Running with Spring Boot v2.5.0, Spring v5.3.7
 2024-09-18 12:15:05,639 INFO c.v.m.MgrApplication [restartedMain] No active profile set, falling back to default profiles: default
+2024-09-18 12:40:16,240 INFO c.v.m.MgrApplication [restartedMain] Starting MgrApplication using Java 17.0.10 on Notebook-DiTerlizzi with PID 13620 (C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE\target\classes started by Antonio Di Terlizzi in C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE)
+2024-09-18 12:40:16,254 DEBUG c.v.m.MgrApplication [restartedMain] Running with Spring Boot v2.5.0, Spring v5.3.7
+2024-09-18 12:40:16,255 INFO c.v.m.MgrApplication [restartedMain] No active profile set, falling back to default profiles: default
+2024-09-18 12:41:17,865 INFO c.v.m.MgrApplication [restartedMain] Starting MgrApplication using Java 17.0.10 on Notebook-DiTerlizzi with PID 300 (C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE\target\classes started by Antonio Di Terlizzi in C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE)
+2024-09-18 12:41:17,877 DEBUG c.v.m.MgrApplication [restartedMain] Running with Spring Boot v2.5.0, Spring v5.3.7
+2024-09-18 12:41:17,878 INFO c.v.m.MgrApplication [restartedMain] No active profile set, falling back to default profiles: default
+2024-09-18 12:42:54,189 INFO c.v.m.MgrApplication [restartedMain] Starting MgrApplication using Java 17.0.10 on Notebook-DiTerlizzi with PID 7708 (C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE\target\classes started by Antonio Di Terlizzi in C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE)
+2024-09-18 12:42:54,200 DEBUG c.v.m.MgrApplication [restartedMain] Running with Spring Boot v2.5.0, Spring v5.3.7
+2024-09-18 12:42:54,200 INFO c.v.m.MgrApplication [restartedMain] No active profile set, falling back to default profiles: default
+2024-09-18 12:43:41,631 INFO c.v.m.MgrApplication [restartedMain] Starting MgrApplication using Java 17.0.10 on Notebook-DiTerlizzi with PID 18604 (C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE\target\classes started by Antonio Di Terlizzi in C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE)
+2024-09-18 12:43:41,642 DEBUG c.v.m.MgrApplication [restartedMain] Running with Spring Boot v2.5.0, Spring v5.3.7
+2024-09-18 12:43:41,644 INFO c.v.m.MgrApplication [restartedMain] No active profile set, falling back to default profiles: default
+2024-09-18 12:43:48,560 INFO c.v.m.MgrApplication [restartedMain] Started MgrApplication in 7.301 seconds (JVM running for 8.207)
+2024-09-18 12:44:22,880 DEBUG c.v.m.s.UtenteService [http-nio-8080-exec-1] [{"color":"green","label":"Novità release software","value":"1","content":"<b>Rel. V.1.0 del 19/09/2024 Aggiornamento contenuti welcome page ed Aggiornamento Servizi Web MGR<\/b><\/br>Rel. V.0.9 del 12/09/2024 Disponibile nuovo oggetto grafico per visualizzazione rapida del colore dello stato della richiesta su mobile;<\/br>Rel. V.0.8 del 05/09/2024 Disponibile Aggiornamento Dashboard;<\/br>Rel. V.0.7 del 30/08/2024 Disponibile sezione Dettaglio Utente;<\/br>Rel. V.0.6 del 23/08/2024 Disponibile nuovo sistema di Wizard per la Richiesta;<\/br>Rel. V.0.5 del 16/08/2024 Disponibili nuovi datagrid responsive;<\/br>Rel. V.0.4 del 09/08/2024 Disponibile servizio di Salvataggio Richiesta;<\/br>Rel. V.0.3 del 02/08/2024 Disponibile nuovo template grafco della piattaforma;<\/br>Rel. V.0.2 del 31/07/2024 Generazione dell'ISBN della Richiesta;<\/br>Rel. V.0.1 del 26/07/2024 Invio Notifica per email quando la richiesta viene inserita o modificata con recupero mail destinatario;<\/br>","url":""},{"color":"white","label":"Manuali","value":"2","content":"In questa sezione è possibile scaricare il pdf contenente il manuale di utilizzo della piattaforma MGR - Modello Gestione Richieste. Il manuale contiene tutti gli scenari di utilizzo ed i vari step procedurali per gestire l'intero ciclo di vita delle richieste.<\/br><a href=\"/Manuale_MGR.pdf\"><img src=\"/static/media/PDF_file_icon.e8edf75cf38223297d97.png\" style=\"max-height: 60px; margin-top: 2%; margin-left: 2%;\" /><\/a><\/br>Manuale_MGR.pdf","url":""},{"color":"red","label":"Link utili","value":"3","content":"<a href=\"https://www.vigilfuoco.it/\" style=\"text-decoration: none !important;\">WWW.VIGILFUOCO.IT<\/a>","url":""}]
+2024-09-18 12:44:22,940 DEBUG c.v.m.s.UtenteService [http-nio-8080-exec-2] [{"color":"green","label":"Novità release software","value":"1","content":"<b>Rel. V.1.0 del 19/09/2024 Aggiornamento contenuti welcome page ed Aggiornamento Servizi Web MGR<\/b><\/br>Rel. V.0.9 del 12/09/2024 Disponibile nuovo oggetto grafico per visualizzazione rapida del colore dello stato della richiesta su mobile;<\/br>Rel. V.0.8 del 05/09/2024 Disponibile Aggiornamento Dashboard;<\/br>Rel. V.0.7 del 30/08/2024 Disponibile sezione Dettaglio Utente;<\/br>Rel. V.0.6 del 23/08/2024 Disponibile nuovo sistema di Wizard per la Richiesta;<\/br>Rel. V.0.5 del 16/08/2024 Disponibili nuovi datagrid responsive;<\/br>Rel. V.0.4 del 09/08/2024 Disponibile servizio di Salvataggio Richiesta;<\/br>Rel. V.0.3 del 02/08/2024 Disponibile nuovo template grafco della piattaforma;<\/br>Rel. V.0.2 del 31/07/2024 Generazione dell'ISBN della Richiesta;<\/br>Rel. V.0.1 del 26/07/2024 Invio Notifica per email quando la richiesta viene inserita o modificata con recupero mail destinatario;<\/br>","url":""},{"color":"white","label":"Manuali","value":"2","content":"In questa sezione è possibile scaricare il pdf contenente il manuale di utilizzo della piattaforma MGR - Modello Gestione Richieste. Il manuale contiene tutti gli scenari di utilizzo ed i vari step procedurali per gestire l'intero ciclo di vita delle richieste.<\/br><a href=\"/Manuale_MGR.pdf\"><img src=\"/static/media/PDF_file_icon.e8edf75cf38223297d97.png\" style=\"max-height: 60px; margin-top: 2%; margin-left: 2%;\" /><\/a><\/br>Manuale_MGR.pdf","url":""},{"color":"red","label":"Link utili","value":"3","content":"<a href=\"https://www.vigilfuoco.it/\" style=\"text-decoration: none !important;\">WWW.VIGILFUOCO.IT<\/a>","url":""}]
+2024-09-18 12:45:25,664 DEBUG c.v.m.c.UtenteController [http-nio-8080-exec-4] Ingresso api /api/utente/loginCheck?accountName=antonioroberto.diterlizzi
+2024-09-18 12:45:25,967 DEBUG c.v.m.s.UtenteService [http-nio-8080-exec-4] {
+    "not_logged_user_menu": [
+        {
+            "label": "Novità release software",
+            "content": "<b>Rel. V.1.0 del 19/09/2024 Aggiornamento contenuti welcome page ed Aggiornamento Servizi Web MGR</b></br>Rel. V.0.9 del 12/09/2024 Disponibile nuovo oggetto grafico per visualizzazione rapida del colore dello stato della richiesta su mobile;</br>Rel. V.0.8 del 05/09/2024 Disponibile Aggiornamento Dashboard;</br>Rel. V.0.7 del 30/08/2024 Disponibile sezione Dettaglio Utente;</br>Rel. V.0.6 del 23/08/2024 Disponibile nuovo sistema di Wizard per la Richiesta;</br>Rel. V.0.5 del 16/08/2024 Disponibili nuovi datagrid responsive;</br>Rel. V.0.4 del 09/08/2024 Disponibile servizio di Salvataggio Richiesta;</br>Rel. V.0.3 del 02/08/2024 Disponibile nuovo template grafco della piattaforma;</br>Rel. V.0.2 del 31/07/2024 Generazione dell'ISBN della Richiesta;</br>Rel. V.0.1 del 26/07/2024 Invio Notifica per email quando la richiesta viene inserita o modificata con recupero mail destinatario;</br>",
+            "value": "1",
+            "color": "green",
+            "url": ""
+        },
+        {
+            "label": "Manuali",
+			"content": "In questa sezione è possibile scaricare il pdf contenente il manuale di utilizzo della piattaforma MGR - Modello Gestione Richieste. Il manuale contiene tutti gli scenari di utilizzo ed i vari step procedurali per gestire l'intero ciclo di vita delle richieste.</br><a href=\"/Manuale_MGR.pdf\"><img src=\"/static/media/PDF_file_icon.e8edf75cf38223297d97.png\" style=\"max-height: 60px; margin-top: 2%; margin-left: 2%;\" /></a></br>Manuale_MGR.pdf",
+      		"value": "2",
+            "color": "white",
+            "url": ""
+        },
+        {
+            "label": "Link utili",
+			"content": "<a href=\"https://www.vigilfuoco.it/\" style=\"text-decoration: none !important;\">WWW.VIGILFUOCO.IT</a>",
+            "value": "3",
+            "color": "red",
+            "url": ""
+        }
+    ],
+    "small_user_menu": [
+        {
+            "titolo": "Dettaglio Utente",
+            "url": "/utente"
+        },
+        {
+            "titolo": "Help",
+            "url": "/help"
+        },
+                {
+            "titolo": "About",
+            "url": "/about"
+        },       
+        {
+            "titolo": "Logout",
+            "url": "/logout"
+        }
+    ],
+    "json_menu": [
+        {
+            "id_ruolo": 1,
+            "voci_menu": [
+                {
+                    "titolo": "Dashboard",
+                    "url": "/"
+                },
+                {
+                    "titolo": "Inserisci Richiesta",
+                    "url": "/richiesta/add"
+                },
+                {
+                    "titolo": "Elenco Richieste",
+                   	"url": "/richiesta/list"
+                },
+                {
+                    "titolo": "Amministrazione",
+                    "sottovoci": [
+                        {
+                            "titolo": "Inserisci Tipologia Richiesta",
+                            "url": "/tipologia/add"
+                        },
+                        {
+                            "titolo": "Gestione Tipolgia Richiesta",
+                            "url": "/tipologia/list"
+                        },
+                        {
+                            "titolo": "Inserisci Settore di Competenza",
+                            "url": "/settore/add"
+                        },
+                        {
+                            "titolo": "Gestione Settori di Competenza",
+                            "url": "/settore/list"
+                        }
+                    ]
+                },
+                {
+                    "titolo": "Logout",
+					"url": "/logout"
+                }
+            ]
+        },
+        {
+            "id_ruolo": 2,
+            "voci_menu": [
+                {
+                    "titolo": "Voce Menu 3",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 3.1",
+                            "url": "/voce_menu2/sottovoce3.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 3.2",
+                            "url": "/voce_menu2/sottovoce3.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 3.3",
+                            "url": "/voce_menu2/sottovoce3.3"
+                        }
+                    ]
+                },
+                {
+                    "titolo": "Voce Menu 2",
+                    "sottovoci": [
+                        {
+                            "titolo": "Sottovoce 2.1",
+                            "url": "/voce_menu1/sottovoce2.1"
+                        },
+                        {
+                            "titolo": "Sottovoce 2.2",
+                            "url": "/voce_menu1/sottovoce2.2"
+                        },
+                        {
+                            "titolo": "Sottovoce 2.3",
+                            "url": "/voce_menu1/sottovoce2.3"
+                        }
+                    ]
+                },
+                {
+                    "titolo": "Home",
+                    "url": "/"
+                },
+                {
+                    "titolo": "Logout",
+					"url": "/logout"
+                }
+            ]
+        }
+    ]
+}
+
+2024-09-18 12:45:25,969 DEBUG c.v.m.s.UtenteService [http-nio-8080-exec-4] [{"titolo":"Dashboard","url":"/"},{"titolo":"Inserisci Richiesta","url":"/richiesta/add"},{"titolo":"Elenco Richieste","url":"/richiesta/list"},{"titolo":"Amministrazione","sottovoci":[{"titolo":"Inserisci Tipologia Richiesta","url":"/tipologia/add"},{"titolo":"Gestione Tipolgia Richiesta","url":"/tipologia/list"},{"titolo":"Inserisci Settore di Competenza","url":"/settore/add"},{"titolo":"Gestione Settori di Competenza","url":"/settore/list"}]},{"titolo":"Logout","url":"/logout"}]
+2024-09-18 12:45:25,971 INFO c.v.m.s.UtenteService [http-nio-8080-exec-4] Utente antonioroberto.diterlizzi già censito a DB.
+2024-09-18 12:45:26,026 DEBUG c.v.m.s.UtenteService [http-nio-8080-exec-6] [{"titolo":"Dettaglio Utente","url":"/utente"},{"titolo":"Help","url":"/help"},{"titolo":"About","url":"/about"},{"titolo":"Logout","url":"/logout"}]
+2024-09-18 12:45:26,243 DEBUG c.v.m.s.UtenteService [http-nio-8080-exec-8] [{"color":"green","label":"Novità release software","value":"1","content":"<b>Rel. V.1.0 del 19/09/2024 Aggiornamento contenuti welcome page ed Aggiornamento Servizi Web MGR<\/b><\/br>Rel. V.0.9 del 12/09/2024 Disponibile nuovo oggetto grafico per visualizzazione rapida del colore dello stato della richiesta su mobile;<\/br>Rel. V.0.8 del 05/09/2024 Disponibile Aggiornamento Dashboard;<\/br>Rel. V.0.7 del 30/08/2024 Disponibile sezione Dettaglio Utente;<\/br>Rel. V.0.6 del 23/08/2024 Disponibile nuovo sistema di Wizard per la Richiesta;<\/br>Rel. V.0.5 del 16/08/2024 Disponibili nuovi datagrid responsive;<\/br>Rel. V.0.4 del 09/08/2024 Disponibile servizio di Salvataggio Richiesta;<\/br>Rel. V.0.3 del 02/08/2024 Disponibile nuovo template grafco della piattaforma;<\/br>Rel. V.0.2 del 31/07/2024 Generazione dell'ISBN della Richiesta;<\/br>Rel. V.0.1 del 26/07/2024 Invio Notifica per email quando la richiesta viene inserita o modificata con recupero mail destinatario;<\/br>","url":""},{"color":"white","label":"Manuali","value":"2","content":"In questa sezione è possibile scaricare il pdf contenente il manuale di utilizzo della piattaforma MGR - Modello Gestione Richieste. Il manuale contiene tutti gli scenari di utilizzo ed i vari step procedurali per gestire l'intero ciclo di vita delle richieste.<\/br><a href=\"/Manuale_MGR.pdf\"><img src=\"/static/media/PDF_file_icon.e8edf75cf38223297d97.png\" style=\"max-height: 60px; margin-top: 2%; margin-left: 2%;\" /><\/a><\/br>Manuale_MGR.pdf","url":""},{"color":"red","label":"Link utili","value":"3","content":"<a href=\"https://www.vigilfuoco.it/\" style=\"text-decoration: none !important;\">WWW.VIGILFUOCO.IT<\/a>","url":""}]
+2024-09-18 12:45:26,307 DEBUG c.v.m.s.UtenteService [http-nio-8080-exec-9] [{"color":"green","label":"Novità release software","value":"1","content":"<b>Rel. V.1.0 del 19/09/2024 Aggiornamento contenuti welcome page ed Aggiornamento Servizi Web MGR<\/b><\/br>Rel. V.0.9 del 12/09/2024 Disponibile nuovo oggetto grafico per visualizzazione rapida del colore dello stato della richiesta su mobile;<\/br>Rel. V.0.8 del 05/09/2024 Disponibile Aggiornamento Dashboard;<\/br>Rel. V.0.7 del 30/08/2024 Disponibile sezione Dettaglio Utente;<\/br>Rel. V.0.6 del 23/08/2024 Disponibile nuovo sistema di Wizard per la Richiesta;<\/br>Rel. V.0.5 del 16/08/2024 Disponibili nuovi datagrid responsive;<\/br>Rel. V.0.4 del 09/08/2024 Disponibile servizio di Salvataggio Richiesta;<\/br>Rel. V.0.3 del 02/08/2024 Disponibile nuovo template grafco della piattaforma;<\/br>Rel. V.0.2 del 31/07/2024 Generazione dell'ISBN della Richiesta;<\/br>Rel. V.0.1 del 26/07/2024 Invio Notifica per email quando la richiesta viene inserita o modificata con recupero mail destinatario;<\/br>","url":""},{"color":"white","label":"Manuali","value":"2","content":"In questa sezione è possibile scaricare il pdf contenente il manuale di utilizzo della piattaforma MGR - Modello Gestione Richieste. Il manuale contiene tutti gli scenari di utilizzo ed i vari step procedurali per gestire l'intero ciclo di vita delle richieste.<\/br><a href=\"/Manuale_MGR.pdf\"><img src=\"/static/media/PDF_file_icon.e8edf75cf38223297d97.png\" style=\"max-height: 60px; margin-top: 2%; margin-left: 2%;\" /><\/a><\/br>Manuale_MGR.pdf","url":""},{"color":"red","label":"Link utili","value":"3","content":"<a href=\"https://www.vigilfuoco.it/\" style=\"text-decoration: none !important;\">WWW.VIGILFUOCO.IT<\/a>","url":""}]
+2024-09-18 12:48:12,396 DEBUG c.v.m.c.RichiestaController [http-nio-8080-exec-3] Ingresso api /api/richiesta/tipologieRichieste/
+2024-09-18 12:48:12,447 DEBUG c.v.m.c.RichiestaController [http-nio-8080-exec-5] Ingresso api /api/richiesta/tipologieRichieste/
+2024-09-18 12:48:15,844 DEBUG c.v.m.c.RichiestaController [http-nio-8080-exec-7] Ingresso api /api/richiesta/tipologieRichieste/
+2024-09-18 12:48:15,849 DEBUG c.v.m.c.RichiestaController [http-nio-8080-exec-6] Ingresso api /api/richiesta/visualizzaFormModello/ idModello: 0
+2024-09-18 12:48:15,883 DEBUG c.v.m.c.RichiestaController [http-nio-8080-exec-9] Ingresso api /api/richiesta/visualizzaFormModello/ idModello: 1
+2024-09-18 12:48:15,914 DEBUG c.v.m.c.RichiestaController [http-nio-8080-exec-1] Ingresso api /api/richiesta/getPriorityList/
+2024-09-18 12:48:15,933 DEBUG c.v.m.c.RichiestaController [http-nio-8080-exec-1] Ingresso api /api/richiesta/getPriorityList/
+2024-09-18 12:54:57,422 INFO c.v.m.MgrApplication [restartedMain] Starting MgrApplication using Java 17.0.10 on Notebook-DiTerlizzi with PID 18604 (C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE\target\classes started by Antonio Di Terlizzi in C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE)
+2024-09-18 12:54:57,423 DEBUG c.v.m.MgrApplication [restartedMain] Running with Spring Boot v2.5.0, Spring v5.3.7
+2024-09-18 12:54:57,423 INFO c.v.m.MgrApplication [restartedMain] No active profile set, falling back to default profiles: default
+2024-09-18 12:54:59,210 INFO c.v.m.MgrApplication [restartedMain] Started MgrApplication in 1.85 seconds (JVM running for 678.857)
+2024-09-18 12:55:11,833 INFO c.v.m.MgrApplication [restartedMain] Starting MgrApplication using Java 17.0.10 on Notebook-DiTerlizzi with PID 18604 (C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE\target\classes started by Antonio Di Terlizzi in C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE)
+2024-09-18 12:55:11,835 DEBUG c.v.m.MgrApplication [restartedMain] Running with Spring Boot v2.5.0, Spring v5.3.7
+2024-09-18 12:55:11,835 INFO c.v.m.MgrApplication [restartedMain] No active profile set, falling back to default profiles: default
+2024-09-18 12:55:13,343 INFO c.v.m.MgrApplication [restartedMain] Started MgrApplication in 1.571 seconds (JVM running for 692.99)
+2024-09-18 12:56:18,177 DEBUG c.v.m.s.UtenteService [http-nio-8080-exec-1] [{"color":"green","label":"Novità release software","value":"1","content":"<b>Rel. V.1.0 del 19/09/2024 Aggiornamento contenuti welcome page ed Aggiornamento Servizi Web MGR<\/b><\/br>Rel. V.0.9 del 12/09/2024 Disponibile nuovo oggetto grafico per visualizzazione rapida del colore dello stato della richiesta su mobile;<\/br>Rel. V.0.8 del 05/09/2024 Disponibile Aggiornamento Dashboard;<\/br>Rel. V.0.7 del 30/08/2024 Disponibile sezione Dettaglio Utente;<\/br>Rel. V.0.6 del 23/08/2024 Disponibile nuovo sistema di Wizard per la Richiesta;<\/br>Rel. V.0.5 del 16/08/2024 Disponibili nuovi datagrid responsive;<\/br>Rel. V.0.4 del 09/08/2024 Disponibile servizio di Salvataggio Richiesta;<\/br>Rel. V.0.3 del 02/08/2024 Disponibile nuovo template grafco della piattaforma;<\/br>Rel. V.0.2 del 31/07/2024 Generazione dell'ISBN della Richiesta;<\/br>Rel. V.0.1 del 26/07/2024 Invio Notifica per email quando la richiesta viene inserita o modificata con recupero mail destinatario;<\/br>","url":""},{"color":"white","label":"Manuali","value":"2","content":"In questa sezione è possibile scaricare il pdf contenente il manuale di utilizzo della piattaforma MGR - Modello Gestione Richieste. Il manuale contiene tutti gli scenari di utilizzo ed i vari step procedurali per gestire l'intero ciclo di vita delle richieste.<\/br><a href=\"/Manuale_MGR.pdf\"><img src=\"/static/media/PDF_file_icon.e8edf75cf38223297d97.png\" style=\"max-height: 60px; margin-top: 2%; margin-left: 2%;\" /><\/a><\/br>Manuale_MGR.pdf","url":""},{"color":"red","label":"Link utili","value":"3","content":"<a href=\"https://www.vigilfuoco.it/\" style=\"text-decoration: none !important;\">WWW.VIGILFUOCO.IT<\/a>","url":""}]
+2024-09-18 12:56:18,256 DEBUG c.v.m.s.UtenteService [http-nio-8080-exec-2] [{"color":"green","label":"Novità release software","value":"1","content":"<b>Rel. V.1.0 del 19/09/2024 Aggiornamento contenuti welcome page ed Aggiornamento Servizi Web MGR<\/b><\/br>Rel. V.0.9 del 12/09/2024 Disponibile nuovo oggetto grafico per visualizzazione rapida del colore dello stato della richiesta su mobile;<\/br>Rel. V.0.8 del 05/09/2024 Disponibile Aggiornamento Dashboard;<\/br>Rel. V.0.7 del 30/08/2024 Disponibile sezione Dettaglio Utente;<\/br>Rel. V.0.6 del 23/08/2024 Disponibile nuovo sistema di Wizard per la Richiesta;<\/br>Rel. V.0.5 del 16/08/2024 Disponibili nuovi datagrid responsive;<\/br>Rel. V.0.4 del 09/08/2024 Disponibile servizio di Salvataggio Richiesta;<\/br>Rel. V.0.3 del 02/08/2024 Disponibile nuovo template grafco della piattaforma;<\/br>Rel. V.0.2 del 31/07/2024 Generazione dell'ISBN della Richiesta;<\/br>Rel. V.0.1 del 26/07/2024 Invio Notifica per email quando la richiesta viene inserita o modificata con recupero mail destinatario;<\/br>","url":""},{"color":"white","label":"Manuali","value":"2","content":"In questa sezione è possibile scaricare il pdf contenente il manuale di utilizzo della piattaforma MGR - Modello Gestione Richieste. Il manuale contiene tutti gli scenari di utilizzo ed i vari step procedurali per gestire l'intero ciclo di vita delle richieste.<\/br><a href=\"/Manuale_MGR.pdf\"><img src=\"/static/media/PDF_file_icon.e8edf75cf38223297d97.png\" style=\"max-height: 60px; margin-top: 2%; margin-left: 2%;\" /><\/a><\/br>Manuale_MGR.pdf","url":""},{"color":"red","label":"Link utili","value":"3","content":"<a href=\"https://www.vigilfuoco.it/\" style=\"text-decoration: none !important;\">WWW.VIGILFUOCO.IT<\/a>","url":""}]
+2024-09-18 13:00:09,655 INFO c.v.m.MgrApplication [restartedMain] Starting MgrApplication using Java 17.0.10 on Notebook-DiTerlizzi with PID 1380 (C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE\target\classes started by Antonio Di Terlizzi in C:\Users\Antonio Di Terlizzi\Documents\GitHub\mgrBE)
+2024-09-18 13:00:09,668 DEBUG c.v.m.MgrApplication [restartedMain] Running with Spring Boot v2.5.0, Spring v5.3.7
+2024-09-18 13:00:09,668 INFO c.v.m.MgrApplication [restartedMain] No active profile set, falling back to default profiles: default
+2024-09-18 13:00:17,278 INFO c.v.m.MgrApplication [restartedMain] Started MgrApplication in 8.022 seconds (JVM running for 9.018)

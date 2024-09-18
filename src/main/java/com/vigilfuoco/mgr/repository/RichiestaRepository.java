@@ -34,7 +34,7 @@ public interface RichiestaRepository extends JpaRepository<Richiesta, Long>, Jpa
 	@Query(value = "SELECT * FROM RICHIESTA WHERE descrizione LIKE :ds", nativeQuery = true)
 	List<Richiesta> SelByDescrizioneLike(@Param("ds") String ds);
 	
-	 
+	
 	//Query JPQL
 	/*@Query(value = "FROM RICHIESTA WHERE descrizione LIKE :ds")
 	List<Richiesta> SelByDescrizioneLikeJPQL(@Param("ds") String ds);
