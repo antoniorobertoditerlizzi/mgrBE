@@ -37,7 +37,7 @@ public class RichiestaSpecification {
                 attivo == null ? builder.conjunction() : builder.equal(root.get("statoRichiesta").get("attivo"), attivo);
     }
 
-    public static Specification<Richiesta> hasIdSettoreUfficio(Long idSettoreUfficio) {
+    public static Specification<Richiesta> hasIdSettoreUfficio(Short idSettoreUfficio) {
         return (root, query, builder) ->
                 idSettoreUfficio == null ? builder.conjunction() : builder.equal(root.get("settoreUfficio").get("idSettoreUfficio"), idSettoreUfficio);
     }
@@ -74,10 +74,10 @@ public class RichiestaSpecification {
             if (idUtente == null) {
                 return builder.conjunction();
             }
-            // Usa LEFT JOIN per utente
+            // da rivedere LEFT JOIN per utente
             return builder.equal(
-                root.join("utenteUfficioRuoloStatoCorrente", JoinType.LEFT)  // Usa LEFT JOIN per evitare che vengano esclusi record
-                    .join("utente", JoinType.LEFT)  // Usa LEFT JOIN su tbl_utenti
+                root.join("utenteUfficioRuoloStatoCorrente", JoinType.LEFT)  // da rivedere LEFT JOIN per evitare che vengano esclusi record
+                    .join("utente", JoinType.LEFT)  // da rivedere LEFT JOIN su tbl_utenti
                     .get("idUtente"), idUtente
             );
         };

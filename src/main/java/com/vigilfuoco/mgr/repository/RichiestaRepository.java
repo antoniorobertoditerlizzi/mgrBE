@@ -4,6 +4,7 @@ package com.vigilfuoco.mgr.repository;
 import com.vigilfuoco.mgr.model.Richiesta;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -44,5 +45,7 @@ public interface RichiestaRepository extends JpaRepository<Richiesta, Long>, Jpa
 	@Modifying
 	@Query(value = "DELETE FROM RICHIESTA WHERE descrizione = :ds", nativeQuery = true)
 	void DelRowDescrizione(@Param("ds") String ds);*/
-	    
-}
+	
+	    @Query("SELECT r FROM Richiesta r WHERE r.settoreUfficio.ufficio.idUfficio IN :idUffici")
+	    List<Richiesta> findBySettoreUfficioUfficioIdUfficioIn(@Param("idUffici") Set<Long> idUffici);
+	}

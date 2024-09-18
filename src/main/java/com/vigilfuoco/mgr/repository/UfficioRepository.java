@@ -2,6 +2,7 @@ package com.vigilfuoco.mgr.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.vigilfuoco.mgr.model.Ufficio;
@@ -9,7 +10,7 @@ import com.vigilfuoco.mgr.model.Ufficio;
 import java.util.List;
 
 @Repository
-public interface UfficioRepository extends JpaRepository<Ufficio, Integer> {
+public interface UfficioRepository extends JpaRepository<Ufficio, Long> {
 	//JPQL che restituisce oggetti di tipo u Ufficio
 	
 	/*select * from tbl_uffici u
@@ -22,4 +23,9 @@ public interface UfficioRepository extends JpaRepository<Ufficio, Integer> {
     		+ "JOIN UtenteUfficioRuolo uur ON su.idSettoreUfficio = uur.settoreUfficio.idSettoreUfficio "
     		+ "WHERE uur.utente.idUtente = :idUtente")
     List<Ufficio> findUfficiByUtenteId(int idUtente);
+    
+    
+    List<Ufficio> findByUtenteId(Long idUtente);
+
+
 }

@@ -1,22 +1,22 @@
 {
     "not_logged_user_menu": [
         {
-            "label": "Novità software",
-            "content": "Testo Novità software BE",
+            "label": "Novità release software",
+            "content": "<b>Rel. V.1.0 del 19/09/2024 Aggiornamento contenuti welcome page ed Aggiornamento Servizi Web MGR</b></br>Rel. V.0.9 del 12/09/2024 Disponibile nuovo oggetto grafico per visualizzazione rapida del colore dello stato della richiesta su mobile;</br>Rel. V.0.8 del 05/09/2024 Disponibile Aggiornamento Dashboard;</br>Rel. V.0.7 del 30/08/2024 Disponibile sezione Dettaglio Utente;</br>Rel. V.0.6 del 23/08/2024 Disponibile nuovo sistema di Wizard per la Richiesta;</br>Rel. V.0.5 del 16/08/2024 Disponibili nuovi datagrid responsive;</br>Rel. V.0.4 del 09/08/2024 Disponibile servizio di Salvataggio Richiesta;</br>Rel. V.0.3 del 02/08/2024 Disponibile nuovo template grafco della piattaforma;</br>Rel. V.0.2 del 31/07/2024 Generazione dell'ISBN della Richiesta;</br>Rel. V.0.1 del 26/07/2024 Invio Notifica per email quando la richiesta viene inserita o modificata con recupero mail destinatario;</br>",
             "value": "1",
             "color": "green",
             "url": ""
         },
         {
-            "label": "Documentazione",
-            "content": "Testo Documentazione",
-            "value": "2",
+            "label": "Manuali",
+			"content": "In questa sezione è possibile scaricare il pdf contenente il manuale di utilizzo della piattaforma MGR - Modello Gestione Richieste. Il manuale contiene tutti gli scenari di utilizzo ed i vari step procedurali per gestire l'intero ciclo di vita delle richieste.</br><a href=\"/Manuale_MGR.pdf\"><img src=\"/static/media/PDF_file_icon.e8edf75cf38223297d97.png\" style=\"max-height: 60px; margin-top: 2%; margin-left: 2%;\" /></a></br>Manuale_MGR.pdf",
+      		"value": "2",
             "color": "white",
             "url": ""
         },
         {
             "label": "Link utili",
-            "content": "Testo Link utili",
+			"content": "<a href=\"https://www.vigilfuoco.it/\" style=\"text-decoration: none !important;\">WWW.VIGILFUOCO.IT</a>",
             "value": "3",
             "color": "red",
             "url": ""

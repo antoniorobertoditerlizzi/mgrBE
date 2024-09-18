@@ -16,9 +16,14 @@ import com.vigilfuoco.mgr.model.Richiesta;
 import com.vigilfuoco.mgr.model.SettoreUfficio;
 import com.vigilfuoco.mgr.model.StatoRichiesta;
 import com.vigilfuoco.mgr.model.TipologiaRichiesta;
+import com.vigilfuoco.mgr.model.Ufficio;
+import com.vigilfuoco.mgr.model.UfficioRichieste;
+import com.vigilfuoco.mgr.model.UtenteUfficioRuolo;
 import com.vigilfuoco.mgr.repository.ModelloCompilatoRepository;
 import com.vigilfuoco.mgr.repository.ModelloRepository;
 import com.vigilfuoco.mgr.repository.RichiestaRepository;
+import com.vigilfuoco.mgr.repository.UfficioRepository;
+import com.vigilfuoco.mgr.repository.UtenteUfficioRuoloRepository;
 import com.vigilfuoco.mgr.service.RichiestaService;
 import com.vigilfuoco.mgr.specification.RichiestaSpecification;
 import com.vigilfuoco.mgr.utility.DateUtil;
@@ -27,6 +32,7 @@ import com.vigilfuoco.mgr.utility.Utility;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +67,9 @@ public class RichiestaController {
     private ModelloRepository modelloRepository;
 
     @Autowired
+    private UtenteUfficioRuoloRepository utenteUfficioRuoloRepository;
+    
+    @Autowired
     public RichiestaController(RichiestaService richiestaService) {
         this.richiestaService = richiestaService;
     }
@@ -76,7 +85,7 @@ public class RichiestaController {
             @RequestParam(required = false) Long idStatoRichiesta,
             @RequestParam(required = false) String descrizioneStatoRichiesta,
             @RequestParam(required = false) Boolean attivo,
-            @RequestParam(required = false) Long idSettoreUfficio,
+            @RequestParam(required = false) Short idSettoreUfficio,
             @RequestParam(required = false) Long idUfficio,
             @RequestParam(required = false) Long idUtente,
             @RequestParam(required = false) Long idUtenteUfficioRuoloStatoCorrente,
@@ -103,6 +112,39 @@ public class RichiestaController {
     }
     
 
+   /* @GetMapping("/utente/uffici/richeste")
+    public ResponseEntity<List<UfficioRichieste>> getUfficiRichieste(@RequestParam Long idUtente) {
+        logger.debug("/utente/uffici/richeste/", idUtente);
+        
+        List<UtenteUfficioRuolo> utentiUfficiRuoli = utenteUfficioRuoloRepository.findByUtenteIdUtente(idUtente);
+        
+        if (utentiUfficiRuoli.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        List<UfficioRichieste> result = new ArrayList<>();
+        for (UtenteUfficioRuolo utenteUfficioRuolo : utentiUfficiRuoli) {
+            Ufficio ufficio = utenteUfficioRuolo.getSettoreUfficio().getUfficio();
+            SettoreUfficio settoreUfficio = utenteUfficioRuolo.getSettoreUfficio();
+            
+            List<Richiesta> richieste = repositoryRichiesta.findAll(Specification
+                .where(RichiestaSpecification.hasIdUfficio(ufficio.getIdUfficio()))
+                .and(RichiestaSpecification.hasIdSettoreUfficio(settoreUfficio.getIdSettoreUfficio()))
+                .and(RichiestaSpecification.hasId(null))
+            );
+
+            UfficioRichieste dto = new UfficioRichieste();
+            dto.setIdUfficio(ufficio.getIdUfficio());
+            dto.setDescrizioneUfficio(ufficio.getDescrizioneUfficio());
+            dto.setRichieste(richieste);
+
+            result.add(dto);
+        }
+
+        return ResponseEntity.ok(result);
+    }*/
+
+    
 
     /*TEST
     @GetMapping("/cerca")
