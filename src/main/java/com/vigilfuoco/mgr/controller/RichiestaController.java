@@ -112,13 +112,14 @@ public class RichiestaController {
     }
     
 
-    @GetMapping("/utente/uffici/richeste")
-    public ResponseEntity<List<UfficioRichieste>> getUfficiRichieste(@RequestParam Long idUtente) {
-        logger.debug("/utente/uffici/richeste/", idUtente);
+    @GetMapping("/utente/uffici/")
+    public ResponseEntity<List<UfficioRichieste>> getUfficiRichieste(@RequestParam Integer idUtente) {
+        logger.debug("/utente/uffici/", idUtente);
         
         List<UtenteUfficioRuolo> utentiUfficiRuoli = utenteUfficioRuoloRepository.findByUtenteIdUtente(idUtente);
         
-       /* if (utentiUfficiRuoli.isEmpty()) {
+               
+        if (utentiUfficiRuoli.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
@@ -128,10 +129,9 @@ public class RichiestaController {
             SettoreUfficio settoreUfficio = utenteUfficioRuolo.getSettoreUfficio();
             
             List<Richiesta> richieste = repositoryRichiesta.findAll(Specification
-                .where(RichiestaSpecification.hasIdUfficio(ufficio.getIdUfficio()))
-                .and(RichiestaSpecification.hasIdSettoreUfficio(settoreUfficio.getIdSettoreUfficio()))
-                .and(RichiestaSpecification.hasId(null))
-            );
+            	    .where(RichiestaSpecification.hasIdUfficio(ufficio.getIdUfficio()))
+            	    .and(RichiestaSpecification.hasIdSettoreUfficio(settoreUfficio.getIdSettoreUfficio()))
+            	);
 
             UfficioRichieste dto = new UfficioRichieste();
             dto.setIdUfficio(ufficio.getIdUfficio());
@@ -141,8 +141,7 @@ public class RichiestaController {
             result.add(dto);
         }
 
-        return ResponseEntity.ok(result);*/
-        return null;
+        return ResponseEntity.ok(result);
     }
 
     
