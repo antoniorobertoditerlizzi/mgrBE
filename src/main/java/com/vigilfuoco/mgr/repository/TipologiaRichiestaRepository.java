@@ -1,7 +1,5 @@
 package com.vigilfuoco.mgr.repository;
 
-
-import com.vigilfuoco.mgr.model.Richiesta;
 import com.vigilfuoco.mgr.model.TipologiaRichiesta;
 
 import java.util.List;
@@ -20,5 +18,6 @@ public interface TipologiaRichiestaRepository extends JpaRepository<TipologiaRic
 	TipologiaRichiesta findByIdTipologiaRichiesta(Short idTipologiaRichiesta);
 	
 	List<TipologiaRichiesta> findAll();
+	
 
 }

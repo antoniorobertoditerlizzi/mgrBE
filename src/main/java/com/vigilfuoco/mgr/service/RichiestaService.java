@@ -25,6 +25,8 @@ import com.vigilfuoco.mgr.model.ModelloConJson;
 import com.vigilfuoco.mgr.model.ModelloTipologiaRichiesta;
 import com.vigilfuoco.mgr.model.Priorita;
 import com.vigilfuoco.mgr.model.Richiesta;
+import com.vigilfuoco.mgr.model.Settore;
+import com.vigilfuoco.mgr.model.SettoreUfficio;
 import com.vigilfuoco.mgr.model.StatoRichiesta;
 import com.vigilfuoco.mgr.model.TipologiaRichiesta;
 import com.vigilfuoco.mgr.model.Utente;
@@ -32,8 +34,11 @@ import com.vigilfuoco.mgr.repository.ModelliTipologiaRichiestaRepository;
 import com.vigilfuoco.mgr.repository.ModelloRepository;
 import com.vigilfuoco.mgr.repository.PrioritaRepository;
 import com.vigilfuoco.mgr.repository.RichiestaRepository;
+import com.vigilfuoco.mgr.repository.SettoreRepository;
+import com.vigilfuoco.mgr.repository.SettoreUfficioRepository;
 import com.vigilfuoco.mgr.repository.StatoRichiestaRepository;
 import com.vigilfuoco.mgr.repository.TipologiaRichiestaRepository;
+import com.vigilfuoco.mgr.repository.UfficioRepository;
 import com.vigilfuoco.mgr.repository.UtenteRepository;
 import com.vigilfuoco.mgr.utility.Utility;
 
@@ -64,11 +69,12 @@ import com.vigilfuoco.mgr.utility.Utility;
 	    
 	    @Autowired 
 	    private final ModelliTipologiaRichiestaRepository repositoryModelliTipologiaRichiesta;
-
 	    
-	    
+	    @Autowired
+	    private final SettoreUfficioRepository repositorySettoreUfficio;
 
-
+	    @Autowired
+	    private final SettoreRepository repositorySettore;
 	    
 	    private static final Logger logger = LogManager.getLogger(RichiestaService.class);
 
@@ -79,7 +85,10 @@ import com.vigilfuoco.mgr.utility.Utility;
 					    		TipologiaRichiestaRepository repositoryTipologiaRichiesta,
 					    		PrioritaRepository repositoryPriorita,
 					    		StatoRichiestaRepository repositoryStatoRichiesta,
-					    		ModelliTipologiaRichiestaRepository repositoryModelliTipologiaRichiesta) {
+					    		ModelliTipologiaRichiestaRepository repositoryModelliTipologiaRichiesta,
+					    		UfficioRepository repositoryUfficio,
+					    		SettoreUfficioRepository repositorySettoreUfficio,
+					    		SettoreRepository repositorySettore) {
 	        this.repositoryUtente = repositoryUtente;
 			this.repositoryRichiesta = repositoryRichiesta;
 	        this.repositoryModello = repositoryModello;
@@ -87,7 +96,8 @@ import com.vigilfuoco.mgr.utility.Utility;
 	        this.repositoryPriorita = repositoryPriorita;
 	        this.repositoryStatoRichiesta = repositoryStatoRichiesta;
 	        this.repositoryModelliTipologiaRichiesta = repositoryModelliTipologiaRichiesta;
-
+	        this.repositorySettoreUfficio = repositorySettoreUfficio;
+	        this.repositorySettore = repositorySettore;
 	    }
 	    
 	    //Salva/Modifica Richiesta
@@ -187,6 +197,50 @@ import com.vigilfuoco.mgr.utility.Utility;
 			 return ResponseEntity.ok(repositoryTipologiaRichiesta.save(tipologiaRichiesta));	
 		 }
 		 
+		 //SALVA SETTORI DI COMPETENZA
+		 public ResponseEntity<SettoreUfficio> saveSettoriCompetenza(SettoreUfficio settoreUfficio) {
+			    
+			    // Controlla se il settore è presente
+			   /* if (settoreUfficio.getSettore() != null && settoreUfficio.getSettore().getIdSettore() != null) {
+			        Long settoreId = settoreUfficio.getSettore().getIdSettore();
+			        SettoreUfficio settore = repositorySettoreUfficio.findById(settoreId)
+			            .orElseThrow(() -> new EntityNotFoundException("Settore non trovato con ID: " + settoreId));
+			        settoreUfficio.setSettore(settore);
+			    } else {
+			        throw new IllegalArgumentException("ID settore non può essere nullo.");
+			    }
+
+			    // Controlla se l'ufficio è presente
+			    if (settoreUfficio.getUfficio() != null && settoreUfficio.getUfficio().getIdUfficio() != null) {
+			        Long ufficioId = settoreUfficio.getUfficio().getIdUfficio();
+			        Ufficio ufficio = repositoryUfficio.findById(ufficioId)
+			            .orElseThrow(() -> new EntityNotFoundException("Ufficio non trovato con ID: " + ufficioId));
+			        settoreUfficio.setUfficio(ufficio);
+			    } else {
+			        throw new IllegalArgumentException("ID ufficio non può essere nullo.");
+			    }*/
+
+			    // Salva il nuovo SettoreUfficio
+			    return ResponseEntity.ok(repositorySettoreUfficio.save(settoreUfficio));
+			}
+	 
+		 //SALVA SETTORI DI COMPETENZA
+		 public ResponseEntity<Settore> saveSettori(Settore settore) {
+			    return ResponseEntity.ok(repositorySettore.save(settore));
+		}
+		 
+		// Lista settori di competenza
+	    public ResponseEntity<List<SettoreUfficio>> getListSettoriCompetenza() {
+	        List<SettoreUfficio> settori = repositorySettoreUfficio.findAll();
+	        return ResponseEntity.ok(settori);
+	    }
+	    
+		// Lista settori
+	    public ResponseEntity<List<Settore>> getListSettori() {
+	        List<Settore> settori = repositorySettore.findAll();
+	        return ResponseEntity.ok(settori);
+	    }
+	 
 		 //SALVA MODELLI TIPOLOGIA RICHIESTA
 		    public ResponseEntity<ModelloTipologiaRichiesta> saveModelliTipologiaRichiesta(ModelloTipologiaRichiesta modelliTipologieRichieste) {
 		        

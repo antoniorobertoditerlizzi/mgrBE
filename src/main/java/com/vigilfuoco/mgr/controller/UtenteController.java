@@ -3,10 +3,17 @@ package com.vigilfuoco.mgr.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.vigilfuoco.mgr.exception.InvalidTokenException;
 import com.vigilfuoco.mgr.model.JwtResponse;
+import com.vigilfuoco.mgr.model.Ruolo;
+import com.vigilfuoco.mgr.model.SettoreUfficio;
 import com.vigilfuoco.mgr.model.Ufficio;
 import com.vigilfuoco.mgr.model.Utente;
+import com.vigilfuoco.mgr.model.UtenteUfficioRuolo;
+import com.vigilfuoco.mgr.repository.RuoloRepository;
+import com.vigilfuoco.mgr.repository.UfficioRepository;
 import com.vigilfuoco.mgr.repository.UtenteRepository;
 import com.vigilfuoco.mgr.service.UtenteService;
+import com.vigilfuoco.mgr.service.UtenteUfficioRuoloService;
+
 
 import io.jsonwebtoken.UnsupportedJwtException;
 
@@ -46,6 +53,9 @@ public class UtenteController {
     @Autowired
     private UtenteRepository utenteRepository;
     
+    @Autowired
+    private UfficioRepository ufficioRepository;
+    
     private final UtenteService utenteService;
 
     @Autowired
@@ -53,10 +63,15 @@ public class UtenteController {
         this.utenteService = utenteService;
     }
     
-	private static final Logger logger = LogManager.getLogger(UtenteController.class);
-
+    @Autowired
+    private RuoloRepository ruoloRepository;
+    
+	@Autowired
+	private UtenteUfficioRuoloService utenteUfficioRuoloService;
 	
-
+	private static final Logger logger = LogManager.getLogger(UtenteController.class);
+	
+	
 	// API LoginCheck ----------------------------------------------------------- /api/utente/login?accountName=antonioroberto.diterlizzi
 	@GetMapping("login")
 	public ResponseEntity<JwtResponse> login(@RequestParam String accountName) throws IllegalArgumentException, IOException, JsonProcessingException {
@@ -157,4 +172,51 @@ public class UtenteController {
 		return utenteService.getMenuByRoleWS(roleId);
 	}*/
     
+   
+
+	// API Salva Richiesta a DB ---------------------------------------- /api/utente/saveUtentiUfficiRuoli
+	@PostMapping("/saveUtentiUfficiRuoli")
+	public ResponseEntity<UtenteUfficioRuolo> createUtenteUfficioRuolo(
+			@RequestParam String accountName,
+	        @RequestParam Long idRuolo,
+	        @RequestParam Short idSettoreUfficio,
+	        @RequestParam boolean attivo) {
+	
+	    logger.debug("Ingresso api /api/utente/saveUtentiUfficiRuoli");
+
+	    int idUtente = utenteRepository.findIdUtenteByAccount(accountName);
+
+        if (idUtente == 0) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+	    // Simulazione del recupero delle entità esistenti
+	    Utente utente = new Utente();  // Recupera l'utente da un service o repository
+	    utente.setIdUtente(idUtente);
+	
+	    Ruolo ruolo = new Ruolo();  // Recupera il ruolo da un service o repository
+	    ruolo.setIdRuolo(idRuolo);
+	
+	    SettoreUfficio settoreUfficio = new SettoreUfficio();  // Recupera il settore da un service o repository
+	    settoreUfficio.setIdSettoreUfficio(idSettoreUfficio);
+	
+	    UtenteUfficioRuolo uuf = utenteUfficioRuoloService.createUtenteUfficioRuolo(utente, ruolo, settoreUfficio, attivo);
+	
+	    return ResponseEntity.ok(uuf);
+	}
+	
+	
+	// API LISTA RUOLI NOT BY USER -------------------------------------------- /api/utente/getAllRuoli
+    @GetMapping("/getAllRuoli")
+    public ResponseEntity<List<Ruolo>> getAllRuoli() {
+        List<Ruolo> ruoli = ruoloRepository.findAll();
+        return ResponseEntity.ok(ruoli);
+    }
+
+	// API LISTA UFFICI NOT BY USER -------------------------------------------- /api/utente/getAllUffici
+    @GetMapping("/getAllUffici")
+    public ResponseEntity<List<Ufficio>> getAllUffici() {
+        List<Ufficio> uffici = ufficioRepository.findAll();
+        return ResponseEntity.ok(uffici);
+    }   
+	
 }

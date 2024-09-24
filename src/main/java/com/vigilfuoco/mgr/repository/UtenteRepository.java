@@ -6,6 +6,8 @@ import com.vigilfuoco.mgr.model.Utente;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /* 
@@ -21,6 +23,10 @@ import org.springframework.stereotype.Repository;
 public interface UtenteRepository extends JpaRepository<Utente, Long> {
 
 	Utente findByAccount(String accountDipvvf);
+	
+    @Query("SELECT u.idUtente FROM Utente u WHERE u.account = :accountName")
+    int findIdUtenteByAccount(@Param("accountName") String accountName);
+
 	//List<Utente> findByAccount(String accountDipvvf);
 	    
     //Query

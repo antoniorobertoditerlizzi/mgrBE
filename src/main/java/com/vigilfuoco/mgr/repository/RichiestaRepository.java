@@ -2,6 +2,7 @@ package com.vigilfuoco.mgr.repository;
 
 
 import com.vigilfuoco.mgr.model.Richiesta;
+import com.vigilfuoco.mgr.model.Settore;
 
 import java.util.List;
 import java.util.Set;
@@ -46,6 +47,14 @@ public interface RichiestaRepository extends JpaRepository<Richiesta, Long>, Jpa
 	@Query(value = "DELETE FROM RICHIESTA WHERE descrizione = :ds", nativeQuery = true)
 	void DelRowDescrizione(@Param("ds") String ds);*/
 	
-	    @Query("SELECT r FROM Richiesta r WHERE r.settoreUfficio.ufficio.idUfficio IN :idUffici")
-	    List<Richiesta> findBySettoreUfficioUfficioIdUfficioIn(@Param("idUffici") Set<Long> idUffici);
+    @Query("SELECT r FROM Richiesta r WHERE r.settoreUfficio.ufficio.idUfficio IN :idUffici")
+    List<Richiesta> findBySettoreUfficioUfficioIdUfficioIn(@Param("idUffici") Set<Long> idUffici);
+    
+    //verifico se esiste almeno una richiesta con quell'id tipolgoia richiesta per evitare inconsistenze a db in fase di delete
+    boolean existsByTipologiaRichiesta_IdTipologiaRichiesta(Short idTipologiaRichiesta);
+
+    
+    boolean existsBySettoreUfficio_IdSettoreUfficio(Short idSettoreUfficio);
+
+    
 	}

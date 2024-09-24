@@ -13,16 +13,20 @@ import com.vigilfuoco.mgr.model.ModelloConJson;
 import com.vigilfuoco.mgr.model.ModelloTipologiaRichiesta;
 import com.vigilfuoco.mgr.model.Priorita;
 import com.vigilfuoco.mgr.model.Richiesta;
+import com.vigilfuoco.mgr.model.Settore;
 import com.vigilfuoco.mgr.model.SettoreUfficio;
 import com.vigilfuoco.mgr.model.StatoRichiesta;
 import com.vigilfuoco.mgr.model.TipologiaRichiesta;
 import com.vigilfuoco.mgr.model.Ufficio;
 import com.vigilfuoco.mgr.model.UfficioRichieste;
 import com.vigilfuoco.mgr.model.UtenteUfficioRuolo;
+import com.vigilfuoco.mgr.repository.ModelliTipologiaRichiestaRepository;
 import com.vigilfuoco.mgr.repository.ModelloCompilatoRepository;
 import com.vigilfuoco.mgr.repository.ModelloRepository;
 import com.vigilfuoco.mgr.repository.RichiestaRepository;
-import com.vigilfuoco.mgr.repository.UfficioRepository;
+import com.vigilfuoco.mgr.repository.SettoreRepository;
+import com.vigilfuoco.mgr.repository.SettoreUfficioRepository;
+import com.vigilfuoco.mgr.repository.TipologiaRichiestaRepository;
 import com.vigilfuoco.mgr.repository.UtenteUfficioRuoloRepository;
 import com.vigilfuoco.mgr.service.RichiestaService;
 import com.vigilfuoco.mgr.specification.RichiestaSpecification;
@@ -35,7 +39,10 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -64,7 +71,16 @@ public class RichiestaController {
     private final RichiestaService richiestaService;
     
     @Autowired
+    private SettoreUfficioRepository repositorySettoreUfficio;
+    
+    @Autowired
+    private SettoreRepository repositorySettore;
+    
+    @Autowired
     private ModelloRepository modelloRepository;
+    
+    @Autowired
+    private ModelliTipologiaRichiestaRepository repositoryModelliTipologiaRichiesta;
 
     @Autowired
     private UtenteUfficioRuoloRepository utenteUfficioRuoloRepository;
@@ -76,6 +92,10 @@ public class RichiestaController {
     
     @Autowired
     private ModelloCompilatoRepository modelloCompilatoRepository;
+    
+    @Autowired
+    private TipologiaRichiestaRepository tipologiaRichiestaRepository;
+    
 
     // API Ricerca Richiesta -------------------------------- es. /api/richiesta/cerca?idSettoreUfficio=2&idUfficio=1
     @GetMapping("/cerca")
@@ -303,14 +323,36 @@ public class RichiestaController {
 		logger.debug("Ingresso api SAVE /api/richiesta/tipologieRichieste/save");
 		return richiestaService.saveTipologiaRichiesta(tipologiaRichiesta);
 	}
-	
-    /*  RAW  * {
-	   "descrizioneTipologiaRichiesta": "Automezzo",
-	   "attivo": true,
-	   "statoRichiestaPartenza": {
-	       "idStatoRichiesta": 999
-	   }
-	}*/
+
+	// API SALVA Settori Competenza ---------------------------------- /api/richiesta/settoriCompetenza/save
+    @PostMapping(value = "/settoriCompetenza/save", consumes = "application/json", produces = "application/json")
+	@PreAuthorize("isAuthenticated()") 
+	public ResponseEntity<SettoreUfficio> saveSettoriCompetenza(
+		@RequestBody SettoreUfficio settoreUfficio,
+		Authentication authentication) throws JsonMappingException, JsonProcessingException{
+		logger.debug("Ingresso api SAVE /api/richiesta/settoriCompetenza/save");
+		return richiestaService.saveSettoriCompetenza(settoreUfficio);
+	}
+    /*  
+    {
+	    "settore": {
+	        "idSettore": 1 
+	    },
+	    "ufficio": {
+	        "idUfficio": 1  
+	    },
+	    "attivo": true 
+	}
+    */
+    
+    
+	// API List getListSettoriCompetenza ---------------------------------- /api/richiesta/getListSettoriCompetenza
+    @GetMapping("/getListSettoriCompetenza")
+    public ResponseEntity<ResponseEntity<List<SettoreUfficio>>> getListSettoriCompetenza() {
+        return ResponseEntity.ok(richiestaService.getListSettoriCompetenza());
+    }
+    
+    
 	
 	// API SALVA Modelli Tipologia Richiesta --------------------------- /api/richiesta/modelliTipologiaRichiesta/save
     @PostMapping(value = "/modelliTipologiaRichiesta/save", consumes = "application/json", produces = "application/json")
@@ -330,6 +372,30 @@ public class RichiestaController {
 	   }
 	}*/
     
+    
+	// API List getListSettori ---------------------------------- /api/richiesta/getListSettori
+    @GetMapping("/getListSettori")
+    public ResponseEntity<ResponseEntity<List<Settore>>> getListSettori() {
+        return ResponseEntity.ok(richiestaService.getListSettori());
+    }
+    
+    
+	// API SALVA Settori  ---------------------------------- /api/richiesta/settori/save
+    @PostMapping(value = "/settori/save", consumes = "application/json", produces = "application/json")
+	@PreAuthorize("isAuthenticated()") 
+	public ResponseEntity<Settore> saveSettori(
+		@RequestBody Settore settore,
+		Authentication authentication) throws JsonMappingException, JsonProcessingException{
+		logger.debug("Ingresso api SAVE /api/richiesta/settori/save");
+		return richiestaService.saveSettori(settore);
+	}
+    /*
+     {
+    "descrizioneSettore": "Settore Esempio",
+    "emailSettore": "esempio@aaaa.com",
+    "attivo": true
+}
+     */
     
     // DATO ID TIPOLOGIA RESTITUISCE LA LISTA DEI MODELLI ASSOCIATI ---------------------------- /api/richiesta/modelli?idTipologiaRichiesta=20
     @GetMapping("/modelli")
@@ -462,6 +528,118 @@ public class RichiestaController {
         repositoryRichiesta.delete(richiesta);
 
         return ResponseEntity.ok("Richiesta cancellata con successo.");
+    }
+    
+    
+    
+    // API Cancella tipologia richiesta: valido solo se la tipogia è priva di modello altrimenti cancellare prima il modello e le sue relazioni ----- {{baseUrl}}/api/richiesta/deleteTipologiaRichiesta/22
+    @DeleteMapping("/deleteTipologiaRichiesta/{idTipologiaRichiesta}")
+    public ResponseEntity<String> deleteTipologiaRichiesta(@PathVariable("idTipologiaRichiesta") Short idTipologiaRichiesta) {
+        try {
+            // Verifico se esistono richieste correlate già salvate a DB per quella tipologia richiesta
+            if (repositoryRichiesta.existsByTipologiaRichiesta_IdTipologiaRichiesta(idTipologiaRichiesta)) {
+                return ResponseEntity.badRequest().body("Impossibile cancellare la tipologia di richiesta: già utilizzata in altre richieste.");
+            }
+
+            // Recupero tutti i modelli associati alla tipologia richiesta
+            List<ModelloTipologiaRichiesta> modelliTipologia = repositoryModelliTipologiaRichiesta.findByTipologiaRichiesta_IdTipologiaRichiesta(idTipologiaRichiesta);
+
+            // Controllo che non ci siano modelli compilati per i modelli associati a questa tipologia
+            boolean hasCompilati = false;
+            List<Long> idModelli = new ArrayList<>();
+
+            for (ModelloTipologiaRichiesta modelloTipologia : modelliTipologia) {
+                Long idModello = modelloTipologia.getModello().getIdModello();
+                idModelli.add(idModello);
+
+                // Verifico se esistono modelli compilati associati a questo modello
+                List<ModelloCompilato> modelliCompilati = modelloCompilatoRepository.findByModelloIdAndTipologiaRichiestaIdAndAttivo(idModello, idTipologiaRichiesta);
+                if (!modelliCompilati.isEmpty()) {
+                    hasCompilati = true;
+                    break; // Termino se trovo un modello compilato
+                }
+            }
+
+            // Se ci sono modelli compilati, restituisci un errore
+            if (hasCompilati) {
+                return ResponseEntity.badRequest().body("Impossibile cancellare la tipologia di richiesta: presente un modello compilato associato.");
+            }
+
+            // Se non ci sono modelli compilati, cancelliamo i modelli associati
+            for (Long idModello : idModelli) {
+                modelloRepository.deleteById(idModello);
+        		logger.debug("Cancellato modello: " + idModello);
+            }
+
+            // Cancellazione delle righe associate nella tabella ModelloTipologiaRichiesta
+            repositoryModelliTipologiaRichiesta.deleteByTipologiaRichiesta_IdTipologiaRichiesta(idTipologiaRichiesta);
+    		logger.debug("Cancellate righe tabella modelli tipologia richiesta aventi idTipologiaRichiesta: " + idTipologiaRichiesta);
+
+            // Cancellazione della tipologia di richiesta
+            TipologiaRichiesta tipologiaRichiesta = tipologiaRichiestaRepository.findByIdTipologiaRichiesta(idTipologiaRichiesta);
+            if (tipologiaRichiesta == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("TipologiaRichiesta non trovata con ID: " + idTipologiaRichiesta);
+            }
+            tipologiaRichiestaRepository.delete(tipologiaRichiesta);
+    		logger.debug("Cancellata tipologiaRichiesta: " + idTipologiaRichiesta);
+            return ResponseEntity.ok("Tipologia di richiesta cancellata con successo.");
+
+        } catch (DataIntegrityViolationException e) {
+            // Gestione dell'eccezione di violazione del vincolo di integrità referenziale
+            return ResponseEntity.badRequest().body("Presenti relazioni con la tabella tbl_tipologie_richieste, impossibile procedere con l'eliminazione. Rimuovere prima relazione con tbl_modelli_tipologie_richieste.");
+
+        } catch (Exception e) {
+            // Gestione di altre eccezioni generiche
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore interno durante l'eliminazione della tipologia di richiesta.");
+        }
+    }
+    
+    
+    // API Cancella SettoreUfficio
+    @DeleteMapping("/deleteSettoreUfficio/{idSettoreUfficio}")
+    public ResponseEntity<String> deleteSettoreUfficio(@PathVariable("idSettoreUfficio") Short idSettoreUfficio) {
+        try {
+            // Verifica se ci sono richieste correlate
+            if (repositoryRichiesta.existsBySettoreUfficio_IdSettoreUfficio(idSettoreUfficio)) {
+                return ResponseEntity.badRequest().body("Impossibile cancellare il settore ufficio: già utilizzato in altre richieste.");
+            }
+            
+            // Recupera il SettoreUfficio da cancellare
+            SettoreUfficio settoreUfficio = repositorySettoreUfficio.findByIdSettoreUfficio(idSettoreUfficio);
+            
+            if (settoreUfficio == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("SettoreUfficio non trovato con ID: " + idSettoreUfficio);
+            }
+            
+            // Cancellazione del SettoreUfficio
+            repositorySettoreUfficio.delete(settoreUfficio);
+            return ResponseEntity.ok("SettoreUfficio cancellato con successo.");
+
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.badRequest().body("Presenti relazioni con altre tabelle, impossibile procedere con l'eliminazione.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore interno durante l'eliminazione del SettoreUfficio.");
+        }
+    }
+    
+    
+    // API Cancella Settore
+    @DeleteMapping("/deleteSettore/{idSettore}")
+    public ResponseEntity<String> deleteSettore(@PathVariable("idSettore") Long idSettore) {
+        try {
+            // Recupero del Settore
+            Settore settore = repositorySettore.findById(idSettore)
+                .orElseThrow(() -> new EntityNotFoundException("Settore non trovato con ID: " + idSettore));
+
+            // Cancellazione del Settore
+            repositorySettore.delete(settore);
+            return ResponseEntity.ok("Settore cancellato con successo.");
+
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.badRequest().body("Presenti relazioni con altre tabelle, impossibile procedere con l'eliminazione.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore interno durante l'eliminazione del Settore.");
+        }
     }
     
     /*JSON DI ESEMPIO
