@@ -25,8 +25,10 @@ import com.vigilfuoco.mgr.exception.MenuException;
 import com.vigilfuoco.mgr.exception.NumeroRichiestaDuplicatoException;
 import com.vigilfuoco.mgr.exception.RichiestaException;
 import com.vigilfuoco.mgr.model.JwtResponse;
+import com.vigilfuoco.mgr.model.Ruolo;
 import com.vigilfuoco.mgr.model.Ufficio;
 import com.vigilfuoco.mgr.model.Utente;
+import com.vigilfuoco.mgr.repository.RuoloRepository;
 import com.vigilfuoco.mgr.repository.UfficioRepository;
 import com.vigilfuoco.mgr.repository.UtenteRepository;
 import com.vigilfuoco.mgr.repository.UtenteWAUCRepository;
@@ -57,7 +59,12 @@ public class UtenteService {
     private UtenteWAUCRepository utenteWAUCRepository;
 	
     @Autowired
+    private RuoloRepository ruoloRepository;
+
+	
+    @Autowired
     private BlacklistServiceImpl blacklistService;
+    
 
 	private UtenteWAUC_to_Utente_Service utenteWAUC_to_Utente_Service = new UtenteWAUC_to_Utente_Service();
 
@@ -409,4 +416,15 @@ public class UtenteService {
     public boolean isLoggedIn() {
         return SecurityContextHolder.getContext().getAuthentication() != null;
     }
+    
+    
+    public List<Ruolo> getRuoliUtenteById(int idUtente) {
+        return ruoloRepository.findDistinctRuoliByIdUtente(idUtente);
+    }
+
+    public List<Ruolo> getRuoliUtenteByAccount(String account) {
+        return ruoloRepository.findDistinctRuoliByAccount(account);
+    }
+    
+    
 }

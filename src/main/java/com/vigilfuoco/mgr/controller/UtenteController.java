@@ -219,4 +219,21 @@ public class UtenteController {
         return ResponseEntity.ok(uffici);
     }   
 	
+    
+    
+    // API che restituisce i ruoli di un utente tramite ID
+    @GetMapping("/getRuoliById")
+    public ResponseEntity<List<Ruolo>> getRuoliByIdUtente(@RequestParam int idUtente) {
+        List<Ruolo> ruoli = utenteService.getRuoliUtenteById(idUtente);
+        return ResponseEntity.ok(ruoli);
+    }
+
+    // API che restituisce i ruoli di un utente tramite account
+    @GetMapping("/getRuoliByAccount")
+    public ResponseEntity<List<Ruolo>> getRuoliByAccount(@RequestParam String account) {
+        List<Ruolo> ruoli = utenteService.getRuoliUtenteByAccount(account);
+        return ResponseEntity.ok(ruoli);
+    }
+    
+    
 }
