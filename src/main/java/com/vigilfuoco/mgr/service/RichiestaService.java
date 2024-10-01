@@ -26,6 +26,7 @@ import com.vigilfuoco.mgr.model.ModelloTipologiaRichiesta;
 import com.vigilfuoco.mgr.model.Priorita;
 import com.vigilfuoco.mgr.model.Richiesta;
 import com.vigilfuoco.mgr.model.Settore;
+import com.vigilfuoco.mgr.model.SettoreRichiesta;
 import com.vigilfuoco.mgr.model.SettoreUfficio;
 import com.vigilfuoco.mgr.model.StatoRichiesta;
 import com.vigilfuoco.mgr.model.TipologiaRichiesta;
@@ -35,6 +36,7 @@ import com.vigilfuoco.mgr.repository.ModelloRepository;
 import com.vigilfuoco.mgr.repository.PrioritaRepository;
 import com.vigilfuoco.mgr.repository.RichiestaRepository;
 import com.vigilfuoco.mgr.repository.SettoreRepository;
+import com.vigilfuoco.mgr.repository.SettoreRichiestaRepository;
 import com.vigilfuoco.mgr.repository.SettoreUfficioRepository;
 import com.vigilfuoco.mgr.repository.StatoRichiestaRepository;
 import com.vigilfuoco.mgr.repository.TipologiaRichiestaRepository;
@@ -75,6 +77,9 @@ import com.vigilfuoco.mgr.utility.Utility;
 
 	    @Autowired
 	    private final SettoreRepository repositorySettore;
+	    
+	    @Autowired
+	    private SettoreRichiestaRepository settoreRichiestaRepository;
 	    
 	    private static final Logger logger = LogManager.getLogger(RichiestaService.class);
 
@@ -328,5 +333,20 @@ import com.vigilfuoco.mgr.utility.Utility;
 		                .map(ModelloTipologiaRichiesta::getTipologiaRichiesta)
 		                .filter(Objects::nonNull) // Filtra eventuali null
 		                .collect(Collectors.toList());
+		    }
+		    
+		    
+
+		    public boolean existsBySettoreAndTipologiaRichiesta(Long idSettore, Short idTipologiaRichiesta) {
+		        return settoreRichiestaRepository.existsBySettore_IdSettoreAndTipologiaRichiesta_IdTipologiaRichiesta(idSettore, idTipologiaRichiesta);
+		    }
+		    
+		    public SettoreRichiesta saveSettoreRichiesta(SettoreRichiesta settoreRichiesta) {
+		        return settoreRichiestaRepository.save(settoreRichiesta);
+		    }
+		    
+		    public boolean updateAttivo(Long idSettoreRichiesta, boolean attivo) {
+		        int updatedRows = settoreRichiestaRepository.updateAttivoByIdSettoreRichiesta(idSettoreRichiesta, attivo);
+		        return updatedRows > 0; // Restituisce true se è stato aggiornato almeno un record
 		    }
 	}

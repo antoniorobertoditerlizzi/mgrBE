@@ -11,19 +11,24 @@ import javax.persistence.Table;
 @Table(name = "tbl_funzionalita")
 public class Funzionalita {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idFunzionalita;
-	
-	@Column(length = 120, nullable = false)
-	private String descrizioneFunzionalita;
-	
-	@Column(length = 50, nullable = false)
-	private String titolo;
-	
-	@Column(length = 250, nullable = false)
-	private String url;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_funzionalita")
+    private Long idFunzionalita;
 
+    @Column(name = "codice_funzionalita", nullable = false, length = 10)
+    private String codiceFunzionalita;
+
+    @Column(name = "descrizione_funzionalita", nullable = false, length = 120)
+    private String descrizioneFunzionalita;
+
+    @Column(name = "titolo", nullable = false, length = 50)
+    private String titolo;
+
+    @Column(name = "url", nullable = false, length = 250)
+    private String url;
+
+	
 	public Long getIdFunzionalita() {
 		return idFunzionalita;
 	}
@@ -32,6 +37,15 @@ public class Funzionalita {
 		this.idFunzionalita = idFunzionalita;
 	}
 	
+	
+	public String getCodiceFunzionalita() {
+		return codiceFunzionalita;
+	}
+
+	public void setCodiceFunzionalita(String codiceFunzionalita) {
+		this.codiceFunzionalita = codiceFunzionalita;
+	}
+
 	public String getDescrizioneFunzionalita() {
 		return descrizioneFunzionalita;
 	}
@@ -58,10 +72,10 @@ public class Funzionalita {
 
 	@Override
 	public String toString() {
-		return "Funzionalita [idFunzionalita=" + idFunzionalita + ", descrizioneFunzionalita=" + descrizioneFunzionalita
-				+ ", titolo=" + titolo + ", url=" + url + "]";
+		return "Funzionalita [idFunzionalita=" + idFunzionalita + ", codiceFunzionalita=" + codiceFunzionalita
+				+ ", descrizioneFunzionalita=" + descrizioneFunzionalita + ", titolo=" + titolo + ", url=" + url + "]";
 	}
-	
+
 	
   
 }

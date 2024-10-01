@@ -4,6 +4,8 @@ package com.vigilfuoco.mgr.service;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,4 +52,17 @@ public class UtenteUfficioRuoloService {
         return utenteUfficioRuoloRepository.save(uuf);
 
     }
+    
+    
+    public UtenteUfficioRuolo updateAttivoFlag(Utente utente, Ruolo ruolo, SettoreUfficio settoreUfficio, boolean attivo) {
+        UtenteUfficioRuolo uuf = utenteUfficioRuoloRepository.findByUtenteAndRuoloAndSettoreUfficio(utente, ruolo, settoreUfficio);
+
+        if (uuf != null) {
+            uuf.setAttivo(attivo);
+            return utenteUfficioRuoloRepository.save(uuf);
+        } else {
+            throw new EntityNotFoundException("Combinazione Utente-Ruolo-Settore non trovata.");
+        }
+    }
+    
 }

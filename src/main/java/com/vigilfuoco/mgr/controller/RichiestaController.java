@@ -14,6 +14,7 @@ import com.vigilfuoco.mgr.model.ModelloTipologiaRichiesta;
 import com.vigilfuoco.mgr.model.Priorita;
 import com.vigilfuoco.mgr.model.Richiesta;
 import com.vigilfuoco.mgr.model.Settore;
+import com.vigilfuoco.mgr.model.SettoreRichiesta;
 import com.vigilfuoco.mgr.model.SettoreUfficio;
 import com.vigilfuoco.mgr.model.StatoRichiesta;
 import com.vigilfuoco.mgr.model.TipologiaRichiesta;
@@ -29,6 +30,7 @@ import com.vigilfuoco.mgr.repository.SettoreUfficioRepository;
 import com.vigilfuoco.mgr.repository.TipologiaRichiestaRepository;
 import com.vigilfuoco.mgr.repository.UtenteUfficioRuoloRepository;
 import com.vigilfuoco.mgr.service.RichiestaService;
+import com.vigilfuoco.mgr.service.StatoRichiestaService;
 import com.vigilfuoco.mgr.specification.RichiestaSpecification;
 import com.vigilfuoco.mgr.utility.DateUtil;
 import com.vigilfuoco.mgr.utility.Utility;
@@ -37,7 +39,9 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -95,6 +99,9 @@ public class RichiestaController {
     
     @Autowired
     private TipologiaRichiestaRepository tipologiaRichiestaRepository;
+    
+    @Autowired
+    private StatoRichiestaService statoRichiestaService;
     
 
     // API Ricerca Richiesta -------------------------------- es. /api/richiesta/cerca?idSettoreUfficio=2&idUfficio=1
@@ -165,6 +172,8 @@ public class RichiestaController {
     }
 
     
+    
+
 
     /*TEST
     @GetMapping("/cerca")
@@ -430,7 +439,9 @@ public class RichiestaController {
 	    // Check Stato Richiesta // Controllo su id richiesta se già censita allora modifico altrimenti imposto su inserita
 	    if (request.getStatoRichiesta() == null) { // || request.getStatoRichiesta().getIdStatoRichiesta() == 1) {
 		    StatoRichiesta statoInserita = new StatoRichiesta();
-		    statoInserita.setIdStatoRichiesta(1L); // Es. 1 Inserita **********
+		    statoInserita.setIdStatoRichiesta(1L); 		// 1 Inserita **********
+		    statoInserita.setPercentuale(10);			// 1 Inserita **********
+		    statoInserita.setColore("#808080");			// 1 Inserita **********
 		    request.setStatoRichiesta(statoInserita);
 	    
 		    // Verifico che TipologiaRichiesta e SettoreUfficio non siano null
@@ -641,6 +652,137 @@ public class RichiestaController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore interno durante l'eliminazione del Settore.");
         }
     }
+    
+    //API SALVA SETTORE RICHIESTA  -------------- /api/richiesta/saveSettoreRichiesta?idSettore=1&idTipologiaRichiesta=2&attivo=0
+    @PostMapping("/saveSettoreRichiesta")
+    public ResponseEntity<SettoreRichiesta> saveSettoreRichiesta(
+
+            @RequestParam Long idSettore,
+            @RequestParam Short idTipologiaRichiesta,
+            @RequestParam boolean attivo) {
+
+        // Verifica se la tupla esiste già
+        boolean exists = richiestaService.existsBySettoreAndTipologiaRichiesta(idSettore, idTipologiaRichiesta);
+        
+        if (exists) {
+        	logger.warn("Tupla per SettoriRichieste già presente a DB.");
+            return null;
+        }
+
+        // Creazione dell'entità Settore
+        Settore settore = new Settore();
+        settore.setIdSettore(idSettore);
+
+        // Creazione dell'entità TipologiaRichiesta
+        TipologiaRichiesta tipologiaRichiesta = new TipologiaRichiesta();
+        tipologiaRichiesta.setIdTipologiaRichiesta(idTipologiaRichiesta);
+
+        // Creazione dell'entità SettoreRichiesta
+        SettoreRichiesta settoreRichiesta = new SettoreRichiesta();
+        settoreRichiesta.setSettore(settore);
+        settoreRichiesta.setTipologiaRichiesta(tipologiaRichiesta);
+        settoreRichiesta.setAttivo(attivo);
+
+        // Salvataggio tramite il service
+        SettoreRichiesta savedSettoreRichiesta = richiestaService.saveSettoreRichiesta(settoreRichiesta);
+
+        // Restituzione della risposta con l'oggetto salvato
+        return ResponseEntity.ok(savedSettoreRichiesta);
+    }
+    
+    
+    // API per aggiornare il campo attivo di SettoreRichiesta ------------------------------------ /api/richieste/updateSettoreRichiesta
+    @PutMapping("/updateSettoreRichiesta")
+    public ResponseEntity<String> updateSettoreRichiesta(
+            @RequestParam Long idSettoreRichiesta,
+            @RequestParam boolean attivo) {
+
+        boolean success = richiestaService.updateAttivo(idSettoreRichiesta, attivo);
+        
+        if (success) {
+            return ResponseEntity.ok("Campo attivo aggiornato correttamente.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nessun record trovato con l'id specificato.");
+        }
+    }
+    
+    
+    
+    // API per ottenere tutti gli STATI RICHIESTA o filtrare per ID o descrizione  --- {{baseUrl}}/api/richiesta/getStatiRichiesta/
+    @GetMapping("/getStatiRichiesta")
+    public ResponseEntity<List<StatoRichiesta>> getAllStatiRichieste(
+            @RequestParam(required = false) Long idStatoRichiesta,
+            @RequestParam(required = false) String descrizioneStatoRichiesta) {
+
+        if (idStatoRichiesta != null) {
+            Optional<StatoRichiesta> statoRichiesta = statoRichiestaService.getById(idStatoRichiesta);
+            if (statoRichiesta.isPresent()) {
+                return ResponseEntity.ok(Collections.singletonList(statoRichiesta.get()));
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+        } else if (descrizioneStatoRichiesta != null) {
+            List<StatoRichiesta> statiRichiesta = statoRichiestaService.getByDescrizione(descrizioneStatoRichiesta);
+            if (!statiRichiesta.isEmpty()) {
+                return ResponseEntity.ok(statiRichiesta);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+        } else {
+            List<StatoRichiesta> statiRichiesta = statoRichiestaService.getAll();
+            return ResponseEntity.ok(statiRichiesta);
+        }
+    }
+    
+    //API INSERISCI NUOVO STATO RICHIESTA  ------------- {{baseUrl}}/api/richiesta/saveStatiRichiesta/?descrizioneStatoRichiesta=asd&attivo=1&descrizioneStato=asdasd&percentuale=3&colore=234234
+    @PostMapping("/saveStatiRichiesta")
+    public ResponseEntity<StatoRichiesta> createStatoRichiesta(
+            @RequestParam String descrizioneStatoRichiesta,
+            @RequestParam boolean attivo,
+            @RequestParam String descrizioneStato,
+            @RequestParam int percentuale,
+            @RequestParam String colore) {
+
+        StatoRichiesta statoRichiesta = new StatoRichiesta();
+        statoRichiesta.setDescrizioneStatoRichiesta(descrizioneStatoRichiesta);
+        statoRichiesta.setAttivo(attivo);
+        statoRichiesta.setDescrizioneStato(descrizioneStato);
+        statoRichiesta.setPercentuale(percentuale);
+        statoRichiesta.setColore(colore);
+
+        StatoRichiesta savedStatoRichiesta = statoRichiestaService.save(statoRichiesta);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedStatoRichiesta);
+    }
+    
+    
+    //API Modifica flag in stato richiesta ------------ {{baseUrl}}/api/richiesta/updateStatoRichiesta/?idStatoRichiesta=1&attivo=1
+    @PutMapping("/updateStatoRichiesta")
+    public ResponseEntity<?> updateStatoRichiesta(
+            @RequestParam Long idStatoRichiesta,
+            @RequestParam boolean attivo) {
+        
+        try {
+            // Cerca lo stato richiesta tramite id
+            Optional<StatoRichiesta> statoRichiestaOptional = statoRichiestaService.getById(idStatoRichiesta);
+
+            if (statoRichiestaOptional.isPresent()) {
+                StatoRichiesta statoRichiesta = statoRichiestaOptional.get();
+                // Modifica il flag attivo
+                statoRichiesta.setAttivo(attivo);
+                // Salva lo stato aggiornato
+                StatoRichiesta updatedStatoRichiesta = statoRichiestaService.save(statoRichiesta);
+                return ResponseEntity.ok(updatedStatoRichiesta);
+            } else {
+                // Se non trovi lo stato richiesta con l'ID fornito
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("StatoRichiesta non trovato con ID: " + idStatoRichiesta);
+            }
+        } catch (Exception e) {
+            // Gestione di eventuali errori
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante l'aggiornamento dello stato richiesta.");
+        }
+    }
+    
     
     /*JSON DI ESEMPIO
      * 

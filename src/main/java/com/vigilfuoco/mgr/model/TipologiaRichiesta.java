@@ -21,7 +21,7 @@ public class TipologiaRichiesta {
     @Column(nullable = false, length = 120)
     private String descrizioneTipologiaRichiesta;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_stato_richiesta_partenza")
     private StatoRichiesta statoRichiestaPartenza;
 

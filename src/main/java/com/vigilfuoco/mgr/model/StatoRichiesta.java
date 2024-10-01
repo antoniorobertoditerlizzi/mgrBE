@@ -13,44 +13,80 @@ public class StatoRichiesta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_stato_richiesta", nullable = false, updatable = false)
     private Long idStatoRichiesta;
 
-    @Column(nullable = false, length = 120)
+    @Column(name = "descrizione_stato_richiesta", length = 120, nullable = false)
     private String descrizioneStatoRichiesta;
 
-    @Column(nullable = false)
-    private Boolean attivo;
+    @Column(name = "attivo", nullable = false)
+    private boolean attivo;
 
-	public Long getIdStatoRichiesta() {
-		return idStatoRichiesta;
-	}
+    @Column(name = "descrizione_stato", length = 120, nullable = false)
+    private String descrizioneStato;
 
-	public void setIdStatoRichiesta(Long idStatoRichiesta) {
-		this.idStatoRichiesta = idStatoRichiesta;
-	}
+    @Column(name = "percentuale", nullable = false)
+    private int percentuale;
 
-	public String getDescrizioneStatoRichiesta() {
-		return descrizioneStatoRichiesta;
-	}
+    @Column(name = "colore", length = 10, nullable = false)
+    private String colore;
 
-	public void setDescrizioneStatoRichiesta(String descrizioneStatoRichiesta) {
-		this.descrizioneStatoRichiesta = descrizioneStatoRichiesta;
-	}
+    // Getters and Setters
+    public Long getIdStatoRichiesta() {
+        return idStatoRichiesta;
+    }
 
-	public Boolean getAttivo() {
-		return attivo;
-	}
+    public void setIdStatoRichiesta(Long idStatoRichiesta) {
+        this.idStatoRichiesta = idStatoRichiesta;
+    }
 
-	public void setAttivo(Boolean attivo) {
-		this.attivo = attivo;
-	}
+    public String getDescrizioneStatoRichiesta() {
+        return descrizioneStatoRichiesta;
+    }
+
+    public void setDescrizioneStatoRichiesta(String descrizioneStatoRichiesta) {
+        this.descrizioneStatoRichiesta = descrizioneStatoRichiesta;
+    }
+
+    public boolean isAttivo() {
+        return attivo;
+    }
+
+    public void setAttivo(boolean attivo) {
+        this.attivo = attivo;
+    }
+
+    public String getDescrizioneStato() {
+        return descrizioneStato;
+    }
+
+    public void setDescrizioneStato(String descrizioneStato) {
+        this.descrizioneStato = descrizioneStato;
+    }
+
+    public int getPercentuale() {
+        return percentuale;
+    }
+
+    public void setPercentuale(int percentuale) {
+        this.percentuale = percentuale;
+    }
+
+    public String getColore() {
+        return colore;
+    }
+
+    public void setColore(String colore) {
+        this.colore = colore;
+    }
 
 	@Override
 	public String toString() {
 		return "StatoRichiesta [idStatoRichiesta=" + idStatoRichiesta + ", descrizioneStatoRichiesta="
-				+ descrizioneStatoRichiesta + ", attivo=" + attivo + "]";
+				+ descrizioneStatoRichiesta + ", attivo=" + attivo + ", descrizioneStato=" + descrizioneStato
+				+ ", percentuale=" + percentuale + ", colore=" + colore + "]";
 	}
-
-   
-	
+    
+    
+    
 }

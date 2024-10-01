@@ -5,6 +5,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.vigilfuoco.mgr.model.Ruolo;
+import com.vigilfuoco.mgr.model.SettoreUfficio;
+import com.vigilfuoco.mgr.model.Utente;
 import com.vigilfuoco.mgr.model.UtenteUfficioRuolo;
 
 import java.util.List;
@@ -21,6 +24,8 @@ public interface UtenteUfficioRuoloRepository extends JpaRepository<UtenteUffici
    		+ "AND uuf.settoreUfficio.idSettoreUfficio = :idSettoreUfficio")
    List<UtenteUfficioRuolo> findByUtenteRuoloSettore(@Param("idUtente") int idUtente, @Param("idRuolo") Long idRuolo, @Param("idSettoreUfficio") Short idSettoreUfficio);
 
+   UtenteUfficioRuolo findByUtenteAndRuoloAndSettoreUfficio(Utente utente, Ruolo ruolo, SettoreUfficio settoreUfficio);
+
 }
 
 /*SELECT * 
@@ -30,3 +35,5 @@ JOIN tbl_ruoli r ON uuf.id_ruolo = r.id_ruolo
 JOIN tbl_settori_uffici su ON uuf.id_settore_ufficio = su.id_settore_ufficio
 WHERE uuf.id_utente_ufficio_ruolo = 7;
 */
+
+

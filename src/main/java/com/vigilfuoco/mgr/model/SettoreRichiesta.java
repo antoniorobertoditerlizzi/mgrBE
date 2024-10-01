@@ -14,19 +14,20 @@ import javax.persistence.Table;
 @Table(name = "tbl_settori_richieste")
 public class SettoreRichiesta {
 
-    @Id
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_settore_richiesta")
     private Long idSettoreRichiesta;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_tipologia_richiesta")
-    private TipologiaRichiesta tipologiaRichiesta;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_settore")
+    @JoinColumn(name = "id_settore", nullable = false)
     private Settore settore;
 
-    @Column(nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_tipologia_richiesta", nullable = false)
+    private TipologiaRichiesta tipologiaRichiesta;
+
+    @Column(name = "attivo", nullable = false)
     private Boolean attivo;
 
 	public Long getIdSettoreRichiesta() {

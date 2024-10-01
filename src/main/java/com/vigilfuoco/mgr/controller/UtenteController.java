@@ -20,6 +20,9 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.Map;
+
+import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -174,7 +177,7 @@ public class UtenteController {
     
    
 
-	// API Salva Richiesta a DB ---------------------------------------- /api/utente/saveUtentiUfficiRuoli
+	// API Salva UTENTI UFFICI RUOLI a DB ---------------------------------------- /api/utente/saveUtentiUfficiRuoli
 	@PostMapping("/saveUtentiUfficiRuoli")
 	public ResponseEntity<UtenteUfficioRuolo> createUtenteUfficioRuolo(
 			@RequestParam String accountName,
@@ -189,14 +192,13 @@ public class UtenteController {
         if (idUtente == 0) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-	    // Simulazione del recupero delle entità esistenti
-	    Utente utente = new Utente();  // Recupera l'utente da un service o repository
+	    Utente utente = new Utente();
 	    utente.setIdUtente(idUtente);
 	
-	    Ruolo ruolo = new Ruolo();  // Recupera il ruolo da un service o repository
+	    Ruolo ruolo = new Ruolo();
 	    ruolo.setIdRuolo(idRuolo);
 	
-	    SettoreUfficio settoreUfficio = new SettoreUfficio();  // Recupera il settore da un service o repository
+	    SettoreUfficio settoreUfficio = new SettoreUfficio();
 	    settoreUfficio.setIdSettoreUfficio(idSettoreUfficio);
 	
 	    UtenteUfficioRuolo uuf = utenteUfficioRuoloService.createUtenteUfficioRuolo(utente, ruolo, settoreUfficio, attivo);
@@ -204,6 +206,39 @@ public class UtenteController {
 	    return ResponseEntity.ok(uuf);
 	}
 	
+	
+	// API Modifica Flag Attivo in UTENTI UFFICI RUOLI a DB ---------------------------------------- /api/utente/updateUtentiUfficiRuoli
+	@PostMapping("/updateUtentiUfficiRuoli")
+	public ResponseEntity<UtenteUfficioRuolo> updateUtentiUfficiRuoli(
+			@RequestParam String accountName,
+	        @RequestParam Long idRuolo,
+	        @RequestParam Short idSettoreUfficio,
+	        @RequestParam boolean attivo) {
+	
+	    logger.debug("Ingresso api /api/utente/saveUtentiUfficiRuoli");
+
+	    int idUtente = utenteRepository.findIdUtenteByAccount(accountName);
+
+        if (idUtente == 0) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+	    Utente utente = new Utente();
+	    utente.setIdUtente(idUtente);
+	
+	    Ruolo ruolo = new Ruolo();
+	    ruolo.setIdRuolo(idRuolo);
+	
+	    SettoreUfficio settoreUfficio = new SettoreUfficio();
+	    settoreUfficio.setIdSettoreUfficio(idSettoreUfficio);
+	
+	    // Aggiornamento del flag attivo
+	    try {
+	        UtenteUfficioRuolo uuf = utenteUfficioRuoloService.updateAttivoFlag(utente, ruolo, settoreUfficio, attivo);
+	        return ResponseEntity.ok(uuf);
+	    } catch (EntityNotFoundException e) {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	    }
+	}
 	
 	// API LISTA RUOLI NOT BY USER -------------------------------------------- /api/utente/getAllRuoli
     @GetMapping("/getAllRuoli")
@@ -235,5 +270,11 @@ public class UtenteController {
         return ResponseEntity.ok(ruoli);
     }
     
+    // API che restituisce i ruoli e le funzionalità di un utente tramite account
+    @GetMapping("/getRuoliEFunzionalitaByAccountName")
+    public ResponseEntity<Map<String, Object>> getRuoliEFunzionalitaByAccount(@RequestParam String account) {
+        Map<String, Object> result = utenteService.getRuoliEFunzionalitaByAccount(account);
+        return ResponseEntity.ok(result);
+    }
     
 }

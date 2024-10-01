@@ -3,7 +3,9 @@ package com.vigilfuoco.mgr.service;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -24,10 +26,12 @@ import com.vigilfuoco.mgr.exception.InvalidTokenException;
 import com.vigilfuoco.mgr.exception.MenuException;
 import com.vigilfuoco.mgr.exception.NumeroRichiestaDuplicatoException;
 import com.vigilfuoco.mgr.exception.RichiestaException;
+import com.vigilfuoco.mgr.model.Funzionalita;
 import com.vigilfuoco.mgr.model.JwtResponse;
 import com.vigilfuoco.mgr.model.Ruolo;
 import com.vigilfuoco.mgr.model.Ufficio;
 import com.vigilfuoco.mgr.model.Utente;
+import com.vigilfuoco.mgr.repository.RuoloFunzionalitaRepository;
 import com.vigilfuoco.mgr.repository.RuoloRepository;
 import com.vigilfuoco.mgr.repository.UfficioRepository;
 import com.vigilfuoco.mgr.repository.UtenteRepository;
@@ -66,6 +70,10 @@ public class UtenteService {
     private BlacklistServiceImpl blacklistService;
     
 
+    @Autowired
+    private RuoloFunzionalitaRepository ruoloFunzionalitaRepository;
+    
+    
 	private UtenteWAUC_to_Utente_Service utenteWAUC_to_Utente_Service = new UtenteWAUC_to_Utente_Service();
 
 
@@ -422,9 +430,30 @@ public class UtenteService {
         return ruoloRepository.findDistinctRuoliByIdUtente(idUtente);
     }
 
+    // API che restituisce i ruoli di un utente tramite account
     public List<Ruolo> getRuoliUtenteByAccount(String account) {
         return ruoloRepository.findDistinctRuoliByAccount(account);
     }
     
+    
+    
+    /* API PER RESTITUIRE TUTTE LE FUNZIONALITA ASSOCIATE AI RUOLI DELL'UTENTE LOGGATO */
+
+    // Nuovo metodo per ottenere le funzionalità associate ai ruoli di un utente
+    public List<Funzionalita> getFunzionalitaByAccount(String account) {
+        return ruoloFunzionalitaRepository.findFunzionalitaByAccount(account);
+    }
+
+    // Metodo combinato per ottenere ruoli e funzionalità
+    public Map<String, Object> getRuoliEFunzionalitaByAccount(String account) {
+        List<Ruolo> ruoli = getRuoliUtenteByAccount(account);
+        List<Funzionalita> funzionalita = getFunzionalitaByAccount(account);
+        
+        Map<String, Object> result = new HashMap<>();
+        result.put("ruoli", ruoli);
+        result.put("funzionalita", funzionalita);
+        
+        return result;
+    }
     
 }
