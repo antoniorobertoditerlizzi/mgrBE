@@ -345,8 +345,13 @@ import com.vigilfuoco.mgr.utility.Utility;
 		        return settoreRichiestaRepository.save(settoreRichiesta);
 		    }
 		    
-		    public boolean updateAttivo(Long idSettoreRichiesta, boolean attivo) {
+		    public boolean updateSettoreRichiestaAttivo(Long idSettoreRichiesta, boolean attivo) {
 		        int updatedRows = settoreRichiestaRepository.updateAttivoByIdSettoreRichiesta(idSettoreRichiesta, attivo);
+		        return updatedRows > 0; // Restituisce true se è stato aggiornato almeno un record
+		    }
+		    
+		    public boolean updateTipologiaRichiestaAttivo(Short idTipologiaRichiesta, boolean attivo) {
+		        int updatedRows = repositoryTipologiaRichiesta.updateAttivoByIdTipologiaRichiesta(idTipologiaRichiesta, attivo);
 		        return updatedRows > 0; // Restituisce true se è stato aggiornato almeno un record
 		    }
 	}

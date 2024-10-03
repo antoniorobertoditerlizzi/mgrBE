@@ -697,7 +697,7 @@ public class RichiestaController {
             @RequestParam Long idSettoreRichiesta,
             @RequestParam boolean attivo) {
 
-        boolean success = richiestaService.updateAttivo(idSettoreRichiesta, attivo);
+        boolean success = richiestaService.updateSettoreRichiestaAttivo(idSettoreRichiesta, attivo);
         
         if (success) {
             return ResponseEntity.ok("Campo attivo aggiornato correttamente.");
@@ -706,6 +706,21 @@ public class RichiestaController {
         }
     }
     
+    
+    // API per aggiornare il campo attivo di TipplogiaRichiesta ------------------------------------ /api/richieste/updateTipologiaRichiesta
+    @PutMapping("/updateTipologiaRichiesta")
+    public ResponseEntity<String> updateTipologiaRichiesta(
+            @RequestParam Short idTipologiaRichiesta,
+            @RequestParam boolean attivo) {
+
+        boolean success = richiestaService.updateTipologiaRichiestaAttivo(idTipologiaRichiesta, attivo);
+        
+        if (success) {
+            return ResponseEntity.ok("Campo attivo aggiornato correttamente.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nessun record trovato con l'id specificato.");
+        }
+    }
     
     
     // API per ottenere tutti gli STATI RICHIESTA o filtrare per ID o descrizione  --- {{baseUrl}}/api/richiesta/getStatiRichiesta/
