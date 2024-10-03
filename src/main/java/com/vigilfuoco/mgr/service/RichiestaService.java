@@ -350,6 +350,11 @@ import com.vigilfuoco.mgr.utility.Utility;
 		        return updatedRows > 0; // Restituisce true se è stato aggiornato almeno un record
 		    }
 		    
+		    public boolean updateSettoreAttivo(Long idSettore, boolean attivo) {
+		        int updatedRows = repositorySettore.updateAttivoByIdSettore(idSettore, attivo);
+		        return updatedRows > 0; // Restituisce true se è stato aggiornato almeno un record
+		    }
+		    
 		    public boolean updateTipologiaRichiestaAttivo(Short idTipologiaRichiesta, boolean attivo) {
 		        int updatedRows = repositoryTipologiaRichiesta.updateAttivoByIdTipologiaRichiesta(idTipologiaRichiesta, attivo);
 		        return updatedRows > 0; // Restituisce true se è stato aggiornato almeno un record

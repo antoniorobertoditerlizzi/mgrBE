@@ -706,6 +706,20 @@ public class RichiestaController {
         }
     }
     
+    // API per aggiornare il campo attivo di Settore ------------------------------------ /api/richieste/updateSettore
+    @PutMapping("/updateSettore")
+    public ResponseEntity<String> updateSettore(
+            @RequestParam Long idSettore,
+            @RequestParam boolean attivo) {
+
+        boolean success = richiestaService.updateSettoreAttivo(idSettore, attivo);
+        
+        if (success) {
+            return ResponseEntity.ok("Campo attivo aggiornato correttamente.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nessun record trovato con l'id specificato.");
+        }
+    }
     
     // API per aggiornare il campo attivo di TipplogiaRichiesta ------------------------------------ /api/richieste/updateTipologiaRichiesta
     @PutMapping("/updateTipologiaRichiesta")
