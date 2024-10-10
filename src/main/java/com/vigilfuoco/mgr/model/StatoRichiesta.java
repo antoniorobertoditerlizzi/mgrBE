@@ -30,6 +30,9 @@ public class StatoRichiesta {
 
     @Column(name = "colore", length = 10, nullable = false)
     private String colore;
+    
+    @Column(name = "tab_wizard", nullable = false)
+    private int tabWizard;
 
     // Getters and Setters
     public Long getIdStatoRichiesta() {
@@ -80,12 +83,23 @@ public class StatoRichiesta {
         this.colore = colore;
     }
 
+    
+	public int getTabWizard() {
+		return tabWizard;
+	}
+
+	public void setTabWizard(int tabWizard) {
+		this.tabWizard = tabWizard;
+	}
+
 	@Override
 	public String toString() {
 		return "StatoRichiesta [idStatoRichiesta=" + idStatoRichiesta + ", descrizioneStatoRichiesta="
 				+ descrizioneStatoRichiesta + ", attivo=" + attivo + ", descrizioneStato=" + descrizioneStato
-				+ ", percentuale=" + percentuale + ", colore=" + colore + "]";
+				+ ", percentuale=" + percentuale + ", colore=" + colore + ", tabWizard=" + tabWizard + "]";
 	}
+
+
     
     
     
