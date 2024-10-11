@@ -384,10 +384,9 @@ public class RichiestaController {
     
 	// API List getListSettori ---------------------------------- /api/richiesta/getListSettori
     @GetMapping("/getListSettori")
-    public ResponseEntity<ResponseEntity<List<Settore>>> getListSettori() {
-        return ResponseEntity.ok(richiestaService.getListSettori());
+    public ResponseEntity<ResponseEntity<List<Settore>>> getListSettori(@RequestParam(required = false) Long idSettore) {
+        return ResponseEntity.ok(richiestaService.getListSettori(idSettore));
     }
-    
     
 	// API SALVA Settori  ---------------------------------- /api/richiesta/settori/save
     @PostMapping(value = "/settori/save", consumes = "application/json", produces = "application/json")

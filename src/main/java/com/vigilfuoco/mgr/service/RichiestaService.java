@@ -1,6 +1,7 @@
 package com.vigilfuoco.mgr.service;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -241,10 +242,22 @@ import com.vigilfuoco.mgr.utility.Utility;
 	    }
 	    
 		// Lista settori
-	    public ResponseEntity<List<Settore>> getListSettori() {
-	        List<Settore> settori = repositorySettore.findAll();
-	        return ResponseEntity.ok(settori);
+	    public ResponseEntity<List<Settore>> getListSettori(Long id) {
+	        if (id != null) {
+	            Optional<Settore> settore = repositorySettore.findById(id);
+	            return settore.map(s -> {
+	                        List<Settore> singleSettoreList = Collections.singletonList(s);
+	                        return ResponseEntity.ok(singleSettoreList);
+	                    })
+	                    .orElseGet(() -> ResponseEntity.notFound().build());
+	        } else {
+	            // Altrimenti, restituisci tutti i settori
+	            List<Settore> settori = repositorySettore.findAll();
+	            return ResponseEntity.ok(settori);
+	        }
 	    }
+	    
+	    
 	 
 		 //SALVA MODELLI TIPOLOGIA RICHIESTA
 		    public ResponseEntity<ModelloTipologiaRichiesta> saveModelliTipologiaRichiesta(ModelloTipologiaRichiesta modelliTipologieRichieste) {
