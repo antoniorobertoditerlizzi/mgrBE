@@ -28,7 +28,7 @@ CREATE TABLE `tbl_blacklisted_tokens` (
   `id_token` int unsigned NOT NULL AUTO_INCREMENT,
   `token` varchar(250) NOT NULL,
   PRIMARY KEY (`id_token`)
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -37,7 +37,7 @@ CREATE TABLE `tbl_blacklisted_tokens` (
 
 LOCK TABLES `tbl_blacklisted_tokens` WRITE;
 /*!40000 ALTER TABLE `tbl_blacklisted_tokens` DISABLE KEYS */;
-INSERT INTO `tbl_blacklisted_tokens` VALUES (42,'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzaW1vbmUubGVjY2EiLCJpYXQiOjE3Mjg2MzA3NzEsImV4cCI6MTcyODYzMTY3MX0.CvLMhQMXEZ4SpJ4uXovPg9PKDHlTdttfdZtYW0IRgdAYF2e4k66ixW1k2K-QbDcN5Hh5bPwufGKps0ojBWNOcg'),(43,'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzaW1vbmUubGVjY2EiLCJpYXQiOjE3Mjg2MzA5NzAsImV4cCI6MTcyODYzMTg3MH0.5ZUhbs53e4BCEPXWxXkrAa8X5lP5NC0iY6m9UwYNWfDfmY8rSB-veWJEiqUjRBMln4FlcyxBNhclUZDtDnWipA'),(44,'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbnRvbmlvcm9iZXJ0by5kaXRlcmxpenppIiwiaWF0IjoxNzI4NjMxMDA0LCJleHAiOjE3Mjg2MzE5MDR9.nka3z9f8ZdaGj2bu94yoHh-frMPqI93JeeY4L_-o6G2v7KPkbSmcSG-p96S1fB56Pq_DeSkMnssEVkU5d_crjQ'),(45,'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzaW1vbmUubGVjY2EiLCJpYXQiOjE3Mjg2MzEwNzQsImV4cCI6MTcyODYzMTk3NH0.f9z2nsUj0ibwopkPKrWlubnQlT4S4R8yEDlss9gDbO3R-34gIAy9fQOf9AEBzSGnE5HAcCm_1o79jfhywk3s1Q');
+INSERT INTO `tbl_blacklisted_tokens` VALUES (59,'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzaW1vbmUubGVjY2EiLCJpYXQiOjE3Mjg2MzYwMzUsImV4cCI6MTcyODYzNjkzNX0.ROqk8euhO29urXH_OuS41QuiZx8_v5ue6axxP7DmNQbnZYFs3bgqMiaJhqXD8uugUJoodbfBuh7P7P1xEKA1Ig');
 /*!40000 ALTER TABLE `tbl_blacklisted_tokens` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -85,7 +85,7 @@ CREATE TABLE `tbl_funzionalita` (
   `titolo` varchar(50) NOT NULL,
   `url` varchar(250) NOT NULL,
   PRIMARY KEY (`id_funzionalita`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -94,7 +94,7 @@ CREATE TABLE `tbl_funzionalita` (
 
 LOCK TABLES `tbl_funzionalita` WRITE;
 /*!40000 ALTER TABLE `tbl_funzionalita` DISABLE KEYS */;
-INSERT INTO `tbl_funzionalita` VALUES (1,'FU001','Visualizza Dashboard','Dashboard','/dashboard'),(2,'FU002','Visualizza Elenco Richieste','Elenco Richieste','/elencorichieste'),(3,'FU003','Inserisci Richiesta','Salva Richiesta','/inserimentoRichiesta'),(4,'FU004','Referente Ufficio','Referente Ufficio','/referenteUfficio'),(5,'FU005','Responsabile Settore','Responsabile Settore','/responsabileSettore'),(6,'FU006','Comandante','Comandante','/comandante'),(7,'FU007','Ufficio Evasione','Ufficio Evasione','/ufficioEvasione'),(8,'FU008','Evasa','Evasa','/Evasa'),(9,'FU009','Avanti','BTN - Avanti','/avanti'),(10,'FU010','Indietro','BTN - Indietro','/indietro');
+INSERT INTO `tbl_funzionalita` VALUES (1,'FU001','Visualizza Dashboard','Dashboard','/dashboard'),(2,'FU002','Visualizza Elenco Richieste','Elenco Richieste','/elencorichieste'),(3,'FU003','Inserisci Richiesta','Salva Richiesta','/inserimentoRichiesta'),(4,'FU004','Referente Ufficio','Referente Ufficio','/referenteUfficio'),(5,'FU005','Responsabile Settore','Responsabile Settore','/responsabileSettore'),(6,'FU006','Comandante','Comandante','/comandante'),(7,'FU007','Ufficio Evasione','Ufficio Evasione','/ufficioEvasione'),(8,'FU008','Evasa','Evasa','/Evasa'),(9,'FU009','Avanti','BTN - Avanti','/avanti'),(10,'FU010','Indietro','BTN - Indietro','/indietro'),(999,'FU999','Administrator','System Administrator','/administrator');
 /*!40000 ALTER TABLE `tbl_funzionalita` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -328,7 +328,7 @@ CREATE TABLE `tbl_ruoli_funzionalita` (
   KEY `fk_tbl_ruoli_has_tbl_funzionalita_tbl_ruoli1_idx` (`id_ruolo`),
   CONSTRAINT `fk_tbl_ruoli_has_tbl_funzionalita_tbl_funzionalita1` FOREIGN KEY (`id_funzionalita`) REFERENCES `tbl_funzionalita` (`id_funzionalita`),
   CONSTRAINT `fk_tbl_ruoli_has_tbl_funzionalita_tbl_ruoli1` FOREIGN KEY (`id_ruolo`) REFERENCES `tbl_ruoli` (`id_ruolo`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -337,7 +337,7 @@ CREATE TABLE `tbl_ruoli_funzionalita` (
 
 LOCK TABLES `tbl_ruoli_funzionalita` WRITE;
 /*!40000 ALTER TABLE `tbl_ruoli_funzionalita` DISABLE KEYS */;
-INSERT INTO `tbl_ruoli_funzionalita` VALUES (17,4,1,_binary ''),(18,4,4,_binary ''),(19,4,5,_binary ''),(20,4,6,_binary ''),(21,4,7,_binary ''),(22,4,8,_binary ''),(23,1,2,_binary ''),(24,1,3,_binary ''),(25,4,9,_binary ''),(26,4,10,_binary '');
+INSERT INTO `tbl_ruoli_funzionalita` VALUES (17,4,1,_binary ''),(18,4,4,_binary ''),(19,4,5,_binary ''),(20,4,6,_binary ''),(21,4,7,_binary ''),(22,4,8,_binary ''),(23,1,2,_binary ''),(24,1,3,_binary ''),(25,4,9,_binary ''),(26,4,10,_binary ''),(27,4,999,_binary '');
 /*!40000 ALTER TABLE `tbl_ruoli_funzionalita` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -618,4 +618,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-11  9:22:21
+-- Dump completed on 2024-10-11 10:42:46
