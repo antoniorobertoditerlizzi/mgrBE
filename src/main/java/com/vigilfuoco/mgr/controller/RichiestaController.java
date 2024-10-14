@@ -653,41 +653,48 @@ public class RichiestaController {
     }
     
     //API SALVA SETTORE RICHIESTA  -------------- /api/richiesta/saveSettoreRichiesta?idSettore=1&idTipologiaRichiesta=2&attivo=0
-    @PostMapping("/saveSettoreRichiesta")
-    public ResponseEntity<SettoreRichiesta> saveSettoreRichiesta(
+    @PostMapping("/saveSettoreRichiesta") 
+    public ResponseEntity<?> saveSettoreRichiesta(
+            @RequestParam(required = false) Long idSettore,
+            @RequestParam(required = false) Short idTipologiaRichiesta,
+            @RequestParam(required = false) Boolean attivo) {
 
-            @RequestParam Long idSettore,
-            @RequestParam Short idTipologiaRichiesta,
-            @RequestParam boolean attivo) {
-
-        // Verifica se la tupla esiste già
-        boolean exists = richiestaService.existsBySettoreAndTipologiaRichiesta(idSettore, idTipologiaRichiesta);
-        
-        if (exists) {
-        	logger.warn("Tupla per SettoriRichieste già presente a DB.");
-            return null;
+        if (idSettore == null || idTipologiaRichiesta == null || attivo == null) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Parametri obbligatori mancanti: idSettore, idTipologiaRichiesta, attivo");
         }
 
-        // Creazione dell'entità Settore
-        Settore settore = new Settore();
-        settore.setIdSettore(idSettore);
+        try {
+            // Controllo se la tupla esiste già
+            boolean exists = richiestaService.existsBySettoreAndTipologiaRichiesta(idSettore, idTipologiaRichiesta);
 
-        // Creazione dell'entità TipologiaRichiesta
-        TipologiaRichiesta tipologiaRichiesta = new TipologiaRichiesta();
-        tipologiaRichiesta.setIdTipologiaRichiesta(idTipologiaRichiesta);
+            if (exists) {
+                logger.warn("Tupla per SettoriRichieste già presente a DB.");
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Tupla già esistente.");
+            }
 
-        // Creazione dell'entità SettoreRichiesta
-        SettoreRichiesta settoreRichiesta = new SettoreRichiesta();
-        settoreRichiesta.setSettore(settore);
-        settoreRichiesta.setTipologiaRichiesta(tipologiaRichiesta);
-        settoreRichiesta.setAttivo(attivo);
+            // Creazione dell'entità Settore, SettoreRichiesta e salvataggio
+            Settore settore = new Settore();
+            settore.setIdSettore(idSettore);
 
-        // Salvataggio tramite il service
-        SettoreRichiesta savedSettoreRichiesta = richiestaService.saveSettoreRichiesta(settoreRichiesta);
+            TipologiaRichiesta tipologiaRichiesta = new TipologiaRichiesta();
+            tipologiaRichiesta.setIdTipologiaRichiesta(idTipologiaRichiesta);
 
-        // Restituzione della risposta con l'oggetto salvato
-        return ResponseEntity.ok(savedSettoreRichiesta);
+            SettoreRichiesta settoreRichiesta = new SettoreRichiesta();
+            settoreRichiesta.setSettore(settore);
+            settoreRichiesta.setTipologiaRichiesta(tipologiaRichiesta);
+            settoreRichiesta.setAttivo(attivo);
+
+            SettoreRichiesta savedSettoreRichiesta = richiestaService.saveSettoreRichiesta(settoreRichiesta);
+
+            return ResponseEntity.ok(savedSettoreRichiesta);
+        } catch (Exception e) {
+            logger.error("Errore durante il salvataggio di SettoreRichiesta", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore interno del server");
+        }
     }
+
     
     
     // API per aggiornare il campo attivo di SettoreRichiesta ------------------------------------ /api/richieste/updateSettoreRichiesta
