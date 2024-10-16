@@ -26,12 +26,14 @@ import com.vigilfuoco.mgr.model.ModelloConJson;
 import com.vigilfuoco.mgr.model.ModelloTipologiaRichiesta;
 import com.vigilfuoco.mgr.model.Priorita;
 import com.vigilfuoco.mgr.model.Richiesta;
+import com.vigilfuoco.mgr.model.RichiestaUpdateDTO;
 import com.vigilfuoco.mgr.model.Settore;
 import com.vigilfuoco.mgr.model.SettoreRichiesta;
 import com.vigilfuoco.mgr.model.SettoreUfficio;
 import com.vigilfuoco.mgr.model.StatoRichiesta;
 import com.vigilfuoco.mgr.model.TipologiaRichiesta;
 import com.vigilfuoco.mgr.model.Utente;
+import com.vigilfuoco.mgr.model.UtenteUfficioRuolo;
 import com.vigilfuoco.mgr.repository.ModelliTipologiaRichiestaRepository;
 import com.vigilfuoco.mgr.repository.ModelloRepository;
 import com.vigilfuoco.mgr.repository.PrioritaRepository;
@@ -43,6 +45,7 @@ import com.vigilfuoco.mgr.repository.StatoRichiestaRepository;
 import com.vigilfuoco.mgr.repository.TipologiaRichiestaRepository;
 import com.vigilfuoco.mgr.repository.UfficioRepository;
 import com.vigilfuoco.mgr.repository.UtenteRepository;
+import com.vigilfuoco.mgr.repository.UtenteUfficioRuoloRepository;
 import com.vigilfuoco.mgr.utility.Utility;
 
 /* 
@@ -80,6 +83,9 @@ import com.vigilfuoco.mgr.utility.Utility;
 	    private final SettoreRepository repositorySettore;
 	    
 	    @Autowired
+	    private final UtenteUfficioRuoloRepository repositoryUtenteUfficioRuolo;
+	    
+	    @Autowired
 	    private SettoreRichiestaRepository settoreRichiestaRepository;
 	    
 	    private static final Logger logger = LogManager.getLogger(RichiestaService.class);
@@ -94,6 +100,7 @@ import com.vigilfuoco.mgr.utility.Utility;
 					    		ModelliTipologiaRichiestaRepository repositoryModelliTipologiaRichiesta,
 					    		UfficioRepository repositoryUfficio,
 					    		SettoreUfficioRepository repositorySettoreUfficio,
+					    		UtenteUfficioRuoloRepository repositoryUtenteUfficioRuolo,
 					    		SettoreRepository repositorySettore) {
 	        this.repositoryUtente = repositoryUtente;
 			this.repositoryRichiesta = repositoryRichiesta;
@@ -103,6 +110,7 @@ import com.vigilfuoco.mgr.utility.Utility;
 	        this.repositoryStatoRichiesta = repositoryStatoRichiesta;
 	        this.repositoryModelliTipologiaRichiesta = repositoryModelliTipologiaRichiesta;
 	        this.repositorySettoreUfficio = repositorySettoreUfficio;
+	        this.repositoryUtenteUfficioRuolo = repositoryUtenteUfficioRuolo;
 	        this.repositorySettore = repositorySettore;
 	    }
 	    
@@ -371,5 +379,75 @@ import com.vigilfuoco.mgr.utility.Utility;
 		    public boolean updateTipologiaRichiestaAttivo(Short idTipologiaRichiesta, boolean attivo) {
 		        int updatedRows = repositoryTipologiaRichiesta.updateAttivoByIdTipologiaRichiesta(idTipologiaRichiesta, attivo);
 		        return updatedRows > 0; // Restituisce true se è stato aggiornato almeno un record
+		    }
+		    
+		    
+		    public List<SettoreRichiesta> getAllSettoreRichiesta() {
+		        return settoreRichiestaRepository.findAll();
+		    }
+
+		    public List<SettoreRichiesta> getByIdSettore(Long idSettore) {
+		        return settoreRichiestaRepository.findBySettore_IdSettore(idSettore);
+		    }
+
+		    public List<SettoreRichiesta> getByIdTipologiaRichiesta(Short idTipologiaRichiesta) {
+		        return settoreRichiestaRepository.findByTipologiaRichiesta_IdTipologiaRichiesta(idTipologiaRichiesta);
+		    }
+
+		    public List<SettoreRichiesta> getByIdSettoreAndIdTipologiaRichiesta(Long idSettore, Short idTipologiaRichiesta) {
+		        return settoreRichiestaRepository.findBySettore_IdSettoreAndTipologiaRichiesta_IdTipologiaRichiesta(idSettore, idTipologiaRichiesta);
+		    }
+		    
+		    
+		    
+		    public Richiesta aggiornaRichiesta(Long idRichiesta, RichiestaUpdateDTO richiestaUpdateDTO) {
+		        Richiesta richiesta = repositoryRichiesta.findById(idRichiesta)
+		                .orElseThrow(() -> new EntityNotFoundException("Richiesta non trovata con id: " + idRichiesta));
+
+		        if (richiestaUpdateDTO.getNumeroRichiesta() != null) {
+		            richiesta.setNumeroRichiesta(richiestaUpdateDTO.getNumeroRichiesta());
+		        }
+
+		        if (richiestaUpdateDTO.getIdStatoRichiesta() != null) {
+		            StatoRichiesta statoRichiesta = repositoryStatoRichiesta.findById(richiestaUpdateDTO.getIdStatoRichiesta())
+		                    .orElseThrow(() -> new EntityNotFoundException("Stato Richiesta non trovato"));
+		            richiesta.setStatoRichiesta(statoRichiesta);
+		        }
+
+		        if (richiestaUpdateDTO.getIdTipologiaRichiesta() != null) {
+		            TipologiaRichiesta tipologiaRichiesta = repositoryTipologiaRichiesta.findById(richiestaUpdateDTO.getIdTipologiaRichiesta())
+		                    .orElseThrow(() -> new EntityNotFoundException("Tipologia Richiesta non trovata"));
+		            richiesta.setTipologiaRichiesta(tipologiaRichiesta);
+		        }
+
+		        if (richiestaUpdateDTO.getRichiestaPersonale() != null) {
+		            richiesta.setRichiestaPersonale(richiestaUpdateDTO.getRichiestaPersonale());
+		        }
+
+		        if (richiestaUpdateDTO.getIdPriorita() != null) {
+		            Priorita priorita = repositoryPriorita.findById(richiestaUpdateDTO.getIdPriorita())
+		                    .orElseThrow(() -> new EntityNotFoundException("Priorità non trovata"));
+		            richiesta.setPriorita(priorita);
+		        }
+
+		        if (richiestaUpdateDTO.getIdUtenteUfficioRuoloStatoCorrente() != null) {
+		            UtenteUfficioRuolo utenteCorrente = repositoryUtenteUfficioRuolo.findById(richiestaUpdateDTO.getIdUtenteUfficioRuoloStatoCorrente())
+		                    .orElseThrow(() -> new EntityNotFoundException("Utente Ufficio Ruolo Corrente non trovato"));
+		            richiesta.setUtenteUfficioRuoloStatoCorrente(utenteCorrente);
+		        }
+
+		        if (richiestaUpdateDTO.getIdUtenteUfficioRuoloStatoIniziale() != null) {
+		            UtenteUfficioRuolo utenteIniziale = repositoryUtenteUfficioRuolo.findById(richiestaUpdateDTO.getIdUtenteUfficioRuoloStatoIniziale())
+		                    .orElseThrow(() -> new EntityNotFoundException("Utente Ufficio Ruolo Iniziale non trovato"));
+		            richiesta.setUtenteUfficioRuoloStatoIniziale(utenteIniziale);
+		        }
+
+		        if (richiestaUpdateDTO.getIdSettoreUfficio() != null) {
+		            SettoreUfficio settoreUfficio = repositorySettoreUfficio.findById(richiestaUpdateDTO.getIdSettoreUfficio())
+		                    .orElseThrow(() -> new EntityNotFoundException("Settore Ufficio non trovato"));
+		            richiesta.setSettoreUfficio(settoreUfficio);
+		        }
+
+		        return repositoryRichiesta.save(richiesta);
 		    }
 	}

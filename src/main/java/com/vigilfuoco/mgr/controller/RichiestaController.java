@@ -13,6 +13,7 @@ import com.vigilfuoco.mgr.model.ModelloConJson;
 import com.vigilfuoco.mgr.model.ModelloTipologiaRichiesta;
 import com.vigilfuoco.mgr.model.Priorita;
 import com.vigilfuoco.mgr.model.Richiesta;
+import com.vigilfuoco.mgr.model.RichiestaUpdateDTO;
 import com.vigilfuoco.mgr.model.Settore;
 import com.vigilfuoco.mgr.model.SettoreRichiesta;
 import com.vigilfuoco.mgr.model.SettoreUfficio;
@@ -671,7 +672,7 @@ public class RichiestaController {
 
             if (exists) {
                 logger.warn("Tupla per SettoriRichieste già presente a DB.");
-                return ResponseEntity.status(HttpStatus.CONFLICT).body("Tupla già esistente.");
+                return ResponseEntity.status(HttpStatus.OK).body("Warning: Tupla già esistente.");
             }
 
             // Creazione dell'entità Settore, SettoreRichiesta e salvataggio
@@ -695,7 +696,29 @@ public class RichiestaController {
         }
     }
 
-    
+    //API LISTA SETTORI RICHIESTA  -------------- /api/richiesta/getSettoriRichiesta
+    @GetMapping("/getSettoriRichiesta")
+    public ResponseEntity<List<SettoreRichiesta>> getSettoriRichiesta(
+            @RequestParam(required = false) Long idSettore,
+            @RequestParam(required = false) Short idTipologiaRichiesta) {
+
+        List<SettoreRichiesta> result;
+
+        // Filtra in base ai parametri ricevuti
+        if (idSettore != null && idTipologiaRichiesta != null) {
+            result = richiestaService.getByIdSettoreAndIdTipologiaRichiesta(idSettore, idTipologiaRichiesta);
+        } else if (idSettore != null) {
+            result = richiestaService.getByIdSettore(idSettore);
+        } else if (idTipologiaRichiesta != null) {
+            result = richiestaService.getByIdTipologiaRichiesta(idTipologiaRichiesta);
+        } else {
+            result = richiestaService.getAllSettoreRichiesta();
+        }
+
+        return ResponseEntity.ok(result);
+    }
+
+
     
     // API per aggiornare il campo attivo di SettoreRichiesta ------------------------------------ /api/richieste/updateSettoreRichiesta
     @PutMapping("/updateSettoreRichiesta")
@@ -791,9 +814,9 @@ public class RichiestaController {
     }
     
     
-    //API Modifica flag in stato richiesta ------------ {{baseUrl}}/api/richiesta/updateStatoRichiesta/?idStatoRichiesta=1&attivo=1
-    @PutMapping("/updateStatoRichiesta")
-    public ResponseEntity<?> updateStatoRichiesta(
+    //API Modifica flag in tbl stato richiesta ------------ {{baseUrl}}/api/richiesta/updateStatoRichiesta/?idStatoRichiesta=1&attivo=1
+    @PutMapping("/updateTblStatoRichiesta")
+    public ResponseEntity<?> updateTblStatoRichiesta(
             @RequestParam Long idStatoRichiesta,
             @RequestParam boolean attivo) {
         
@@ -819,7 +842,29 @@ public class RichiestaController {
     }
     
     
-    /*JSON DI ESEMPIO
+    //API Modifica PARZIALE dei campi richiesta senza passare l'intero oggetto  ------------ {{baseUrl}}/api/richiesta/updateRichiesta/58/
+    @PatchMapping("/updateRichiesta/{idRichiesta}")
+    public ResponseEntity<Richiesta> aggiornaRichiesta(@PathVariable Long idRichiesta,
+                                                       @RequestBody RichiestaUpdateDTO richiestaUpdateDTO) {
+        Richiesta richiestaAggiornata = richiestaService.aggiornaRichiesta(idRichiesta, richiestaUpdateDTO);
+        return ResponseEntity.ok(richiestaAggiornata);
+    }
+	/*
+	 {
+	  "numeroRichiesta": "RICH-001",
+	  "idStatoRichiesta": 2,
+	  "idTipologiaRichiesta": 3,
+	  "richiestaPersonale": true,
+	  "idPriorita": 1,
+	  "idUtenteUfficioRuoloStatoCorrente": 5,
+	  "idUtenteUfficioRuoloStatoIniziale": 4,
+	  "idSettoreUfficio": 7
+	}
+	*/
+    
+    
+    
+    /* ESEMPIO JSON 
      * 
      * {
     

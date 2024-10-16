@@ -19,11 +19,11 @@ public class SettoreRichiesta {
     @Column(name = "id_settore_richiesta")
     private Long idSettoreRichiesta;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_settore", nullable = false)
     private Settore settore;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipologia_richiesta", nullable = false)
     private TipologiaRichiesta tipologiaRichiesta;
 

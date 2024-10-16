@@ -43,9 +43,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 												            		"https://localhost:3000", 
 												            		"http://*.dipvvf.it", 
 												            		"https://*.dipvvf.it"));
-				            config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+				            config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
 				            config.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
-				    return config;})
+				            //config.setAllowCredentials(true);
+				            return config;})
         	.and()
 	        .csrf().disable()
 	        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
