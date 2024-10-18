@@ -74,6 +74,14 @@
                         {
                             "titolo": "Gestione Settori di Competenza",
                             "url": "/settore/list"
+                        },
+                        {
+                            "titolo": "Relazioni Settori-Tipologie",
+                            "url": "/settoritipologie"
+                        },
+                        {
+                            "titolo": "Gestione Ruoli Utente",
+                            "url": "/ruoliutente"
                         }
                     ]
                 },
