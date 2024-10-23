@@ -174,31 +174,6 @@ public class RichiestaController {
 
     
     
-
-
-    /*TEST
-    @GetMapping("/cerca")
-    public ResponseEntity<String> ricercaPerId(@RequestParam long id) throws IOException {
-
-    	return new ResponseEntity<String>("CIAO", HttpStatus.OK);
-	}*/
-	
-	
-	// API Ricerca per descrizione ------------------------------------ /api/richiesta/cerca/prima richiesta
-	/*@RequestMapping(value = "/cerca/{descrizione}", method = RequestMethod.GET, produces = "application/json")
-	@PreAuthorize("isAuthenticated()") 
-	public ResponseEntity<List<Richiesta>> ricercaDescrizione(@PathVariable("descrizione") String descrizione, Authentication authentication)
-	
-	{
-		// Controlli autorizzativi
-		RichiestaService.checkAuthorization(authentication);
-	    
-		logger.debug("Ingresso api /api/richiesta/cerca/{descrizione}" + "descrizione:"+ descrizione);
-		List<Richiesta> res = repositoryRichiesta.findByDescrizione(descrizione);
-		return new ResponseEntity<List<Richiesta>>(res, HttpStatus.OK);
-	}*/
-
-	
 	
 	// DEPRECATO - API Ricerca tutte le richieste ------------------------------------ /api/richiesta/all
 	@RequestMapping(value = "/all", method = RequestMethod.GET, produces = "application/json")
@@ -356,12 +331,11 @@ public class RichiestaController {
     */
     
     
-	// API List getListSettoriCompetenza ---------------------------------- /api/richiesta/getListSettoriCompetenza
+	// API List getListSettoriCompetenza tbl_settori_uffici --------------------------- /api/richiesta/getListSettoriCompetenza
     @GetMapping("/getListSettoriCompetenza")
     public ResponseEntity<ResponseEntity<List<SettoreUfficio>>> getListSettoriCompetenza() {
         return ResponseEntity.ok(richiestaService.getListSettoriCompetenza());
     }
-    
     
 	
 	// API SALVA Modelli Tipologia Richiesta --------------------------- /api/richiesta/modelliTipologiaRichiesta/save
@@ -400,10 +374,10 @@ public class RichiestaController {
 	}
     /*
      {
-    "descrizioneSettore": "Settore Esempio",
-    "emailSettore": "esempio@aaaa.com",
-    "attivo": true
-}
+	    "descrizioneSettore": "Settore Esempio",
+	    "emailSettore": "esempio@aaaa.com",
+	    "attivo": true
+	 }
      */
     
     // DATO ID TIPOLOGIA RESTITUISCE LA LISTA DEI MODELLI ASSOCIATI ---------------------------- /api/richiesta/modelli?idTipologiaRichiesta=20
@@ -863,72 +837,6 @@ public class RichiestaController {
 	*/
     
     
-    
-    /* ESEMPIO JSON 
-     * 
-     * {
-    
-		  "tipologiaRichiesta": {
-		    "idTipologiaRichiesta": 1,
-		    "descrizioneTipologiaRichiesta": "Acquisti"
-		  },
-		  "richiestaPersonale": false,
-		  "priorita": {
-		    "idPriorita": 1,
-		    "descrizionePriorita": "Alta"
-		  },
-		  "utenteUfficioRuoloStatoCorrente": {
-		    "idUtenteUfficioRuolo": 1
-		  },
-		  "utenteUfficioRuoloStatoIniziale": {
-		    "idUtenteUfficioRuolo": 1
-		  },
-	      "settoreUfficio": {
-		    "idSettoreUfficio": 1,
-		    "settore": {
-		      "idSettore": 1
-		    },
-		    "ufficio": {
-		      "idUfficio": 1
-		    }
-		  }
-    }
-		*/
-    
-    
-    
-    /* DEPRECATO JSON DI ESEMPIO
-		{
-		  "idRichiesta": null,
-		  "numeroRichiesta": "123",
-		  "statoRichiesta": {
-		    "idStatoRichiesta": 1,
-		    "descrizioneStatoRichiesta": "Inserita"
-		  },
-		  "tipologiaRichiesta": {
-		    "idTipologiaRichiesta": 1,
-		    "descrizioneTipologiaRichiesta": "Acquisti"
-		  },
-		  "richiestaPersonale": false,
-		  "priorita": {
-		    "idPriorita": 1,
-		    "descrizionePriorita": "Alta"
-		  },
-		  "dataInserimentoRichiesta": "2024-06-11T07:38:00.000Z",
-		  "dataUltimoStatoRichiesta": "2024-06-11T07:38:00.000Z",
-		  "utenteUfficioRuoloStatoCorrente": {
-		    "idUtenteUfficioRuolo": 1
-		  },
-		  "utenteUfficioRuoloStatoIniziale": {
-		    "idUtenteUfficioRuolo": 1
-		  },
-		  "settoreUfficio": {
-		    "idSettoreUfficio": 1
-		  }
-		}
-    }*/
-	
-    
 	// API Test 1------------------- /api/richiesta/ciao
 	@RequestMapping(value = "/api/richiesta/ciao", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<String> helloWorld()  
@@ -945,9 +853,5 @@ public class RichiestaController {
     }
     
 
-   
-
-	
-    
     
 }

@@ -24,7 +24,6 @@ import org.springframework.stereotype.Service;
 
 import com.vigilfuoco.mgr.exception.InvalidTokenException;
 import com.vigilfuoco.mgr.exception.MenuException;
-import com.vigilfuoco.mgr.exception.NumeroRichiestaDuplicatoException;
 import com.vigilfuoco.mgr.exception.RichiestaException;
 import com.vigilfuoco.mgr.model.Funzionalita;
 import com.vigilfuoco.mgr.model.JwtResponse;
@@ -393,26 +392,7 @@ public class UtenteService {
 	    //jsonData.put("array", menuList);
 	return menuList;
 	}
-	/*
-	// MENU UTENTE NON LOGGATO
-	@SuppressWarnings("unchecked")
-	private String getMenuNotLoggedORSmallUserMenu(String string) throws IOException {
-		 try {
-	         // Accedo al menu in base al ruolo
-	         Object menuObject = menuEntry.get("voci_menu");
-	         if (menuObject instanceof JSONArray) {
-	             return (JSONArray) menuObject;
-	         } else {
-	             logger.error("Errore sul tipo di 'voci_menu' per il ruolo " + idRuolo);
-	             return null;
-	         }
-	     } catch (JSONException e) {
-	         // Handle potential error if "voci_menu" is invalid
-	         logger.error("Invalido campo 'voci_menu' per il ruolo " + idRuolo, e);
-	         return null;
-	     }	
-		 return null;
-	}*/
+
 	
 	//Lista utenti appartenenti ad un ufficio
     public List<Ufficio> getUfficiUtente(int idUtente) {

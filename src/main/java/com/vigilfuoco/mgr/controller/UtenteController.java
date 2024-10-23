@@ -169,11 +169,11 @@ public class UtenteController {
 	    return ResponseEntity.ok(uffici);
    }
    
-	// API MENU ----------------------------------------------------------- /api/utente/menu?roleId=2
-    /*@GetMapping("/menu")
+	// API MENU TODO: Da eventualmente usare -------------------------------------- /api/utente/menu?roleId=2
+    @GetMapping("/menu")
     public ResponseEntity<String> getMenuByID(@RequestParam int roleId) throws IOException {
 		return utenteService.getMenuByRoleWS(roleId);
-	}*/
+	}
     
    
 
