@@ -59,13 +59,6 @@ public class UtenteController {
     @Autowired
     private UfficioRepository ufficioRepository;
     
-    private final UtenteService utenteService;
-
-    @Autowired
-    public UtenteController(UtenteService utenteService) {
-        this.utenteService = utenteService;
-    }
-    
     @Autowired
     private RuoloRepository ruoloRepository;
     
@@ -74,7 +67,13 @@ public class UtenteController {
 	
 	private static final Logger logger = LogManager.getLogger(UtenteController.class);
 	
-	
+    private final UtenteService utenteService;
+
+    @Autowired
+    public UtenteController(UtenteService utenteService) {
+        this.utenteService = utenteService;
+    }
+    
 	// API LoginCheck ----------------------------------------------------------- /api/utente/login?accountName=antonioroberto.diterlizzi
 	@GetMapping("login")
 	public ResponseEntity<JwtResponse> login(@RequestParam String accountName) throws IllegalArgumentException, IOException, JsonProcessingException {
@@ -100,7 +99,6 @@ public class UtenteController {
         return utenteService.logout(token);
 	}
 	
-	
 	// API Ricerca tutti gli utenti salvati a DB ----------------------------- /api/utente/accounts
     @GetMapping("accounts")
 	public ResponseEntity<Iterable<Utente>> getAccounts() throws IOException, JsonProcessingException {
@@ -117,7 +115,6 @@ public class UtenteController {
 		return new ResponseEntity<Iterable<Utente>>(res, HttpStatus.OK);
 	}
     
-
 	// API Ricerca utente per accountName --------------------------------- /api/utente/account/antonioroberto.diterlizzi
     @GetMapping("account/{accountName}")
     public ResponseEntity<Utente> getAccount(@PathVariable String accountName) throws IOException, JsonProcessingException {
@@ -127,7 +124,6 @@ public class UtenteController {
 		return new ResponseEntity<Utente>(res, HttpStatus.OK);
 	}
     
-    
     // API MENU PER ACCOUNT NAME [MENU SX] ------------------------------- /api/utente/menuByAccountName?accountName=antonioroberto.diterlizzi
     @GetMapping("/menuByAccountName")
     @PreAuthorize("isAuthenticated()") 
@@ -136,8 +132,7 @@ public class UtenteController {
     	return ResponseEntity.ok(jsonData);
     }
     
-    
-	// API MENU PER ID [MENU SX] ------------------------------------------ /api/utente/menu?roleId=2
+    // API MENU PER ID [MENU SX] ------------------------------------------ /api/utente/menu?roleId=2
    @GetMapping("/menu")
    @PreAuthorize("isAuthenticated()") 
    public ResponseEntity<List<Object>> getMenuByRole(@RequestParam int roleId) throws IOException {
@@ -175,8 +170,6 @@ public class UtenteController {
 		return utenteService.getMenuByRoleWS(roleId);
 	}*/
     
-   
-
 	// API Salva UTENTI UFFICI RUOLI a DB ---------------------------------------- /api/utente/saveUtentiUfficiRuoli
 	@PostMapping("/saveUtentiUfficiRuoli")
 	public ResponseEntity<UtenteUfficioRuolo> createUtenteUfficioRuolo(
@@ -254,8 +247,6 @@ public class UtenteController {
         return ResponseEntity.ok(uffici);
     }   
 	
-    
-    
     // API che restituisce i ruoli di un utente tramite ID
     @GetMapping("/getRuoliById")
     public ResponseEntity<List<Ruolo>> getRuoliByIdUtente(@RequestParam int idUtente) {

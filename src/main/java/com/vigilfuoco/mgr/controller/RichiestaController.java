@@ -63,7 +63,6 @@ import org.apache.logging.log4j.Logger;
  * 
  */
 
-
 @RestController
 @RequestMapping("/api/richiesta/")
 public class RichiestaController {
@@ -91,11 +90,6 @@ public class RichiestaController {
     private UtenteUfficioRuoloRepository utenteUfficioRuoloRepository;
     
     @Autowired
-    public RichiestaController(RichiestaService richiestaService) {
-        this.richiestaService = richiestaService;
-    }
-    
-    @Autowired
     private ModelloCompilatoRepository modelloCompilatoRepository;
     
     @Autowired
@@ -104,6 +98,10 @@ public class RichiestaController {
     @Autowired
     private StatoRichiestaService statoRichiestaService;
     
+    @Autowired
+    public RichiestaController(RichiestaService richiestaService) {
+        this.richiestaService = richiestaService;
+    }
 
     // API Ricerca Richiesta -------------------------------- es. /api/richiesta/cerca?idSettoreUfficio=2&idUfficio=1
     @GetMapping("/cerca")
@@ -146,11 +144,9 @@ public class RichiestaController {
         
         List<UtenteUfficioRuolo> utentiUfficiRuoli = utenteUfficioRuoloRepository.findByUtenteIdUtente(idUtente);
         
-               
         if (utentiUfficiRuoli.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-
         List<UfficioRichieste> result = new ArrayList<>();
         for (UtenteUfficioRuolo utenteUfficioRuolo : utentiUfficiRuoli) {
             Ufficio ufficio = utenteUfficioRuolo.getSettoreUfficio().getUfficio();
@@ -160,7 +156,6 @@ public class RichiestaController {
             	    .where(RichiestaSpecification.hasIdUfficio(ufficio.getIdUfficio()))
             	    .and(RichiestaSpecification.hasIdSettoreUfficio(settoreUfficio.getIdSettoreUfficio()))
             	);
-
             UfficioRichieste dto = new UfficioRichieste();
             dto.setIdUfficio(ufficio.getIdUfficio());
             dto.setDescrizioneUfficio(ufficio.getDescrizioneUfficio());
@@ -168,23 +163,23 @@ public class RichiestaController {
 
             result.add(dto);
         }
-
         return ResponseEntity.ok(result);
     }
 
     
     // API Utente Uffici Ruoli ------------------ {{baseUrl}}/api/richiesta/utente/uffici/ruoli/?idUtente=1
     @GetMapping("/utente/uffici/ruoli/")
-    public ResponseEntity<List<UtenteUfficioRuolo>> getUtenteUfficiRuoli(@RequestParam Integer idUtente) {
-        logger.debug("/utente/uffici/", idUtente);
-        
-        List<UtenteUfficioRuolo> utentiUfficiRuoli = utenteUfficioRuoloRepository.findByUtenteIdUtente(idUtente);
-        
-               
+    public ResponseEntity<List<UtenteUfficioRuolo>> getUtenteUfficiRuoli(@RequestParam(required = false) Integer idUtente) {
+        logger.debug("Chiamata a /utente/uffici/ruoli con idUtente: {}", idUtente);
+        List<UtenteUfficioRuolo> utentiUfficiRuoli;
+        if (idUtente != null) {
+            utentiUfficiRuoli = utenteUfficioRuoloRepository.findByUtenteIdUtente(idUtente);
+        } else {
+            utentiUfficiRuoli = utenteUfficioRuoloRepository.findAll();
+        }
         if (utentiUfficiRuoli.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-
         return ResponseEntity.ok(utentiUfficiRuoli);
     }
     
@@ -344,14 +339,12 @@ public class RichiestaController {
 	}
     */
     
-    
 	// API List getListSettoriCompetenza tbl_settori_uffici --------------------------- /api/richiesta/getListSettoriCompetenza
     @GetMapping("/getListSettoriCompetenza")
     public ResponseEntity<ResponseEntity<List<SettoreUfficio>>> getListSettoriCompetenza() {
         return ResponseEntity.ok(richiestaService.getListSettoriCompetenza());
     }
     
-	
 	// API SALVA Modelli Tipologia Richiesta --------------------------- /api/richiesta/modelliTipologiaRichiesta/save
     @PostMapping(value = "/modelliTipologiaRichiesta/save", consumes = "application/json", produces = "application/json")
 	@PreAuthorize("isAuthenticated()") 
@@ -369,7 +362,6 @@ public class RichiestaController {
 	       "idStatoRichiesta": 999
 	   }
 	}*/
-    
     
 	// API List getListSettori ---------------------------------- /api/richiesta/getListSettori
     @GetMapping("/getListSettori")
