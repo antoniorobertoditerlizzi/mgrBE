@@ -139,7 +139,7 @@ public class RichiestaController {
         return ResponseEntity.ok(results);
     }
     
-
+    // API Utente Uffici Richieste  ------------------------------- {{baseUrl}}/api/richiesta/utente/uffici/?idUtente=1
     @GetMapping("/utente/uffici/")
     public ResponseEntity<List<UfficioRichieste>> getUfficiRichieste(@RequestParam Integer idUtente) {
         logger.debug("/utente/uffici/", idUtente);
@@ -173,6 +173,20 @@ public class RichiestaController {
     }
 
     
+    // API Utente Uffici Ruoli ------------------ {{baseUrl}}/api/richiesta/utente/uffici/ruoli/?idUtente=1
+    @GetMapping("/utente/uffici/ruoli/")
+    public ResponseEntity<List<UtenteUfficioRuolo>> getUtenteUfficiRuoli(@RequestParam Integer idUtente) {
+        logger.debug("/utente/uffici/", idUtente);
+        
+        List<UtenteUfficioRuolo> utentiUfficiRuoli = utenteUfficioRuoloRepository.findByUtenteIdUtente(idUtente);
+        
+               
+        if (utentiUfficiRuoli.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(utentiUfficiRuoli);
+    }
     
 	
 	// DEPRECATO - API Ricerca tutte le richieste ------------------------------------ /api/richiesta/all
