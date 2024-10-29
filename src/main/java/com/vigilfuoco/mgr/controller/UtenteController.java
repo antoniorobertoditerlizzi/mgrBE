@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.vigilfuoco.mgr.exception.InvalidTokenException;
 import com.vigilfuoco.mgr.model.JwtResponse;
 import com.vigilfuoco.mgr.model.Ruolo;
-import com.vigilfuoco.mgr.model.SettoreUfficio;
 import com.vigilfuoco.mgr.model.Ufficio;
 import com.vigilfuoco.mgr.model.Utente;
 import com.vigilfuoco.mgr.model.UtenteUfficioRuolo;
@@ -12,8 +11,6 @@ import com.vigilfuoco.mgr.repository.RuoloRepository;
 import com.vigilfuoco.mgr.repository.UfficioRepository;
 import com.vigilfuoco.mgr.repository.UtenteRepository;
 import com.vigilfuoco.mgr.service.UtenteService;
-import com.vigilfuoco.mgr.service.UtenteUfficioRuoloService;
-
 
 import io.jsonwebtoken.UnsupportedJwtException;
 
@@ -21,8 +18,6 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
-
-import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -62,9 +57,6 @@ public class UtenteController {
     @Autowired
     private RuoloRepository ruoloRepository;
     
-	@Autowired
-	private UtenteUfficioRuoloService utenteUfficioRuoloService;
-	
 	private static final Logger logger = LogManager.getLogger(UtenteController.class);
 	
     private final UtenteService utenteService;
@@ -164,7 +156,7 @@ public class UtenteController {
 	    return ResponseEntity.ok(uffici);
    }
    
-	// API MENU TODO: Da eventualmente usare -------------------------------------- /api/utente/menu?roleId=2
+	// API MENU: Da eventualmente usare -------------------------------------- /api/utente/menu?roleId=2
     /*@GetMapping("/menu")
     public ResponseEntity<String> getMenuByID(@RequestParam int roleId) throws IOException {
 		return utenteService.getMenuByRoleWS(roleId);
@@ -172,35 +164,17 @@ public class UtenteController {
     
 	// API Salva UTENTI UFFICI RUOLI a DB ---------------------------------------- /api/utente/saveUtentiUfficiRuoli
 	@PostMapping("/saveUtentiUfficiRuoli")
-	public ResponseEntity<UtenteUfficioRuolo> createUtenteUfficioRuolo(
+	public ResponseEntity<?> createUtenteUfficioRuolo(
 			@RequestParam String accountName,
 	        @RequestParam Long idRuolo,
 	        @RequestParam Short idSettoreUfficio,
 	        @RequestParam boolean attivo) {
 	
-	    logger.debug("Ingresso api /api/utente/saveUtentiUfficiRuoli");
-
-	    int idUtente = utenteRepository.findIdUtenteByAccount(accountName);
-
-        if (idUtente == 0) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-	    Utente utente = new Utente();
-	    utente.setIdUtente(idUtente);
-	
-	    Ruolo ruolo = new Ruolo();
-	    ruolo.setIdRuolo(idRuolo);
-	
-	    SettoreUfficio settoreUfficio = new SettoreUfficio();
-	    settoreUfficio.setIdSettoreUfficio(idSettoreUfficio);
-	
-	    UtenteUfficioRuolo uuf = utenteUfficioRuoloService.createUtenteUfficioRuolo(utente, ruolo, settoreUfficio, attivo);
-	
-	    return ResponseEntity.ok(uuf);
+		return utenteService.createUtenteUfficioRuolo(accountName, idRuolo, idSettoreUfficio, attivo);
 	}
 	
 	
-	// API Modifica Flag Attivo in UTENTI UFFICI RUOLI a DB ---------------------------------------- /api/utente/updateUtentiUfficiRuoli
+	// API Modifica Flag Attivo in UTENTI UFFICI RUOLI a DB ----------------------- /api/utente/updateUtentiUfficiRuoli
 	@PostMapping("/updateUtentiUfficiRuoli")
 	public ResponseEntity<UtenteUfficioRuolo> updateUtentiUfficiRuoli(
 			@RequestParam String accountName,
@@ -208,30 +182,9 @@ public class UtenteController {
 	        @RequestParam Short idSettoreUfficio,
 	        @RequestParam boolean attivo) {
 	
-	    logger.debug("Ingresso api /api/utente/saveUtentiUfficiRuoli");
-
-	    int idUtente = utenteRepository.findIdUtenteByAccount(accountName);
-
-        if (idUtente == 0) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-	    Utente utente = new Utente();
-	    utente.setIdUtente(idUtente);
-	
-	    Ruolo ruolo = new Ruolo();
-	    ruolo.setIdRuolo(idRuolo);
-	
-	    SettoreUfficio settoreUfficio = new SettoreUfficio();
-	    settoreUfficio.setIdSettoreUfficio(idSettoreUfficio);
-	
-	    // Aggiornamento del flag attivo
-	    try {
-	        UtenteUfficioRuolo uuf = utenteUfficioRuoloService.updateAttivoFlag(utente, ruolo, settoreUfficio, attivo);
-	        return ResponseEntity.ok(uuf);
-	    } catch (EntityNotFoundException e) {
-	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-	    }
+		return utenteService.updateUtentiUfficiRuoli(accountName, idRuolo, idSettoreUfficio, attivo);
 	}
+	
 	
 	// API LISTA RUOLI NOT BY USER -------------------------------------------- /api/utente/getAllRuoli
     @GetMapping("/getAllRuoli")

@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityNotFoundException;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.apache.logging.log4j.LogManager;
@@ -28,8 +30,10 @@ import com.vigilfuoco.mgr.exception.RichiestaException;
 import com.vigilfuoco.mgr.model.Funzionalita;
 import com.vigilfuoco.mgr.model.JwtResponse;
 import com.vigilfuoco.mgr.model.Ruolo;
+import com.vigilfuoco.mgr.model.SettoreUfficio;
 import com.vigilfuoco.mgr.model.Ufficio;
 import com.vigilfuoco.mgr.model.Utente;
+import com.vigilfuoco.mgr.model.UtenteUfficioRuolo;
 import com.vigilfuoco.mgr.repository.RuoloFunzionalitaRepository;
 import com.vigilfuoco.mgr.repository.RuoloRepository;
 import com.vigilfuoco.mgr.repository.UfficioRepository;
@@ -72,7 +76,9 @@ public class UtenteService {
     @Autowired
     private RuoloFunzionalitaRepository ruoloFunzionalitaRepository;
     
-    
+	@Autowired
+	private UtenteUfficioRuoloService utenteUfficioRuoloService;
+	
 	private UtenteWAUC_to_Utente_Service utenteWAUC_to_Utente_Service = new UtenteWAUC_to_Utente_Service();
 
 
@@ -436,7 +442,67 @@ public class UtenteService {
         return result;
     }
     
+    public ResponseEntity<?> createUtenteUfficioRuolo(String accountName, Long idRuolo, Short idSettoreUfficio, boolean attivo) {
+	    logger.debug("Ingresso api /api/utente/saveUtentiUfficiRuoli");
+
+	    
+	    int idUtente = utenteRepository.findIdUtenteByAccount(accountName);
+
+        if (idUtente == 0) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+	    Utente utente = new Utente();
+	    utente.setIdUtente(idUtente);
+	
+	    Ruolo ruolo = new Ruolo();
+	    ruolo.setIdRuolo(idRuolo);
+	
+	    SettoreUfficio settoreUfficio = new SettoreUfficio();
+	    settoreUfficio.setIdSettoreUfficio(idSettoreUfficio);
+	
+	    
+        // Controllo se la tupla esiste già
+        boolean exists = utenteUfficioRuoloService.ifExistUtenteUfficioRuolo(utente, ruolo, settoreUfficio);
+
+        if (exists) {
+            logger.warn("Tupla per Utente Ufficio Ruolo già presente a DB.");
+            return ResponseEntity.status(HttpStatus.OK).body("Warning: Tupla già esistente.");
+        }
+        
+	    UtenteUfficioRuolo uuf = utenteUfficioRuoloService.createUtenteUfficioRuolo(utente, ruolo, settoreUfficio, attivo);
+	
+	    return ResponseEntity.ok(uuf);
+    }
     
     
-    
+   
+	public ResponseEntity<UtenteUfficioRuolo> updateUtentiUfficiRuoli(String accountName, Long idRuolo,
+			Short idSettoreUfficio, boolean attivo) {
+		
+		    logger.debug("Ingresso api /api/utente/saveUtentiUfficiRuoli");
+	
+		    int idUtente = utenteRepository.findIdUtenteByAccount(accountName);
+	
+	        if (idUtente == 0) {
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	        }
+		    Utente utente = new Utente();
+		    utente.setIdUtente(idUtente);
+		
+		    Ruolo ruolo = new Ruolo();
+		    ruolo.setIdRuolo(idRuolo);
+		
+		    SettoreUfficio settoreUfficio = new SettoreUfficio();
+		    settoreUfficio.setIdSettoreUfficio(idSettoreUfficio);
+		
+		    // Aggiornamento del flag attivo
+		    try {
+		        UtenteUfficioRuolo uuf = utenteUfficioRuoloService.updateAttivoFlag(utente, ruolo, settoreUfficio, attivo);
+		        return ResponseEntity.ok(uuf);
+		    } catch (EntityNotFoundException e) {
+		        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		    }
+	}
+	
+	
 }

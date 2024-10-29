@@ -25,6 +25,9 @@ public interface UtenteUfficioRuoloRepository extends JpaRepository<UtenteUffici
    List<UtenteUfficioRuolo> findByUtenteRuoloSettore(@Param("idUtente") int idUtente, @Param("idRuolo") Long idRuolo, @Param("idSettoreUfficio") Short idSettoreUfficio);
 
    UtenteUfficioRuolo findByUtenteAndRuoloAndSettoreUfficio(Utente utente, Ruolo ruolo, SettoreUfficio settoreUfficio);
+   
+   //Entitu Utente + Entity Ruolo + Entity SettoreUfficio, con rispettivi ID Entity
+   boolean existsByUtente_IdUtenteAndRuolo_IdRuoloAndSettoreUfficio_IdSettoreUfficio(Integer idUtente, Long idRuolo, Short idSettoreUfficio);
 
 }
 

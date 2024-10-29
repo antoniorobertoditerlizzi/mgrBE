@@ -29,13 +29,13 @@ public class UtenteUfficioRuoloService {
     public UtenteUfficioRuolo createUtenteUfficioRuolo(Utente utente, Ruolo ruolo, SettoreUfficio settoreUfficio, boolean attivo) {
         
         // Cerca se esiste già un'associazione
-        List<UtenteUfficioRuolo> associazioniEsistenti = utenteUfficioRuoloRepository.findByUtenteRuoloSettore(
+        /*List<UtenteUfficioRuolo> associazioniEsistenti = utenteUfficioRuoloRepository.findByUtenteRuoloSettore(
             utente.getIdUtente(), ruolo.getIdRuolo(), settoreUfficio.getIdSettoreUfficio());
 
         if (!associazioniEsistenti.isEmpty()) {
         	logger.warn("Associazione utente-ruolo-settore ufficio già presente");
             return null;
-        }
+        }*/
         
     	UtenteUfficioRuolo uuf = new UtenteUfficioRuolo();
         uuf.setUtente(utente);
@@ -63,6 +63,10 @@ public class UtenteUfficioRuoloService {
         } else {
             throw new EntityNotFoundException("Combinazione Utente-Ruolo-Settore non trovata.");
         }
+    }
+    
+    public boolean ifExistUtenteUfficioRuolo(Utente utente, Ruolo ruolo, SettoreUfficio settoreUfficio) {
+		return utenteUfficioRuoloRepository.existsByUtente_IdUtenteAndRuolo_IdRuoloAndSettoreUfficio_IdSettoreUfficio(utente.getIdUtente(), ruolo.getIdRuolo(), settoreUfficio.getIdSettoreUfficio());
     }
     
 }

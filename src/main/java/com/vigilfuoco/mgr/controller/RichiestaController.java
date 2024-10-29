@@ -147,21 +147,13 @@ public class RichiestaController {
         if (utentiUfficiRuoli.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        List<UfficioRichieste> result = new ArrayList<>();
-        for (UtenteUfficioRuolo utenteUfficioRuolo : utentiUfficiRuoli) {
-            Ufficio ufficio = utenteUfficioRuolo.getSettoreUfficio().getUfficio();
-            SettoreUfficio settoreUfficio = utenteUfficioRuolo.getSettoreUfficio();
-            
-            List<Richiesta> richieste = repositoryRichiesta.findAll(Specification
-            	    .where(RichiestaSpecification.hasIdUfficio(ufficio.getIdUfficio()))
-            	    .and(RichiestaSpecification.hasIdSettoreUfficio(settoreUfficio.getIdSettoreUfficio()))
-            	);
-            UfficioRichieste dto = new UfficioRichieste();
-            dto.setIdUfficio(ufficio.getIdUfficio());
-            dto.setDescrizioneUfficio(ufficio.getDescrizioneUfficio());
-            dto.setRichieste(richieste);
-
-            result.add(dto);
+        
+        List<UfficioRichieste> result;
+        try {
+            result = richiestaService.getUfficiRichieste(utentiUfficiRuoli);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
         return ResponseEntity.ok(result);
     }
@@ -411,68 +403,14 @@ public class RichiestaController {
 		return richiestaService.getPriorityList();
 	}
 	
+	
 	// API Salva Richiesta a DB ---------------------------------------- /api/richiesta/save
 	@PostMapping("/save")
 	public Richiesta save(@RequestBody Richiesta request, @RequestParam String accountname ) {
 	    logger.debug("Ingresso api /api/richiesta/save");
-	    
-	    // Check Stato Richiesta // Controllo su id richiesta se già censita allora modifico altrimenti imposto su inserita
-	    if (request.getStatoRichiesta() == null) { // || request.getStatoRichiesta().getIdStatoRichiesta() == 1) {
-		    StatoRichiesta statoInserita = new StatoRichiesta();
-		    statoInserita.setIdStatoRichiesta(1L); 		// 1 Inserita **********
-		    statoInserita.setPercentuale(10);			// 1 Inserita **********
-		    statoInserita.setColore("#808080");			// 1 Inserita **********
-		    request.setStatoRichiesta(statoInserita);
-	    
-		    // Verifico che TipologiaRichiesta e SettoreUfficio non siano null
-		    TipologiaRichiesta tipoRichiesta = request.getTipologiaRichiesta();
-		    Short idTipologiaRichiesta = tipoRichiesta.getIdTipologiaRichiesta();
-		    
-		    // Recupero la descrizione associata all'idTipologia
-		    String descrizioneTipologiaRichiesta = richiestaService.descTipologiaRichiesta(idTipologiaRichiesta);
-		    
-		    SettoreUfficio settoreUfficio = request.getSettoreUfficio();
-		    if (tipoRichiesta == null || settoreUfficio == null || settoreUfficio.getUfficio() == null) {
-		        throw new RichiestaException("TipologiaRichiesta, SettoreUfficio, o Ufficio non possono essere null");
-		    }
-	
-		    // Genero codice ISBN Richiesta
-		    Long idUtente = request.getUtenteUfficioRuoloStatoCorrente().getIdUtenteUfficioRuolo();
-		    Long idUfficio = settoreUfficio.getUfficio().getIdUfficio(); // ????????
-		    String numeroRichiesta = Utility.generaNumeroRichiesta(
-		    		descrizioneTipologiaRichiesta,
-		            idUtente,
-		            idUfficio
-		    );
-
-		    // Se numero richiesta esiste a DB genero eccezione
-		    if (richiestaService.existsByNumeroRichiesta(numeroRichiesta)) {
-		        throw new NumeroRichiestaDuplicatoException("Il numero richiesta esiste già: " + numeroRichiesta);
-		    }
-		    
-		    request.setNumeroRichiesta(numeroRichiesta);
-		    
-		    // Ricavo l'ora corrente nel fuso orario locale
-		    LocalDateTime now = LocalDateTime.now(ZoneId.of("Europe/Rome"));
-		    //LocalDateTime now = LocalDateTime.now();
-		    request.setDataInserimentoRichiesta(now);
-		    request.setDataUltimoStatoRichiesta(now);
-		    
-		    // STAMPO DATA ATTUALE
-		    String formattedDate = DateUtil.format(now);
-		    System.out.println("Formatted Date: " + formattedDate);
-		    
-		    // Salvataggio richiesta
-        	String oggetto = "Salvataggio Richiesta";
-		    Richiesta savedRichiesta = richiestaService.salvaRichiesta(request, accountname, numeroRichiesta, oggetto);
-		    if (savedRichiesta != null) {
-		        return savedRichiesta;
-		    } else {
-		        throw new RichiestaException("Errore durante il salvataggio della richiesta");
-		    }
-	    }
-		return null;
+	    return richiestaService.saveRequest(request, accountname, richiestaService);
 	}
+	
 	
 	// API Modifica Richiesta a DB ---------------------------------------- /api/richiesta/update/1?accountname=antonioroberto.diterlizzi
     @PutMapping("/update/{id}")

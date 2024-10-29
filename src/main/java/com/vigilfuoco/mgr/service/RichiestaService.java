@@ -1,6 +1,9 @@
 package com.vigilfuoco.mgr.service;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +16,7 @@ import javax.persistence.EntityNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,6 +24,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vigilfuoco.mgr.exception.NumeroRichiestaDuplicatoException;
 import com.vigilfuoco.mgr.exception.RichiestaException;
 import com.vigilfuoco.mgr.model.Modello;
 import com.vigilfuoco.mgr.model.ModelloConJson;
@@ -32,6 +37,8 @@ import com.vigilfuoco.mgr.model.SettoreRichiesta;
 import com.vigilfuoco.mgr.model.SettoreUfficio;
 import com.vigilfuoco.mgr.model.StatoRichiesta;
 import com.vigilfuoco.mgr.model.TipologiaRichiesta;
+import com.vigilfuoco.mgr.model.Ufficio;
+import com.vigilfuoco.mgr.model.UfficioRichieste;
 import com.vigilfuoco.mgr.model.Utente;
 import com.vigilfuoco.mgr.model.UtenteUfficioRuolo;
 import com.vigilfuoco.mgr.repository.ModelliTipologiaRichiestaRepository;
@@ -46,6 +53,8 @@ import com.vigilfuoco.mgr.repository.TipologiaRichiestaRepository;
 import com.vigilfuoco.mgr.repository.UfficioRepository;
 import com.vigilfuoco.mgr.repository.UtenteRepository;
 import com.vigilfuoco.mgr.repository.UtenteUfficioRuoloRepository;
+import com.vigilfuoco.mgr.specification.RichiestaSpecification;
+import com.vigilfuoco.mgr.utility.DateUtil;
 import com.vigilfuoco.mgr.utility.Utility;
 
 /* 
@@ -449,5 +458,90 @@ import com.vigilfuoco.mgr.utility.Utility;
 		        }
 
 		        return repositoryRichiesta.save(richiesta);
+		    }
+		    
+		    
+		    
+		    public List<UfficioRichieste> getUfficiRichieste(List<UtenteUfficioRuolo> utentiUfficiRuoli) {
+		    	
+		    	 List<UfficioRichieste> result = new ArrayList<>();
+		         for (UtenteUfficioRuolo utenteUfficioRuolo : utentiUfficiRuoli) {
+		             Ufficio ufficio = utenteUfficioRuolo.getSettoreUfficio().getUfficio();
+		             SettoreUfficio settoreUfficio = utenteUfficioRuolo.getSettoreUfficio();
+		             
+		             List<Richiesta> richieste = repositoryRichiesta.findAll(Specification
+		             	    .where(RichiestaSpecification.hasIdUfficio(ufficio.getIdUfficio()))
+		             	    .and(RichiestaSpecification.hasIdSettoreUfficio(settoreUfficio.getIdSettoreUfficio()))
+		             	);
+		             UfficioRichieste dto = new UfficioRichieste();
+		             dto.setIdUfficio(ufficio.getIdUfficio());
+		             dto.setDescrizioneUfficio(ufficio.getDescrizioneUfficio());
+		             dto.setRichieste(richieste);
+
+		             result.add(dto);
+		         }
+		         return result;
+		    }
+		    
+		    
+		    
+		    public Richiesta saveRequest(Richiesta request, String accountname, RichiestaService richiestaService) {
+		    	
+		    	// Check Stato Richiesta // Controllo su id richiesta se già censita allora modifico altrimenti imposto su inserita
+			    if (request.getStatoRichiesta() == null) { // || request.getStatoRichiesta().getIdStatoRichiesta() == 1) {
+				    StatoRichiesta statoInserita = new StatoRichiesta();
+				    statoInserita.setIdStatoRichiesta(1L); 		// 1 Inserita **********
+				    statoInserita.setPercentuale(10);			// 1 Inserita **********
+				    statoInserita.setColore("#808080");			// 1 Inserita **********
+				    request.setStatoRichiesta(statoInserita);
+			    
+				    // Verifico che TipologiaRichiesta e SettoreUfficio non siano null
+				    TipologiaRichiesta tipoRichiesta = request.getTipologiaRichiesta();
+				    Short idTipologiaRichiesta = tipoRichiesta.getIdTipologiaRichiesta();
+				    
+				    // Recupero la descrizione associata all'idTipologia
+				    String descrizioneTipologiaRichiesta = richiestaService.descTipologiaRichiesta(idTipologiaRichiesta);
+				    
+				    SettoreUfficio settoreUfficio = request.getSettoreUfficio();
+				    if (tipoRichiesta == null || settoreUfficio == null || settoreUfficio.getUfficio() == null) {
+				        throw new RichiestaException("TipologiaRichiesta, SettoreUfficio, o Ufficio non possono essere null");
+				    }
+			
+				    // Genero codice ISBN Richiesta
+				    Long idUtente = request.getUtenteUfficioRuoloStatoCorrente().getIdUtenteUfficioRuolo();
+				    Long idUfficio = settoreUfficio.getUfficio().getIdUfficio(); // ????????
+				    String numeroRichiesta = Utility.generaNumeroRichiesta(
+				    		descrizioneTipologiaRichiesta,
+				            idUtente,
+				            idUfficio
+				    );
+
+				    // Se numero richiesta esiste a DB genero eccezione
+				    if (richiestaService.existsByNumeroRichiesta(numeroRichiesta)) {
+				        throw new NumeroRichiestaDuplicatoException("Il numero richiesta esiste già: " + numeroRichiesta);
+				    }
+				    
+				    request.setNumeroRichiesta(numeroRichiesta);
+				    
+				    // Ricavo l'ora corrente nel fuso orario locale
+				    LocalDateTime now = LocalDateTime.now(ZoneId.of("Europe/Rome"));
+				    //LocalDateTime now = LocalDateTime.now();
+				    request.setDataInserimentoRichiesta(now);
+				    request.setDataUltimoStatoRichiesta(now);
+				    
+				    // STAMPO DATA ATTUALE
+				    String formattedDate = DateUtil.format(now);
+				    System.out.println("Formatted Date: " + formattedDate);
+				    
+				    // Salvataggio richiesta
+		        	String oggetto = "Salvataggio Richiesta";
+				    Richiesta savedRichiesta = richiestaService.salvaRichiesta(request, accountname, numeroRichiesta, oggetto);
+				    if (savedRichiesta != null) {
+				        return savedRichiesta;
+				    } else {
+				        throw new RichiestaException("Errore durante il salvataggio della richiesta");
+				    }
+			    }
+				return null;
 		    }
 	}
