@@ -56,6 +56,7 @@ public class UtenteService {
 	    this.menuResource = menuResource;
 	}
 	
+    
     @Autowired
     private UfficioRepository ufficioRepository;
     
@@ -68,11 +69,9 @@ public class UtenteService {
     @Autowired
     private RuoloRepository ruoloRepository;
 
-	
     @Autowired
     private BlacklistServiceImpl blacklistService;
     
-
     @Autowired
     private RuoloFunzionalitaRepository ruoloFunzionalitaRepository;
     
@@ -502,6 +501,37 @@ public class UtenteService {
 		    } catch (EntityNotFoundException e) {
 		        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		    }
+	}
+
+	public ResponseEntity<Iterable<Utente>> getAccounts(String waucBasePath, String waucPersonale) {
+    	String url = waucBasePath + waucPersonale + "/accounts";
+		logger.debug("Ingresso api" + url );
+		
+		Iterable<Utente> res = utenteRepository.findAll();
+		
+		for (Utente utente : res) {
+			logger.debug("richiesta.getId():"+utente.getAccount());
+			logger.debug("richiesta.getId():"+utente.getEmailUtente());
+		}
+
+		return new ResponseEntity<Iterable<Utente>>(res, HttpStatus.OK);
+	}
+
+	public ResponseEntity<Utente> getAccount(String accountName, String waucBasePath, String waucPersonale) {
+    	String url = waucBasePath + waucPersonale + "/account/" + accountName;
+		logger.debug("Ingresso api" + url );
+		Utente res = utenteRepository.findByAccount(accountName);
+		return new ResponseEntity<Utente>(res, HttpStatus.OK);
+	}
+
+	public ResponseEntity<List<Ruolo>> getAllRuoli() {
+        List<Ruolo> ruoli = ruoloRepository.findAll();
+        return ResponseEntity.ok(ruoli);
+	}
+
+	public ResponseEntity<List<Ufficio>> getAllUffici() {
+        List<Ufficio> uffici = ufficioRepository.findAll();
+        return ResponseEntity.ok(uffici);
 	}
 	
 	

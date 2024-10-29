@@ -2,11 +2,6 @@ package com.vigilfuoco.mgr.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.vigilfuoco.mgr.exception.InvalidRequestStateException;
-import com.vigilfuoco.mgr.exception.NumeroRichiestaDuplicatoException;
-import com.vigilfuoco.mgr.exception.ResourceNotFoundException;
-import com.vigilfuoco.mgr.exception.RichiestaException;
-import com.vigilfuoco.mgr.exception.RichiestaNotFoundException;
 import com.vigilfuoco.mgr.model.Modello;
 import com.vigilfuoco.mgr.model.ModelloCompilato;
 import com.vigilfuoco.mgr.model.ModelloConJson;
@@ -19,36 +14,14 @@ import com.vigilfuoco.mgr.model.SettoreRichiesta;
 import com.vigilfuoco.mgr.model.SettoreUfficio;
 import com.vigilfuoco.mgr.model.StatoRichiesta;
 import com.vigilfuoco.mgr.model.TipologiaRichiesta;
-import com.vigilfuoco.mgr.model.Ufficio;
 import com.vigilfuoco.mgr.model.UfficioRichieste;
 import com.vigilfuoco.mgr.model.UtenteUfficioRuolo;
-import com.vigilfuoco.mgr.repository.ModelliTipologiaRichiestaRepository;
-import com.vigilfuoco.mgr.repository.ModelloCompilatoRepository;
-import com.vigilfuoco.mgr.repository.ModelloRepository;
-import com.vigilfuoco.mgr.repository.RichiestaRepository;
-import com.vigilfuoco.mgr.repository.SettoreRepository;
-import com.vigilfuoco.mgr.repository.SettoreUfficioRepository;
-import com.vigilfuoco.mgr.repository.TipologiaRichiestaRepository;
-import com.vigilfuoco.mgr.repository.UtenteUfficioRuoloRepository;
 import com.vigilfuoco.mgr.service.RichiestaService;
-import com.vigilfuoco.mgr.service.StatoRichiestaService;
-import com.vigilfuoco.mgr.specification.RichiestaSpecification;
-import com.vigilfuoco.mgr.utility.DateUtil;
-import com.vigilfuoco.mgr.utility.Utility;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-
-import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -69,34 +42,7 @@ public class RichiestaController {
 	
     private static final Logger logger = LogManager.getLogger(RichiestaController.class);
 
-    @Autowired
-    private RichiestaRepository repositoryRichiesta;
-    
     private final RichiestaService richiestaService;
-    
-    @Autowired
-    private SettoreUfficioRepository repositorySettoreUfficio;
-    
-    @Autowired
-    private SettoreRepository repositorySettore;
-    
-    @Autowired
-    private ModelloRepository modelloRepository;
-    
-    @Autowired
-    private ModelliTipologiaRichiestaRepository repositoryModelliTipologiaRichiesta;
-
-    @Autowired
-    private UtenteUfficioRuoloRepository utenteUfficioRuoloRepository;
-    
-    @Autowired
-    private ModelloCompilatoRepository modelloCompilatoRepository;
-    
-    @Autowired
-    private TipologiaRichiestaRepository tipologiaRichiestaRepository;
-    
-    @Autowired
-    private StatoRichiestaService statoRichiestaService;
     
     @Autowired
     public RichiestaController(RichiestaService richiestaService) {
@@ -119,60 +65,21 @@ public class RichiestaController {
             @RequestParam(required = false) String descrizioneUfficio) throws IOException {
     	
     	logger.debug("Ingresso api /api/richiesta/cerca");
-    	
-        List<Richiesta> results = repositoryRichiesta.findAll(Specification
-                .where(RichiestaSpecification.hasId(id))
-                .and(RichiestaSpecification.hasNumeroRichiesta(numeroRichiesta))
-                .and(RichiestaSpecification.hasIdStatoRichiesta(idStatoRichiesta))
-                .and(RichiestaSpecification.hasDescrizioneStatoRichiesta(descrizioneStatoRichiesta))
-                .and(RichiestaSpecification.isAttivo(attivo))
-                .and(RichiestaSpecification.hasIdSettoreUfficio(idSettoreUfficio))
-                .and(RichiestaSpecification.hasIdUfficio(idUfficio))
-                .and(RichiestaSpecification.hasIdUtente(idUtente))
-                .and(RichiestaSpecification.hasIdUtenteUfficioRuoloStatoCorrente(idUtenteUfficioRuoloStatoCorrente))
-                .and(RichiestaSpecification.hasIdUtenteUfficioRuoloStatoIniziale(idUtenteUfficioRuoloStatoIniziale))
-                .and(RichiestaSpecification.hasDescrizioneUfficio(descrizioneUfficio))
-        );
-
-        return ResponseEntity.ok(results);
+    	return richiestaService.ricerca(id, numeroRichiesta, idStatoRichiesta, descrizioneStatoRichiesta, attivo, idSettoreUfficio, idUfficio, idUtente, idUtenteUfficioRuoloStatoCorrente, idUtenteUfficioRuoloStatoIniziale, descrizioneUfficio);
     }
     
     // API Utente Uffici Richieste  ------------------------------- {{baseUrl}}/api/richiesta/utente/uffici/?idUtente=1
     @GetMapping("/utente/uffici/")
     public ResponseEntity<List<UfficioRichieste>> getUfficiRichieste(@RequestParam Integer idUtente) {
         logger.debug("/utente/uffici/", idUtente);
-        
-        List<UtenteUfficioRuolo> utentiUfficiRuoli = utenteUfficioRuoloRepository.findByUtenteIdUtente(idUtente);
-        
-        if (utentiUfficiRuoli.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        
-        List<UfficioRichieste> result;
-        try {
-            result = richiestaService.getUfficiRichieste(utentiUfficiRuoli);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-        return ResponseEntity.ok(result);
+        return richiestaService.getUfficiRichiesteWS(idUtente);
     }
 
     
     // API Utente Uffici Ruoli ------------------ {{baseUrl}}/api/richiesta/utente/uffici/ruoli/?idUtente=1
     @GetMapping("/utente/uffici/ruoli/")
     public ResponseEntity<List<UtenteUfficioRuolo>> getUtenteUfficiRuoli(@RequestParam(required = false) Integer idUtente) {
-        logger.debug("Chiamata a /utente/uffici/ruoli con idUtente: {}", idUtente);
-        List<UtenteUfficioRuolo> utentiUfficiRuoli;
-        if (idUtente != null) {
-            utentiUfficiRuoli = utenteUfficioRuoloRepository.findByUtenteIdUtente(idUtente);
-        } else {
-            utentiUfficiRuoli = utenteUfficioRuoloRepository.findAll();
-        }
-        if (utentiUfficiRuoli.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(utentiUfficiRuoli);
+    	return richiestaService.getUtenteUfficiRuoli(idUtente);
     }
     
 	
@@ -181,15 +88,7 @@ public class RichiestaController {
 	@PreAuthorize("isAuthenticated()") 
 	public ResponseEntity<Iterable<Richiesta>> listaCompleta(Authentication authentication)
 	{
-		// Controlli autorizzativi
-		// RichiestaService.checkAuthorization(authentication);
-		
-		Iterable<Richiesta> res = repositoryRichiesta.findAll();
-		for (Richiesta richiesta : res) {
-			System.out.println("richiesta.getIdRichiesta(): " + richiesta.getIdRichiesta());
-			System.out.println("richiesta.getTipologiaRichiesta(): " + richiesta.getTipologiaRichiesta());
-		}
-		return new ResponseEntity<Iterable<Richiesta>>(res, HttpStatus.OK);
+		return richiestaService.listaCompleta(authentication);
 	}
 
 	
@@ -204,8 +103,7 @@ public class RichiestaController {
     //Leggo tutti i Modelli ------------------------------------ {{baseUrl}}/api/richiesta/modello/list
     @GetMapping("/modello/list")
     public ResponseEntity<List<Modello>> getModelli() {
-        List<Modello> modelli = modelloRepository.findAll();
-        return ResponseEntity.ok(modelli);
+        return richiestaService.getModelli();
     }
     
 	// Salva Form Modello ----------------------------------- http://localhost:8080/api/richiesta/modello/salva
@@ -214,21 +112,7 @@ public class RichiestaController {
             @RequestParam("descrizioneModello") String descrizioneModello,
             @RequestParam("transcodificaModello") MultipartFile file,
             @RequestParam("attivo") Boolean attivo) {
-        try {
-            // Creare una nuova entità Modello
-            Modello modello = new Modello();
-            modello.setDescrizioneModello(descrizioneModello);
-            modello.setTranscodificaModello(file.getBytes());
-            modello.setAttivo(attivo);
-
-            // Salvare l'entità nel database
-            Modello nuovoModello = modelloRepository.save(modello);
-
-            // Restituire l'entità salvata come risposta
-            return ResponseEntity.ok(nuovoModello);
-        } catch (IOException e) {
-            return ResponseEntity.status(500).build();  // Gestione dell'errore
-        }
+    	return richiestaService.salvaModello(descrizioneModello, file, attivo);
     }
     
     //SALVA Modello COMPILATO -------------------------------------- {{baseUrl}}/api/richiesta/modellocompilato/salva
@@ -238,28 +122,7 @@ public class RichiestaController {
             @RequestParam("idModello") Long idModello,
             @RequestParam("idRichiesta") Long idRichiesta,
             @RequestParam("transcodificaModelloCompilato") MultipartFile transcodificaFile) {
-        try {
-            // Carico l'entità Modello dal DB
-            Modello modello = modelloRepository.findById(idModello)
-                    .orElseThrow(() -> new RuntimeException("Modello non trovato"));
-
-            // Carico l'entità Richiesta dal DB
-            Richiesta richiesta = repositoryRichiesta.findById(idRichiesta)
-                    .orElseThrow(() -> new RuntimeException("Richiesta non trovata"));
-
-            // Creo e popolo l'entità ModelloCompilato
-            ModelloCompilato modelloCompilato = new ModelloCompilato();
-            modelloCompilato.setFileModello(fileModello.getBytes());
-            modelloCompilato.setModello(modello);
-            modelloCompilato.setRichiesta(richiesta);
-            modelloCompilato.setTranscodificaModelloCompilato(transcodificaFile.getBytes());
-
-            // Salvo l'entità ModelloCompilato nel DB
-            ModelloCompilato nuovoModelloCompilato = modelloCompilatoRepository.save(modelloCompilato);
-            return ResponseEntity.ok(nuovoModelloCompilato);
-        } catch (IOException e) {
-            return ResponseEntity.status(500).build();
-        }
+    	return richiestaService.salvaModelloCompilato(fileModello, idModello, idRichiesta, transcodificaFile);
     }
     
     /*	Tipo Body: form-data
@@ -272,16 +135,13 @@ public class RichiestaController {
     //Leggo tutti i Modelli COMPILATI
     @GetMapping("/modellocompilato/list")
     public ResponseEntity<List<ModelloCompilato>> getModelliCompilati() {
-        List<ModelloCompilato> modelliCompilati = modelloCompilatoRepository.findAll();
-        return ResponseEntity.ok(modelliCompilati);
+        return richiestaService.getModelliCompilati();
     }
 
     //Leggo il Modello COMPILATO by ID
     @GetMapping("/modellocompilato/{id}")
     public ResponseEntity<ModelloCompilato> getModelloCompilatoById(@PathVariable Long id) {
-        return modelloCompilatoRepository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    	return richiestaService.getModelloCompilatoById(id);
     }
     
 	// API Tipologie Richieste ---------------------------------------- /api/richiesta/tipologieRichieste/
@@ -370,13 +230,7 @@ public class RichiestaController {
 		logger.debug("Ingresso api SAVE /api/richiesta/settori/save");
 		return richiestaService.saveSettori(settore);
 	}
-    /*
-     {
-	    "descrizioneSettore": "Settore Esempio",
-	    "emailSettore": "esempio@aaaa.com",
-	    "attivo": true
-	 }
-     */
+  
     
     // DATO ID TIPOLOGIA RESTITUISCE LA LISTA DEI MODELLI ASSOCIATI ---------------------------- /api/richiesta/modelli?idTipologiaRichiesta=20
     @GetMapping("/modelli")
@@ -404,7 +258,7 @@ public class RichiestaController {
 	}
 	
 	
-	// API Salva Richiesta a DB ---------------------------------------- /api/richiesta/save
+	// API Salva Richiesta a DB ---------------------------- /api/richiesta/save
 	@PostMapping("/save")
 	public Richiesta save(@RequestBody Richiesta request, @RequestParam String accountname ) {
 	    logger.debug("Ingresso api /api/richiesta/save");
@@ -412,51 +266,19 @@ public class RichiestaController {
 	}
 	
 	
-	// API Modifica Richiesta a DB ---------------------------------------- /api/richiesta/update/1?accountname=antonioroberto.diterlizzi
+	// API Modifica Richiesta a DB -------------------------- /api/richiesta/update/1?accountname=antonioroberto.diterlizzi
     @PutMapping("/update/{id}")
     public Richiesta update(@PathVariable Long id, @RequestBody Richiesta updatedRequest, @RequestParam String accountname ) {
         logger.debug("Ingresso api /api/richiesta/update");
-
-        // Trova la richiesta esistente per ID
-        Richiesta existingRequest = richiestaService.findById(id)
-                .orElseThrow(() -> new RichiestaNotFoundException("Richiesta non trovata con ID: " + id));
-
-        // Aggiorna i campi della richiesta esistente con i nuovi dati
-        existingRequest.setTipologiaRichiesta(updatedRequest.getTipologiaRichiesta());
-        existingRequest.setSettoreUfficio(updatedRequest.getSettoreUfficio());
-        existingRequest.setDataUltimoStatoRichiesta(LocalDateTime.now(ZoneId.of("Europe/Rome")));
-        
-        // Capire gli altri campi...
-        
-        // Salva la richiesta aggiornata
-    	String oggetto = "Modifica Richiesta";
-        Richiesta savedRequest = richiestaService.salvaRichiesta(existingRequest, accountname, existingRequest.getNumeroRichiesta(), oggetto);
-        
-        if (savedRequest != null) {
-            return savedRequest;
-        } else {
-            throw new RichiestaException("Errore durante l'aggiornamento della richiesta");
-        }
+        return richiestaService.update(id, updatedRequest, accountname, richiestaService);
     }
+    
     
     // API Cancellazione Fisica Richiesta solo se id_stato_richiesta = 1
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteRichiesta(@PathVariable Long id) {
         logger.debug("Ingresso api /api/richiesta/delete");
-
-        // Verifica che la richiesta esista
-        Richiesta richiesta = repositoryRichiesta.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Richiesta non trovata con id: " + id));
-
-        // Controlla se lo stato della richiesta è 1
-        if (richiesta.getStatoRichiesta().getIdStatoRichiesta() != 1) {
-            throw new InvalidRequestStateException("La richiesta non può essere cancellata perché non ha lo stato di bozza ovvero 'Inserita'.");
-        }
-
-        // Cancella la richiesta
-        repositoryRichiesta.delete(richiesta);
-
-        return ResponseEntity.ok("Richiesta cancellata con successo.");
+        return richiestaService.deleteRichiesta(id);
     }
     
     
@@ -464,111 +286,21 @@ public class RichiestaController {
     // API Cancella tipologia richiesta: valido solo se la tipogia è priva di modello altrimenti cancellare prima il modello e le sue relazioni ----- {{baseUrl}}/api/richiesta/deleteTipologiaRichiesta/22
     @DeleteMapping("/deleteTipologiaRichiesta/{idTipologiaRichiesta}")
     public ResponseEntity<String> deleteTipologiaRichiesta(@PathVariable("idTipologiaRichiesta") Short idTipologiaRichiesta) {
-        try {
-            // Verifico se esistono richieste correlate già salvate a DB per quella tipologia richiesta
-            if (repositoryRichiesta.existsByTipologiaRichiesta_IdTipologiaRichiesta(idTipologiaRichiesta)) {
-                return ResponseEntity.badRequest().body("Impossibile cancellare la tipologia di richiesta: già utilizzata in altre richieste.");
-            }
-
-            // Recupero tutti i modelli associati alla tipologia richiesta
-            List<ModelloTipologiaRichiesta> modelliTipologia = repositoryModelliTipologiaRichiesta.findByTipologiaRichiesta_IdTipologiaRichiesta(idTipologiaRichiesta);
-
-            // Controllo che non ci siano modelli compilati per i modelli associati a questa tipologia
-            boolean hasCompilati = false;
-            List<Long> idModelli = new ArrayList<>();
-
-            for (ModelloTipologiaRichiesta modelloTipologia : modelliTipologia) {
-                Long idModello = modelloTipologia.getModello().getIdModello();
-                idModelli.add(idModello);
-
-                // Verifico se esistono modelli compilati associati a questo modello
-                List<ModelloCompilato> modelliCompilati = modelloCompilatoRepository.findByModelloIdAndTipologiaRichiestaIdAndAttivo(idModello, idTipologiaRichiesta);
-                if (!modelliCompilati.isEmpty()) {
-                    hasCompilati = true;
-                    break; // Termino se trovo un modello compilato
-                }
-            }
-
-            // Se ci sono modelli compilati, restituisci un errore
-            if (hasCompilati) {
-                return ResponseEntity.badRequest().body("Impossibile cancellare la tipologia di richiesta: presente un modello compilato associato.");
-            }
-
-            // Se non ci sono modelli compilati, cancelliamo i modelli associati
-            for (Long idModello : idModelli) {
-                modelloRepository.deleteById(idModello);
-        		logger.debug("Cancellato modello: " + idModello);
-            }
-
-            // Cancellazione delle righe associate nella tabella ModelloTipologiaRichiesta
-            repositoryModelliTipologiaRichiesta.deleteByTipologiaRichiesta_IdTipologiaRichiesta(idTipologiaRichiesta);
-    		logger.debug("Cancellate righe tabella modelli tipologia richiesta aventi idTipologiaRichiesta: " + idTipologiaRichiesta);
-
-            // Cancellazione della tipologia di richiesta
-            TipologiaRichiesta tipologiaRichiesta = tipologiaRichiestaRepository.findByIdTipologiaRichiesta(idTipologiaRichiesta);
-            if (tipologiaRichiesta == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("TipologiaRichiesta non trovata con ID: " + idTipologiaRichiesta);
-            }
-            tipologiaRichiestaRepository.delete(tipologiaRichiesta);
-    		logger.debug("Cancellata tipologiaRichiesta: " + idTipologiaRichiesta);
-            return ResponseEntity.ok("Tipologia di richiesta cancellata con successo.");
-
-        } catch (DataIntegrityViolationException e) {
-            // Gestione dell'eccezione di violazione del vincolo di integrità referenziale
-            return ResponseEntity.badRequest().body("Presenti relazioni con la tabella tbl_tipologie_richieste, impossibile procedere con l'eliminazione. Rimuovere prima relazione con tbl_modelli_tipologie_richieste.");
-
-        } catch (Exception e) {
-            // Gestione di altre eccezioni generiche
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore interno durante l'eliminazione della tipologia di richiesta.");
-        }
+        return richiestaService.deleteTipologiaRichiesta(idTipologiaRichiesta);
     }
     
     
     // API Cancella SettoreUfficio
     @DeleteMapping("/deleteSettoreUfficio/{idSettoreUfficio}")
     public ResponseEntity<String> deleteSettoreUfficio(@PathVariable("idSettoreUfficio") Short idSettoreUfficio) {
-        try {
-            // Verifica se ci sono richieste correlate
-            if (repositoryRichiesta.existsBySettoreUfficio_IdSettoreUfficio(idSettoreUfficio)) {
-                return ResponseEntity.badRequest().body("Impossibile cancellare il settore ufficio: già utilizzato in altre richieste.");
-            }
-            
-            // Recupera il SettoreUfficio da cancellare
-            SettoreUfficio settoreUfficio = repositorySettoreUfficio.findByIdSettoreUfficio(idSettoreUfficio);
-            
-            if (settoreUfficio == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("SettoreUfficio non trovato con ID: " + idSettoreUfficio);
-            }
-            
-            // Cancellazione del SettoreUfficio
-            repositorySettoreUfficio.delete(settoreUfficio);
-            return ResponseEntity.ok("SettoreUfficio cancellato con successo.");
-
-        } catch (DataIntegrityViolationException e) {
-            return ResponseEntity.badRequest().body("Presenti relazioni con altre tabelle, impossibile procedere con l'eliminazione.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore interno durante l'eliminazione del SettoreUfficio.");
-        }
+        return richiestaService.deleteSettoreUfficio(idSettoreUfficio);
     }
     
     
     // API Cancella Settore
     @DeleteMapping("/deleteSettore/{idSettore}")
     public ResponseEntity<String> deleteSettore(@PathVariable("idSettore") Long idSettore) {
-        try {
-            // Recupero del Settore
-            Settore settore = repositorySettore.findById(idSettore)
-                .orElseThrow(() -> new EntityNotFoundException("Settore non trovato con ID: " + idSettore));
-
-            // Cancellazione del Settore
-            repositorySettore.delete(settore);
-            return ResponseEntity.ok("Settore cancellato con successo.");
-
-        } catch (DataIntegrityViolationException e) {
-            return ResponseEntity.badRequest().body("Presenti relazioni con altre tabelle, impossibile procedere con l'eliminazione.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore interno durante l'eliminazione del Settore.");
-        }
+       return richiestaService.deleteSettoreUfficioWs(idSettore);
     }
     
     //API SALVA SETTORE RICHIESTA  -------------- /api/richiesta/saveSettoreRichiesta?idSettore=1&idTipologiaRichiesta=2&attivo=0
@@ -577,41 +309,7 @@ public class RichiestaController {
             @RequestParam(required = false) Long idSettore,
             @RequestParam(required = false) Short idTipologiaRichiesta,
             @RequestParam(required = false) Boolean attivo) {
-
-        if (idSettore == null || idTipologiaRichiesta == null || attivo == null) {
-            return ResponseEntity
-                    .badRequest()
-                    .body("Parametri obbligatori mancanti: idSettore, idTipologiaRichiesta, attivo");
-        }
-
-        try {
-            // Controllo se la tupla esiste già
-            boolean exists = richiestaService.existsBySettoreAndTipologiaRichiesta(idSettore, idTipologiaRichiesta);
-
-            if (exists) {
-                logger.warn("Tupla per SettoriRichieste già presente a DB.");
-                return ResponseEntity.status(HttpStatus.OK).body("Warning: Tupla già esistente.");
-            }
-
-            // Creazione dell'entità Settore, SettoreRichiesta e salvataggio
-            Settore settore = new Settore();
-            settore.setIdSettore(idSettore);
-
-            TipologiaRichiesta tipologiaRichiesta = new TipologiaRichiesta();
-            tipologiaRichiesta.setIdTipologiaRichiesta(idTipologiaRichiesta);
-
-            SettoreRichiesta settoreRichiesta = new SettoreRichiesta();
-            settoreRichiesta.setSettore(settore);
-            settoreRichiesta.setTipologiaRichiesta(tipologiaRichiesta);
-            settoreRichiesta.setAttivo(attivo);
-
-            SettoreRichiesta savedSettoreRichiesta = richiestaService.saveSettoreRichiesta(settoreRichiesta);
-
-            return ResponseEntity.ok(savedSettoreRichiesta);
-        } catch (Exception e) {
-            logger.error("Errore durante il salvataggio di SettoreRichiesta", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore interno del server");
-        }
+    	return richiestaService.saveSettoreRichiestaWs(idSettore, idTipologiaRichiesta, attivo);
     }
 
     //API LISTA SETTORI RICHIESTA  -------------- /api/richiesta/getSettoriRichiesta
@@ -620,23 +318,9 @@ public class RichiestaController {
             @RequestParam(required = false) Long idSettore,
             @RequestParam(required = false) Short idTipologiaRichiesta) {
 
-        List<SettoreRichiesta> result;
-
-        // Filtra in base ai parametri ricevuti
-        if (idSettore != null && idTipologiaRichiesta != null) {
-            result = richiestaService.getByIdSettoreAndIdTipologiaRichiesta(idSettore, idTipologiaRichiesta);
-        } else if (idSettore != null) {
-            result = richiestaService.getByIdSettore(idSettore);
-        } else if (idTipologiaRichiesta != null) {
-            result = richiestaService.getByIdTipologiaRichiesta(idTipologiaRichiesta);
-        } else {
-            result = richiestaService.getAllSettoreRichiesta();
-        }
-
-        return ResponseEntity.ok(result);
+    	return richiestaService.getSettoriRichiestaWs(idSettore, idTipologiaRichiesta);
     }
-
-
+    
     
     // API per aggiornare il campo attivo di SettoreRichiesta ------------------------------------ /api/richieste/updateSettoreRichiesta
     @PutMapping("/updateSettoreRichiesta")
@@ -644,8 +328,7 @@ public class RichiestaController {
             @RequestParam Long idSettoreRichiesta,
             @RequestParam boolean attivo) {
 
-        boolean success = richiestaService.updateSettoreRichiestaAttivo(idSettoreRichiesta, attivo);
-        
+        boolean success = richiestaService.updateSettoreRichiestaAttivo(idSettoreRichiesta, attivo);     
         if (success) {
             return ResponseEntity.ok("Campo attivo aggiornato correttamente.");
         } else {
@@ -660,7 +343,6 @@ public class RichiestaController {
             @RequestParam boolean attivo) {
 
         boolean success = richiestaService.updateSettoreAttivo(idSettore, attivo);
-        
         if (success) {
             return ResponseEntity.ok("Campo attivo aggiornato correttamente.");
         } else {
@@ -675,7 +357,6 @@ public class RichiestaController {
             @RequestParam boolean attivo) {
 
         boolean success = richiestaService.updateTipologiaRichiestaAttivo(idTipologiaRichiesta, attivo);
-        
         if (success) {
             return ResponseEntity.ok("Campo attivo aggiornato correttamente.");
         } else {
@@ -689,25 +370,7 @@ public class RichiestaController {
     public ResponseEntity<List<StatoRichiesta>> getAllStatiRichieste(
             @RequestParam(required = false) Long idStatoRichiesta,
             @RequestParam(required = false) String descrizioneStatoRichiesta) {
-
-        if (idStatoRichiesta != null) {
-            Optional<StatoRichiesta> statoRichiesta = statoRichiestaService.getById(idStatoRichiesta);
-            if (statoRichiesta.isPresent()) {
-                return ResponseEntity.ok(Collections.singletonList(statoRichiesta.get()));
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-            }
-        } else if (descrizioneStatoRichiesta != null) {
-            List<StatoRichiesta> statiRichiesta = statoRichiestaService.getByDescrizione(descrizioneStatoRichiesta);
-            if (!statiRichiesta.isEmpty()) {
-                return ResponseEntity.ok(statiRichiesta);
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-            }
-        } else {
-            List<StatoRichiesta> statiRichiesta = statoRichiestaService.getAll();
-            return ResponseEntity.ok(statiRichiesta);
-        }
+    	return richiestaService.getAllStatiRichieste(idStatoRichiesta, descrizioneStatoRichiesta);
     }
     
     //API INSERISCI NUOVO STATO RICHIESTA  ------------- {{baseUrl}}/api/richiesta/saveStatiRichiesta/?descrizioneStatoRichiesta=asd&attivo=1&descrizioneStato=asdasd&percentuale=3&colore=234234
@@ -719,16 +382,7 @@ public class RichiestaController {
             @RequestParam int percentuale,
             @RequestParam String colore) {
 
-        StatoRichiesta statoRichiesta = new StatoRichiesta();
-        statoRichiesta.setDescrizioneStatoRichiesta(descrizioneStatoRichiesta);
-        statoRichiesta.setAttivo(attivo);
-        statoRichiesta.setDescrizioneStato(descrizioneStato);
-        statoRichiesta.setPercentuale(percentuale);
-        statoRichiesta.setColore(colore);
-
-        StatoRichiesta savedStatoRichiesta = statoRichiestaService.save(statoRichiesta);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedStatoRichiesta);
+    	return richiestaService.createStatoRichiesta(descrizioneStatoRichiesta, attivo, descrizioneStato, percentuale, colore);
     }
     
     
@@ -738,25 +392,7 @@ public class RichiestaController {
             @RequestParam Long idStatoRichiesta,
             @RequestParam boolean attivo) {
         
-        try {
-            // Cerca lo stato richiesta tramite id
-            Optional<StatoRichiesta> statoRichiestaOptional = statoRichiestaService.getById(idStatoRichiesta);
-
-            if (statoRichiestaOptional.isPresent()) {
-                StatoRichiesta statoRichiesta = statoRichiestaOptional.get();
-                // Modifica il flag attivo
-                statoRichiesta.setAttivo(attivo);
-                // Salva lo stato aggiornato
-                StatoRichiesta updatedStatoRichiesta = statoRichiestaService.save(statoRichiesta);
-                return ResponseEntity.ok(updatedStatoRichiesta);
-            } else {
-                // Se non trovi lo stato richiesta con l'ID fornito
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("StatoRichiesta non trovato con ID: " + idStatoRichiesta);
-            }
-        } catch (Exception e) {
-            // Gestione di eventuali errori
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante l'aggiornamento dello stato richiesta.");
-        }
+    	return richiestaService.updateTblStatoRichiesta(idStatoRichiesta, attivo);
     }
     
     

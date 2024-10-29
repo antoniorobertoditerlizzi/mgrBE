@@ -47,15 +47,6 @@ public class UtenteController {
 	
 	@Value("${api.wauc.anagraficapersonale}")
     private String anagraficaPersonale;
-	
-    @Autowired
-    private UtenteRepository utenteRepository;
-    
-    @Autowired
-    private UfficioRepository ufficioRepository;
-    
-    @Autowired
-    private RuoloRepository ruoloRepository;
     
 	private static final Logger logger = LogManager.getLogger(UtenteController.class);
 	
@@ -94,26 +85,13 @@ public class UtenteController {
 	// API Ricerca tutti gli utenti salvati a DB ----------------------------- /api/utente/accounts
     @GetMapping("accounts")
 	public ResponseEntity<Iterable<Utente>> getAccounts() throws IOException, JsonProcessingException {
-    	String url = waucBasePath + waucPersonale + "/accounts";
-		logger.debug("Ingresso api" + url );
-		
-		Iterable<Utente> res = utenteRepository.findAll();
-		
-		for (Utente utente : res) {
-			logger.debug("richiesta.getId():"+utente.getAccount());
-			logger.debug("richiesta.getId():"+utente.getEmailUtente());
-		}
-
-		return new ResponseEntity<Iterable<Utente>>(res, HttpStatus.OK);
+    	return utenteService.getAccounts(waucBasePath, waucPersonale);
 	}
     
 	// API Ricerca utente per accountName --------------------------------- /api/utente/account/antonioroberto.diterlizzi
     @GetMapping("account/{accountName}")
     public ResponseEntity<Utente> getAccount(@PathVariable String accountName) throws IOException, JsonProcessingException {
-    	String url = waucBasePath + waucPersonale + "/account/" + accountName;
-		logger.debug("Ingresso api" + url );
-		Utente res = utenteRepository.findByAccount(accountName);
-		return new ResponseEntity<Utente>(res, HttpStatus.OK);
+    	return utenteService.getAccount(accountName, waucBasePath, waucPersonale);
 	}
     
     // API MENU PER ACCOUNT NAME [MENU SX] ------------------------------- /api/utente/menuByAccountName?accountName=antonioroberto.diterlizzi
@@ -189,15 +167,13 @@ public class UtenteController {
 	// API LISTA RUOLI NOT BY USER -------------------------------------------- /api/utente/getAllRuoli
     @GetMapping("/getAllRuoli")
     public ResponseEntity<List<Ruolo>> getAllRuoli() {
-        List<Ruolo> ruoli = ruoloRepository.findAll();
-        return ResponseEntity.ok(ruoli);
+    	return utenteService.getAllRuoli();
     }
 
 	// API LISTA UFFICI NOT BY USER -------------------------------------------- /api/utente/getAllUffici
     @GetMapping("/getAllUffici")
     public ResponseEntity<List<Ufficio>> getAllUffici() {
-        List<Ufficio> uffici = ufficioRepository.findAll();
-        return ResponseEntity.ok(uffici);
+    	return utenteService.getAllUffici();
     }   
 	
     // API che restituisce i ruoli di un utente tramite ID
