@@ -12,7 +12,6 @@ import com.vigilfuoco.mgr.model.Funzionalita;
 import com.vigilfuoco.mgr.model.Ruolo;
 import com.vigilfuoco.mgr.model.RuoloFunzionalita;
 import com.vigilfuoco.mgr.repository.FunzionalitaRepository;
-import com.vigilfuoco.mgr.repository.RuoloFunzionalitaRepository;
 import com.vigilfuoco.mgr.repository.RuoloRepository;
 import com.vigilfuoco.mgr.service.FunzionalitaService;
 
@@ -29,10 +28,7 @@ public class FunzionalitaController {
     @Autowired
     private FunzionalitaRepository funzionalitaRepository;
     
-    @Autowired
-    private RuoloFunzionalitaRepository ruoloFunzionalitaRepository;
     
-
     @PostMapping("/saveFunzionalita")
     public ResponseEntity<?> createFunzionalita(
             @RequestParam String codiceFunzionalita,

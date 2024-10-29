@@ -2,16 +2,12 @@ package com.vigilfuoco.mgr.service;
 
 
 import java.util.Calendar;
-import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.vigilfuoco.mgr.controller.UtenteController;
 import com.vigilfuoco.mgr.model.Ruolo;
 import com.vigilfuoco.mgr.model.SettoreUfficio;
 import com.vigilfuoco.mgr.model.Utente;
@@ -24,7 +20,7 @@ public class UtenteUfficioRuoloService {
     @Autowired
     private UtenteUfficioRuoloRepository utenteUfficioRuoloRepository;
 
-	private static final Logger logger = LogManager.getLogger(UtenteController.class);
+	//private static final Logger logger = LogManager.getLogger(UtenteController.class);
 
     public UtenteUfficioRuolo createUtenteUfficioRuolo(Utente utente, Ruolo ruolo, SettoreUfficio settoreUfficio, boolean attivo) {
         

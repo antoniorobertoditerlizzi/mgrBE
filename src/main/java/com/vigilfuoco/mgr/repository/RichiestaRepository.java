@@ -2,7 +2,6 @@ package com.vigilfuoco.mgr.repository;
 
 
 import com.vigilfuoco.mgr.model.Richiesta;
-import com.vigilfuoco.mgr.model.Settore;
 
 import java.util.List;
 import java.util.Set;

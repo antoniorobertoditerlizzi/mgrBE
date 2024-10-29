@@ -7,9 +7,6 @@ import com.vigilfuoco.mgr.model.Ruolo;
 import com.vigilfuoco.mgr.model.Ufficio;
 import com.vigilfuoco.mgr.model.Utente;
 import com.vigilfuoco.mgr.model.UtenteUfficioRuolo;
-import com.vigilfuoco.mgr.repository.RuoloRepository;
-import com.vigilfuoco.mgr.repository.UfficioRepository;
-import com.vigilfuoco.mgr.repository.UtenteRepository;
 import com.vigilfuoco.mgr.service.UtenteService;
 
 import io.jsonwebtoken.UnsupportedJwtException;
@@ -21,7 +18,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -57,7 +53,7 @@ public class UtenteController {
         this.utenteService = utenteService;
     }
     
-	// API LoginCheck ----------------------------------------------------------- /api/utente/login?accountName=antonioroberto.diterlizzi
+	// API LoginCheck ------------------------------------------------------ /api/utente/login?accountName=antonioroberto.diterlizzi
 	@GetMapping("login")
 	public ResponseEntity<JwtResponse> login(@RequestParam String accountName) throws IllegalArgumentException, IOException, JsonProcessingException {
     	String decodedAccountName = URLEncoder.encode(accountName, "UTF-8");
@@ -74,7 +70,7 @@ public class UtenteController {
 	    return utenteService.refreshToken(refreshToken);
 	}
 	
-	// API Loginout ----------------------------------------------------------- /api/utente/logout
+	// API Loginout --------------------------------------------------------- /api/utente/logout
 	@PostMapping("/logout")
 	public ResponseEntity<String> logout(@RequestHeader("Authorization") String authorizationHeader) throws InvalidTokenException, UnsupportedJwtException, IllegalArgumentException, IOException {
 	    String token = authorizationHeader.split(" ")[1];
@@ -82,7 +78,7 @@ public class UtenteController {
         return utenteService.logout(token);
 	}
 	
-	// API Ricerca tutti gli utenti salvati a DB ----------------------------- /api/utente/accounts
+	// API Ricerca tutti gli utenti salvati a DB --------------------------- /api/utente/accounts
     @GetMapping("accounts")
 	public ResponseEntity<Iterable<Utente>> getAccounts() throws IOException, JsonProcessingException {
     	return utenteService.getAccounts(waucBasePath, waucPersonale);
@@ -134,13 +130,13 @@ public class UtenteController {
 	    return ResponseEntity.ok(uffici);
    }
    
-	// API MENU: Da eventualmente usare -------------------------------------- /api/utente/menu?roleId=2
+	// API MENU: Da eventualmente usare ----------------------------------- /api/utente/menu?roleId=2
     /*@GetMapping("/menu")
     public ResponseEntity<String> getMenuByID(@RequestParam int roleId) throws IOException {
 		return utenteService.getMenuByRoleWS(roleId);
 	}*/
     
-	// API Salva UTENTI UFFICI RUOLI a DB ---------------------------------------- /api/utente/saveUtentiUfficiRuoli
+	// API Salva UTENTI UFFICI RUOLI a DB ---------------------------------- /api/utente/saveUtentiUfficiRuoli
 	@PostMapping("/saveUtentiUfficiRuoli")
 	public ResponseEntity<?> createUtenteUfficioRuolo(
 			@RequestParam String accountName,
@@ -152,7 +148,7 @@ public class UtenteController {
 	}
 	
 	
-	// API Modifica Flag Attivo in UTENTI UFFICI RUOLI a DB ----------------------- /api/utente/updateUtentiUfficiRuoli
+	// API Modifica Flag Attivo in UTENTI UFFICI RUOLI a DB ------------------ /api/utente/updateUtentiUfficiRuoli
 	@PostMapping("/updateUtentiUfficiRuoli")
 	public ResponseEntity<UtenteUfficioRuolo> updateUtentiUfficiRuoli(
 			@RequestParam String accountName,
@@ -164,13 +160,13 @@ public class UtenteController {
 	}
 	
 	
-	// API LISTA RUOLI NOT BY USER -------------------------------------------- /api/utente/getAllRuoli
+	// API LISTA RUOLI NOT BY USER ----------------------------------------- /api/utente/getAllRuoli
     @GetMapping("/getAllRuoli")
     public ResponseEntity<List<Ruolo>> getAllRuoli() {
     	return utenteService.getAllRuoli();
     }
 
-	// API LISTA UFFICI NOT BY USER -------------------------------------------- /api/utente/getAllUffici
+	// API LISTA UFFICI NOT BY USER ----------------------------------------- /api/utente/getAllUffici
     @GetMapping("/getAllUffici")
     public ResponseEntity<List<Ufficio>> getAllUffici() {
     	return utenteService.getAllUffici();

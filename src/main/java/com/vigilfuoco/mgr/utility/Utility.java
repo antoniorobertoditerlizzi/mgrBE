@@ -1,7 +1,6 @@
 package com.vigilfuoco.mgr.utility;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
@@ -38,8 +37,8 @@ public class Utility {
     }*/
     private static final String PREFISSO_TIPO_RICHIESTA = "R"; // REQ - Prefisso per il tipo di richiesta
     private static final int NUMERO_PROGRESSIVO_LENGTH = 4; // Lunghezza del numero progressivo
-    private static final int USER_ID_LENGTH = 4; // Lunghezza dell'ID utente
-    private static final char USER_FILL_SYMBOL = 'X'; // Simbolo di riempimento per userId
+    //private static final int USER_ID_LENGTH = 4; // Lunghezza dell'ID utente
+    //private static final char USER_FILL_SYMBOL = 'X'; // Simbolo di riempimento per userId
     private static final int UFF_ID_LENGTH = 4; // Lunghezza dell'ID ufficio
     private static final char UFF_FILL_SYMBOL = 'Z'; // Simbolo di riempimento per ufficioId
     
@@ -72,7 +71,7 @@ public class Utility {
         //String userId = String.format("%0" + USER_ID_LENGTH + "d", idUtente.intValue());	//0001 - 01
         //String ufficioId = String.format("%0" + UFF_ID_LENGTH + "d", idUfficio.intValue()); //0001 - 01
 
-        String userId = String.format("%d%s", idUtente, String.valueOf(USER_FILL_SYMBOL).repeat(USER_ID_LENGTH - String.valueOf(idUtente).length()));
+        //String userId = String.format("%d%s", idUtente, String.valueOf(USER_FILL_SYMBOL).repeat(USER_ID_LENGTH - String.valueOf(idUtente).length()));
         String ufficioId = String.format("%d%s", idUfficio, String.valueOf(UFF_FILL_SYMBOL).repeat(UFF_ID_LENGTH - String.valueOf(idUfficio).length()));
 
         

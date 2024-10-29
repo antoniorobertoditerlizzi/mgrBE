@@ -1,9 +1,6 @@
 package com.vigilfuoco.mgr.repository;
 
-
 import com.vigilfuoco.mgr.model.Utente;
-
-import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
