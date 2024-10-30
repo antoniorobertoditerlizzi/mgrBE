@@ -34,11 +34,11 @@ public class SwaggerConfig {
 	    
 	    private ApiInfo apiInfo() {
 	        return new ApiInfo(
-	          "REST API - Modulo Gestione Richieste", 
+	          "REST API - Modello Gestione Richieste", 
 	          "Definizione delle API.", 
 	          "API TOS", 
 	          "Termini del servizio", 
-	          new Contact("Vigili del Fuoco", "www.vigilfuoco.it", "antonioroberto.diterlizzi@vigilfuoco.it"),
+	          new Contact("Vigili del Fuoco", "https:\\www.vigilfuoco.it", "antonioroberto.diterlizzi@vigilfuoco.it"),
 	          "License of API", "API license URL", Collections.emptyList());
 	    }
 	
