@@ -53,7 +53,7 @@ import com.vigilfuoco.mgr.wauc.model.UtenteWAUC;
 	    			  //utente.setRuoloID(2); 		// Aggiornare quando ci sarà schema DB aggiornato
 	    			  utente.setCf(request.getCodiceFiscale());
 	    			  utente.setClassificazioneUtenteApp(0);
-	    			  utente.setAttivo(false);
+	    			  utente.setAttivo(true);
 	    		  }
 	    	//Salvo a DB l'utente trovato
 	        return utenteWAUCRepository2.save(utente);
