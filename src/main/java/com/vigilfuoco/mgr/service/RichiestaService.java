@@ -652,7 +652,7 @@ import com.vigilfuoco.mgr.utility.Utility;
 	            utentiUfficiRuoli = utenteUfficioRuoloRepository.findAll();
 	        }
 	        if (utentiUfficiRuoli.isEmpty()) {
-	            return ResponseEntity.notFound().build();
+	            return ResponseEntity.ok().build();
 	        }
 	        return ResponseEntity.ok(utentiUfficiRuoli);
 	}
