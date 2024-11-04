@@ -17,7 +17,7 @@ public interface UfficioRepository extends JpaRepository<Ufficio, Long> {
     join tbl_utenti_uffici_ruoli uur ON su.id_settore_ufficio = uur.id_settore_ufficio
 	where uur.id_utente=1;*/
 	
-    @Query("SELECT u FROM Ufficio u "
+    @Query("SELECT DISTINCT u FROM Ufficio u "
     		+ "JOIN SettoreUfficio su ON u.idUfficio = su.ufficio.idUfficio "
     		+ "JOIN UtenteUfficioRuolo uur ON su.idSettoreUfficio = uur.settoreUfficio.idSettoreUfficio "
     		+ "WHERE uur.utente.idUtente = :idUtente")
