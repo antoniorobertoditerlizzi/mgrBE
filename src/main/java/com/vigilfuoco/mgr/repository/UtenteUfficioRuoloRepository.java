@@ -14,7 +14,7 @@ import java.util.List;
 
 @Repository
 public interface UtenteUfficioRuoloRepository extends JpaRepository<UtenteUfficioRuolo, Long> {
-   List<UtenteUfficioRuolo> findByUtenteIdUtente(Integer idUtente);
+   List<UtenteUfficioRuolo> findByUtenteIdUtenteAndAttivo(Integer idUtente, Boolean attivo);
    
    List<UtenteUfficioRuolo> findByIdUtenteUfficioRuolo(Long idUtente);
    

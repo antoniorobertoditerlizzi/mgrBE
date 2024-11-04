@@ -643,11 +643,11 @@ import com.vigilfuoco.mgr.utility.Utility;
 		
 	}
 
-	public ResponseEntity<List<UtenteUfficioRuolo>> getUtenteUfficiRuoli(Integer idUtente) {
-	     logger.debug("Chiamata a /utente/uffici/ruoli con idUtente: {}", idUtente);
+	public ResponseEntity<List<UtenteUfficioRuolo>> getUtenteUfficiRuoli(Integer idUtente, Boolean attivo) {
+	     logger.debug("Chiamata a /utente/uffici/ruoli con idUtente: {}", idUtente, attivo);
 	        List<UtenteUfficioRuolo> utentiUfficiRuoli;
 	        if (idUtente != null) {
-	            utentiUfficiRuoli = utenteUfficioRuoloRepository.findByUtenteIdUtente(idUtente);
+	            utentiUfficiRuoli = utenteUfficioRuoloRepository.findByUtenteIdUtente(idUtente, attivo);
 	        } else {
 	            utentiUfficiRuoli = utenteUfficioRuoloRepository.findAll();
 	        }

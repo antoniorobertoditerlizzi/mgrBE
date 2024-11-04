@@ -78,8 +78,10 @@ public class RichiestaController {
     
     // API Utente Uffici Ruoli ------------------ {{baseUrl}}/api/richiesta/utente/uffici/ruoli/?idUtente=1
     @GetMapping("/utente/uffici/ruoli/")
-    public ResponseEntity<List<UtenteUfficioRuolo>> getUtenteUfficiRuoli(@RequestParam(required = false) Integer idUtente) {
-    	return richiestaService.getUtenteUfficiRuoli(idUtente);
+    public ResponseEntity<List<UtenteUfficioRuolo>> getUtenteUfficiRuoli(
+    		@RequestParam(required = false) Integer idUtente,
+    		@RequestParam(required = false) Boolean attivo) {
+    	return richiestaService.getUtenteUfficiRuoli(idUtente, attivo);
     }
     
 	
