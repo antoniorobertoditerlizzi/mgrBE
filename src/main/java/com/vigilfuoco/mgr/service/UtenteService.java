@@ -433,6 +433,7 @@ public class UtenteService {
     public Map<String, Object> getRuoliEFunzionalitaByAccount(String account) {
         List<Ruolo> ruoli = getRuoliUtenteByAccount(account);
         List<Funzionalita> funzionalita = getFunzionalitaByAccount(account);
+
         
         Map<String, Object> result = new HashMap<>();
         result.put("ruoli", ruoli);
