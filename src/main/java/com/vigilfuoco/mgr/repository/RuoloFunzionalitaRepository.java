@@ -18,7 +18,7 @@ public interface RuoloFunzionalitaRepository extends JpaRepository<RuoloFunziona
             "WHERE rf.ruolo.idRuolo IN (" +
             "SELECT uur.ruolo.idRuolo FROM UtenteUfficioRuolo uur " +
             "WHERE uur.utente.account = :account " +
-            "AND uur.ruolo.attivo = 1)" +
+            "AND uur.attivo = 1)" +
             "AND rf.attivo = 1")
      List<Funzionalita> findFunzionalitaByAccount(String account);
     

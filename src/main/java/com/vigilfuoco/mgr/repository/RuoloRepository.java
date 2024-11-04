@@ -16,13 +16,13 @@ public interface RuoloRepository extends JpaRepository<Ruolo, Long> {
     // Trovo i ruoli distinti associati all'utente tramite ID utente, filtrati per ruoli attivi
     @Query("SELECT DISTINCT uur.ruolo FROM UtenteUfficioRuolo uur " +
            "WHERE uur.utente.idUtente = :idUtente " +
-           "AND uur.ruolo.attivo = true")
+           "AND uur.attivo = true")
     List<Ruolo> findDistinctRuoliByIdUtente(int idUtente);
 
     // Trovo i ruoli distinti associati all'utente tramite account name, filtrati per ruoli attivi
     @Query("SELECT DISTINCT uur.ruolo FROM UtenteUfficioRuolo uur " +
            "WHERE uur.utente.account = :account " +
-           "AND uur.ruolo.attivo = true")
+           "AND uur.attivo = true")
     List<Ruolo> findDistinctRuoliByAccount(String account);
     
 }
