@@ -647,7 +647,7 @@ import com.vigilfuoco.mgr.utility.Utility;
 	     logger.debug("Chiamata a /utente/uffici/ruoli con idUtente: {}", idUtente, attivo);
 	        List<UtenteUfficioRuolo> utentiUfficiRuoli;
 	        if (idUtente != null) {
-	            utentiUfficiRuoli = utenteUfficioRuoloRepository.findByUtenteIdUtente(idUtente, attivo);
+	            utentiUfficiRuoli = utenteUfficioRuoloRepository.findByUtenteIdUtenteAndAttivo(idUtente, attivo);
 	        } else {
 	            utentiUfficiRuoli = utenteUfficioRuoloRepository.findAll();
 	        }
@@ -659,8 +659,8 @@ import com.vigilfuoco.mgr.utility.Utility;
 	
 
 
-	public ResponseEntity<List<UfficioRichieste>> getUfficiRichiesteWS(Integer idUtente) {
-		List<UtenteUfficioRuolo> utentiUfficiRuoli = utenteUfficioRuoloRepository.findByUtenteIdUtente(idUtente);
+	public ResponseEntity<List<UfficioRichieste>> getUfficiRichiesteWS(Integer idUtente, Boolean attivo) {
+		List<UtenteUfficioRuolo> utentiUfficiRuoli = utenteUfficioRuoloRepository.findByUtenteIdUtenteAndAttivo(idUtente, attivo);
         
         if (utentiUfficiRuoli.isEmpty()) {
             return ResponseEntity.notFound().build();

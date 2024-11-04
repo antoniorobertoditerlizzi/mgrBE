@@ -70,9 +70,9 @@ public class RichiestaController {
     
     // API Utente Uffici Richieste  ------------------------------- {{baseUrl}}/api/richiesta/utente/uffici/?idUtente=1
     @GetMapping("/utente/uffici/")
-    public ResponseEntity<List<UfficioRichieste>> getUfficiRichieste(@RequestParam Integer idUtente) {
+    public ResponseEntity<List<UfficioRichieste>> getUfficiRichieste(@RequestParam Integer idUtente, @RequestParam(required = false) Boolean attivo) {
         logger.debug("/utente/uffici/", idUtente);
-        return richiestaService.getUfficiRichiesteWS(idUtente);
+        return richiestaService.getUfficiRichiesteWS(idUtente, attivo);
     }
 
     
