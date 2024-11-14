@@ -631,6 +631,17 @@ import com.vigilfuoco.mgr.utility.Utility;
 	}
 
 
+	// Metodo di utilità per convertire un array di byte in MultipartFile
+	/*private MultipartFile convertToMultipartFile(byte[] content, String fileName, String contentType) {
+	    DiskFileItem fileItem = new DiskFileItem("file", contentType, false, fileName, content.length, null);
+	    try {
+	        IOUtils.write(content, fileItem.getOutputStream());
+	    } catch (IOException e) {
+	        throw new RuntimeException("Errore nella creazione del MultipartFile", e);
+	    }
+	    return new CommonsMultipartFile(fileItem);
+	}*/
+
 	public ResponseEntity<Modello> salvaModello(String descrizioneModello, MultipartFile file, Boolean attivo) {
 
         try {

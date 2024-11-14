@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 /*
  * Main per il RUN dell'applicativo di BE. REPO: https://github.com/antoniorobertoditerlizzi/mgrBE/
  * git add -f target/mgr-0.0.1-SNAPSHOT.war
+ * BE Realizzato da II Antonio Roberto Di Terlizzi
  */
 @EnableScheduling
 @SpringBootApplication
