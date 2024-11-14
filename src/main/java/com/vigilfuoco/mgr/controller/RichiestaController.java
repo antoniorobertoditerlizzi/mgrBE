@@ -120,10 +120,10 @@ public class RichiestaController {
     //SALVA Modello COMPILATO -------------------------------------- {{baseUrl}}/api/richiesta/modellocompilato/salva
     @PostMapping("/modellocompilato/salva")
     public ResponseEntity<ModelloCompilato> salvaModelloCompilato(
-            @RequestParam("fileModello") MultipartFile fileModello,
+            @RequestParam("fileModello") String fileModello,
             @RequestParam("idModello") Long idModello,
             @RequestParam("idRichiesta") Long idRichiesta,
-            @RequestParam("transcodificaModelloCompilato") MultipartFile transcodificaFile) {
+            @RequestParam("transcodificaModelloCompilato") String transcodificaFile) {
     	return richiestaService.salvaModelloCompilato(fileModello, idModello, idRichiesta, transcodificaFile);
     }
     

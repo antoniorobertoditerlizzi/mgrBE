@@ -48,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				            //config.setAllowCredentials(true);
 				            return config;})
         	.and()
-	        .csrf().disable()
+	        .csrf().disable() //Cross-site request forgery
 	        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 	        .and()
 	        .authorizeRequests()

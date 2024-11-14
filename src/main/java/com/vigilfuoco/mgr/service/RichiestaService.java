@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -597,8 +598,15 @@ import com.vigilfuoco.mgr.utility.Utility;
 	        
 	    }
 	
-	public ResponseEntity<ModelloCompilato> salvaModelloCompilato(MultipartFile fileModello, Long idModello, Long idRichiesta, MultipartFile transcodificaFile) {
+	public ResponseEntity<ModelloCompilato> salvaModelloCompilato(String fileModello, Long idModello, Long idRichiesta, String transcodificaFile) {
         try {
+        	
+            // Conversione fileModello (JSON) in byte
+            byte[] fileModelloBytes = fileModello.getBytes(StandardCharsets.UTF_8);
+
+            // Conversione transcodificaFile (Base64) in byte
+            byte[] transcodificaFileBytes = Base64.getDecoder().decode(transcodificaFile);
+
             // Carico l'entità Modello dal DB
             Modello modello = modelloRepository.findById(idModello)
                     .orElseThrow(() -> new RuntimeException("Modello non trovato"));
@@ -609,15 +617,15 @@ import com.vigilfuoco.mgr.utility.Utility;
 
             // Creo e popolo l'entità ModelloCompilato
             ModelloCompilato modelloCompilato = new ModelloCompilato();
-            modelloCompilato.setFileModello(fileModello.getBytes());
+            modelloCompilato.setFileModello(fileModelloBytes);
             modelloCompilato.setModello(modello);
             modelloCompilato.setRichiesta(richiesta);
-            modelloCompilato.setTranscodificaModelloCompilato(transcodificaFile.getBytes());
+            modelloCompilato.setTranscodificaModelloCompilato(transcodificaFileBytes);
 
             // Salvo l'entità ModelloCompilato nel DB
             ModelloCompilato nuovoModelloCompilato = modelloCompilatoRepository.save(modelloCompilato);
             return ResponseEntity.ok(nuovoModelloCompilato);
-        } catch (IOException e) {
+        } catch (Exception e) {
             return ResponseEntity.status(500).build();
         }
 	}
