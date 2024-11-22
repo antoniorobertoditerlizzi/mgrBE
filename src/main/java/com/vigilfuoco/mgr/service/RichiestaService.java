@@ -972,5 +972,22 @@ import com.vigilfuoco.mgr.utility.Utility;
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
 	}
+	
+	public ResponseEntity<?> getModelliCompilati(Long idModelloCompilato, Long idRichiesta) {
+        if (idRichiesta != null) {
+            List<ModelloCompilato> modelliCompilati = modelloCompilatoRepository.findByRichiesta_IdRichiesta(idRichiesta);
+            return modelliCompilati.isEmpty() 
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.ok(modelliCompilati);
+        }
+
+        if (idModelloCompilato != null) {
+            return modelloCompilatoRepository.findById(idModelloCompilato)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        }
+
+        return ResponseEntity.badRequest().body("Fornire almeno un parametro.");
+    }
 
 }

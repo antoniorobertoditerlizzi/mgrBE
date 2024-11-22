@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.vigilfuoco.mgr.model.Modello;
 import com.vigilfuoco.mgr.model.ModelloCompilato;
+import com.vigilfuoco.mgr.model.ModelloCompilatoDTO;
 import com.vigilfuoco.mgr.model.ModelloConJson;
 import com.vigilfuoco.mgr.model.ModelloTipologiaRichiesta;
 import com.vigilfuoco.mgr.model.Priorita;
@@ -119,12 +120,8 @@ public class RichiestaController {
     
     //SALVA Modello COMPILATO -------------------------------------- {{baseUrl}}/api/richiesta/modellocompilato/salva
     @PostMapping("/modellocompilato/salva")
-    public ResponseEntity<ModelloCompilato> salvaModelloCompilato(
-            @RequestParam("fileModello") String fileModello,
-            @RequestParam("idModello") Long idModello,
-            @RequestParam("idRichiesta") Long idRichiesta,
-            @RequestParam("transcodificaModelloCompilato") String transcodificaFile) {
-    	return richiestaService.salvaModelloCompilato(fileModello, idModello, idRichiesta, transcodificaFile);
+    public ResponseEntity<ModelloCompilato> salvaModelloCompilato(@RequestBody ModelloCompilatoDTO request) {
+    	return richiestaService.salvaModelloCompilato(request.getFileModello(), request.getIdModello(), request.getIdRichiesta(), request.getTranscodificaFile());
     }
     
     /*	Tipo Body: form-data
@@ -145,6 +142,15 @@ public class RichiestaController {
     public ResponseEntity<ModelloCompilato> getModelloCompilatoById(@PathVariable Long id) {
     	return richiestaService.getModelloCompilatoById(id);
     }
+    
+    //Leggo la lista dei Modelli COMPILATI by ID o i modelli compilati associati ad un idRichiesta
+    @GetMapping("/modellocompilato")
+    public ResponseEntity<?> getModelliCompilati(
+            @RequestParam(required = false) Long idModelloCompilato,
+            @RequestParam(required = false) Long idRichiesta) {
+        return richiestaService.getModelliCompilati(idModelloCompilato, idRichiesta);
+    }
+    
     
 	// API Tipologie Richieste ---------------------------------------- /api/richiesta/tipologieRichieste/
 	@RequestMapping(value = "/tipologieRichieste/", method = RequestMethod.GET, produces = "application/json")

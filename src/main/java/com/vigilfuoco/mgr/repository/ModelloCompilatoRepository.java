@@ -22,4 +22,7 @@ public interface ModelloCompilatoRepository extends JpaRepository<ModelloCompila
     List<ModelloCompilato> findByModelloIdAndTipologiaRichiestaIdAndAttivo(
             @Param("idModello") Long idModello,
             @Param("idTipologiaRichiesta") Short idTipologiaRichiesta);
+    
+    List<ModelloCompilato> findByRichiesta_IdRichiesta(Long idRichiesta);
+
 }
