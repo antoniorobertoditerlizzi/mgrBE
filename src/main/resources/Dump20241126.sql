@@ -28,7 +28,7 @@ CREATE TABLE `tbl_blacklisted_tokens` (
   `id_token` int unsigned NOT NULL AUTO_INCREMENT,
   `token` varchar(250) NOT NULL,
   PRIMARY KEY (`id_token`)
-) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -37,6 +37,7 @@ CREATE TABLE `tbl_blacklisted_tokens` (
 
 LOCK TABLES `tbl_blacklisted_tokens` WRITE;
 /*!40000 ALTER TABLE `tbl_blacklisted_tokens` DISABLE KEYS */;
+INSERT INTO `tbl_blacklisted_tokens` VALUES (3,'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbnRvbmlvcm9iZXJ0by5kaXRlcmxpenppIiwiaWF0IjoxNzMyNjI4OTY4LCJleHAiOjE3MzI2Mjk4Njh9.tSCCW4ilFAcPvfYEIsOLA3hWdW_2gUCaGZDcZVh7KyLqAFIezmrdNGO5ozeW7zkibYTelqJrbl0JZx3XmrQC0w'),(4,'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbnRvbmlvLmZlcnJhdG8iLCJpYXQiOjE3MzI2Mjk0NTUsImV4cCI6MTczMjYzMDM1NX0.hn9B7n8meS1obm3nnk_0O7LYfdgnuMSzTADTMaKh9wZiBLNYfbAa6SKem713022V03MGfMUOX3fmi7CflOdq8A');
 /*!40000 ALTER TABLE `tbl_blacklisted_tokens` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -141,7 +142,7 @@ CREATE TABLE `tbl_modelli` (
   `transcodifica_modello` blob NOT NULL,
   `attivo` bit(1) NOT NULL,
   PRIMARY KEY (`id_modello`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -172,7 +173,7 @@ CREATE TABLE `tbl_modelli_compilati` (
   KEY `fk_modelli_compilati_tbl_richieste1_idx` (`id_richiesta`),
   CONSTRAINT `fk_modelli_compilati_tbl_modelli1` FOREIGN KEY (`id_modello`) REFERENCES `tbl_modelli` (`id_modello`),
   CONSTRAINT `fk_modelli_compilati_tbl_richieste1` FOREIGN KEY (`id_richiesta`) REFERENCES `tbl_richieste` (`id_richiesta`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -181,7 +182,7 @@ CREATE TABLE `tbl_modelli_compilati` (
 
 LOCK TABLES `tbl_modelli_compilati` WRITE;
 /*!40000 ALTER TABLE `tbl_modelli_compilati` DISABLE KEYS */;
-INSERT INTO `tbl_modelli_compilati` VALUES (6,_binary '{\n   \"idModello\":2,\n   \"idRichiesta\":152,\n   \"transcodificaModelloCompilato\":{\n      \"forms_all_offices\":\"7\",\n      \"forms_all_priority\":\"1\",\n      \"forms_all_object\":\"jkh\",\n      \"forms_all_materials\":\"on\",\n      \"forms_all_description\":\"kjhkjhkjhkhjkjhk\"\n   },',0,109,_binary '{\r\n    \"data\": [\r\n        {\r\n            \"name\": \"forms_all_object\",\r\n            \"type\": \"text\",\r\n            \"attributes\": {\r\n                \"required\": true\r\n            }\r\n        },\r\n        {\r\n            \"name\": \"forms_all_materials\",\r\n            \"type\": \"checkbox\",\r\n            \"subitems\": [{\"name\": \"pc\", \"value\": \"pc\"},{\"name\": \"monitor\", \"value\": \"monitor\"},{\"name\": \"stampante\", \"value\": \"stampante\"}],\r\n            \"attributes\": {\r\n                \"required\": true,\r\n                \"multiple\": false\r\n            }\r\n        },\r\n        {\r\n            \"name\": \"forms_all_description\",\r\n            \"type\": \"textarea\",\r\n            \"attributes\": {\r\n                \"required\": true\r\n            }\r\n        }\r\n    ]\r\n}'),(7,_binary '{\n   \"idModello\":2,\n   \"idRichiesta\":152,\n   \"transcodificaModelloCompilato\":{\n      \"forms_all_offices\":\"7\",\n      \"forms_all_priority\":\"1\",\n      \"forms_all_object\":\"jkh\",\n      \"forms_all_materials\":\"on\",\n      \"forms_all_description\":\"kjhkjhkjhkhjkjhk\"\n   },',0,109,_binary '{\r\n    \"data\": [\r\n        {\r\n            \"name\": \"forms_all_object\",\r\n            \"type\": \"text\",\r\n            \"attributes\": {\r\n                \"required\": true\r\n            }\r\n        },\r\n        {\r\n            \"name\": \"forms_all_materials\",\r\n            \"type\": \"checkbox\",\r\n            \"subitems\": [{\"name\": \"pc\", \"value\": \"pc\"},{\"name\": \"monitor\", \"value\": \"monitor\"},{\"name\": \"stampante\", \"value\": \"stampante\"}],\r\n            \"attributes\": {\r\n                \"required\": true,\r\n                \"multiple\": false\r\n            }\r\n        },\r\n        {\r\n            \"name\": \"forms_all_description\",\r\n            \"type\": \"textarea\",\r\n            \"attributes\": {\r\n                \"required\": true\r\n            }\r\n        }\r\n    ]\r\n}'),(8,_binary '{\n   \"idModello\":2,\n   \"idRichiesta\":152,\n   \"transcodificaModelloCompilato\":{\n      \"forms_all_offices\":\"7\",\n      \"forms_all_priority\":\"1\",\n      \"forms_all_object\":\"jkh\",\n      \"forms_all_materials\":\"on\",\n      \"forms_all_description\":\"kjhkjhkjhkhjkjhk\"\n   },',0,109,_binary '{\r\n    \"data\": [\r\n        {\r\n            \"name\": \"forms_all_object\",\r\n            \"type\": \"text\",\r\n            \"attributes\": {\r\n                \"required\": true\r\n            }\r\n        },\r\n        {\r\n            \"name\": \"forms_all_materials\",\r\n            \"type\": \"checkbox\",\r\n            \"subitems\": [{\"name\": \"pc\", \"value\": \"pc\"},{\"name\": \"monitor\", \"value\": \"monitor\"},{\"name\": \"stampante\", \"value\": \"stampante\"}],\r\n            \"attributes\": {\r\n                \"required\": true,\r\n                \"multiple\": false\r\n            }\r\n        },\r\n        {\r\n            \"name\": \"forms_all_description\",\r\n            \"type\": \"textarea\",\r\n            \"attributes\": {\r\n                \"required\": true\r\n            }\r\n        }\r\n    ]\r\n}');
+INSERT INTO `tbl_modelli_compilati` VALUES (3,_binary '{\"forms_all_materials\":\"on\",\"forms_all_description\":\"asd\",\"forms_all_object\":\"asdddd\",\"forms_all_priority\":\"1\",\"forms_all_offices\":\"2\"}',2,156,_binary '{\r\n    \"data\": [\r\n        {\r\n            \"name\": \"forms_all_object\",\r\n            \"type\": \"text\",\r\n            \"attributes\": {\r\n                \"required\": true\r\n            }\r\n        },\r\n        {\r\n            \"name\": \"forms_all_materials\",\r\n            \"type\": \"checkbox\",\r\n            \"subitems\": [{\"name\": \"pc\", \"value\": \"pc\"},{\"name\": \"monitor\", \"value\": \"monitor\"},{\"name\": \"stampante\", \"value\": \"stampante\"}],\r\n            \"attributes\": {\r\n                \"required\": true,\r\n                \"multiple\": false\r\n            }\r\n        },\r\n        {\r\n            \"name\": \"forms_all_description\",\r\n            \"type\": \"textarea\",\r\n            \"attributes\": {\r\n                \"required\": true\r\n            }\r\n        }\r\n    ]\r\n}'),(4,_binary '{\"forms_all_offices\":\"2\",\"forms_all_priority\":\"1\",\"forms_all_object\":\"aa\",\"forms_all_description\":\"aa\"}',1,157,_binary '{\r\n    \"data\": [\r\n        {\r\n            \"name\": \"forms_all_object\",\r\n            \"type\": \"text\",\r\n            \"attributes\": {\r\n                \"required\": true,\r\n                \"multiple\": false\r\n            }\r\n        },\r\n        {\r\n            \"name\": \"forms_all_description\",\r\n            \"type\": \"textarea\",\r\n            \"attributes\": {\r\n                \"required\": true,\r\n                \"multiple\": false\r\n            }\r\n        }\r\n    ]\r\n}');
 /*!40000 ALTER TABLE `tbl_modelli_compilati` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -203,7 +204,7 @@ CREATE TABLE `tbl_modelli_tipologie_richieste` (
   KEY `fk_tbl_modelli_tipologie_richieste_tbl_modello` (`id_modello`),
   CONSTRAINT `fk_tbl_modelli_tipologie_richieste_tbl_modello` FOREIGN KEY (`id_modello`) REFERENCES `tbl_modelli` (`id_modello`),
   CONSTRAINT `fk_tbl_modelli_tipologie_richieste_tbl_tipologie_richieste` FOREIGN KEY (`id_tipologia_richiesta`) REFERENCES `tbl_tipologie_richieste` (`id_tipologia_richiesta`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -212,7 +213,7 @@ CREATE TABLE `tbl_modelli_tipologie_richieste` (
 
 LOCK TABLES `tbl_modelli_tipologie_richieste` WRITE;
 /*!40000 ALTER TABLE `tbl_modelli_tipologie_richieste` DISABLE KEYS */;
-INSERT INTO `tbl_modelli_tipologie_richieste` VALUES (1,1,1,_binary '','2074-12-31 00:00:00'),(2,2,2,_binary '','2074-12-31 00:00:00'),(3,3,3,_binary '','2074-12-31 00:00:00'),(4,4,4,_binary '','2074-12-31 00:00:00'),(5,5,5,_binary '','2074-12-31 00:00:00'),(6,6,6,_binary '','2074-12-31 00:00:00'),(7,7,7,_binary '','2074-12-31 00:00:00');
+INSERT INTO `tbl_modelli_tipologie_richieste` VALUES (1,1,1,_binary '','2074-12-31 00:00:00'),(2,2,2,_binary '','2074-12-31 00:00:00'),(3,3,3,_binary '','2074-12-31 00:00:00'),(4,4,4,_binary '','2074-12-31 00:00:00'),(5,5,5,_binary '','2074-12-31 00:00:00');
 /*!40000 ALTER TABLE `tbl_modelli_tipologie_richieste` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -272,7 +273,7 @@ CREATE TABLE `tbl_richieste` (
   CONSTRAINT `fk_tbl_richieste_tbl_tipologie_richieste` FOREIGN KEY (`id_tipologia_richiesta`) REFERENCES `tbl_tipologie_richieste` (`id_tipologia_richiesta`),
   CONSTRAINT `fk_tbl_richieste_tbl_utenti_uffici_ruoli_stato_corrente` FOREIGN KEY (`id_utente_ufficio_ruolo_stato_corrente`) REFERENCES `tbl_utenti_uffici_ruoli` (`id_utente_ufficio_ruolo`),
   CONSTRAINT `fk_tbl_richieste_tbl_utenti_uffici_ruoli_stato_iniziale` FOREIGN KEY (`id_utente_ufficio_ruolo_stato_iniziale`) REFERENCES `tbl_utenti_uffici_ruoli` (`id_utente_ufficio_ruolo`)
-) ENGINE=InnoDB AUTO_INCREMENT=111 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=161 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -281,7 +282,7 @@ CREATE TABLE `tbl_richieste` (
 
 LOCK TABLES `tbl_richieste` WRITE;
 /*!40000 ALTER TABLE `tbl_richieste` DISABLE KEYS */;
-INSERT INTO `tbl_richieste` VALUES (108,'RA2411042961ZZ',1,1,_binary '\0',2,'2024-11-04 14:29:02','2024-11-04 14:29:02',16,16,1),(109,'RA2411055442ZZ',1,2,_binary '\0',2,'2024-11-05 07:10:28','2024-11-05 07:10:28',23,23,1),(110,'RF2411059022ZZ',1,7,_binary '\0',1,'2024-11-05 07:20:22','2024-11-05 07:20:22',23,23,1);
+INSERT INTO `tbl_richieste` VALUES (108,'RA2411042961ZZ',9,1,_binary '\0',2,'2024-11-04 14:29:02','2024-11-04 14:29:02',16,16,1),(111,'RA2411083192ZZ',12,2,_binary '\0',1,'2024-11-08 09:20:22','2024-11-08 09:20:22',3,3,1),(112,'RA2411083982ZZ',12,2,_binary '\0',3,'2024-11-08 09:21:04','2024-11-08 09:21:04',3,3,1),(115,'RA2411115621ZZ',9,2,_binary '\0',1,'2024-11-11 14:56:02','2024-11-11 14:56:02',26,26,1),(116,'RA2411116401ZZ',6,3,_binary '\0',2,'2024-11-11 15:00:24','2024-11-11 15:00:24',28,28,1),(117,'RC2411134942ZZ',2,5,_binary '\0',2,'2024-11-13 08:54:14','2024-11-13 08:54:14',32,32,1),(156,'RA2411257942ZZ',12,2,_binary '\0',1,'2024-11-25 21:02:48','2024-11-25 21:02:48',23,23,1),(157,'RA2411257712ZZ',1,1,_binary '\0',1,'2024-11-25 21:04:00','2024-11-25 21:04:00',23,23,1);
 /*!40000 ALTER TABLE `tbl_richieste` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -327,7 +328,7 @@ CREATE TABLE `tbl_ruoli_funzionalita` (
   KEY `fk_tbl_ruoli_has_tbl_funzionalita_tbl_ruoli1_idx` (`id_ruolo`),
   CONSTRAINT `fk_tbl_ruoli_has_tbl_funzionalita_tbl_funzionalita1` FOREIGN KEY (`id_funzionalita`) REFERENCES `tbl_funzionalita` (`id_funzionalita`),
   CONSTRAINT `fk_tbl_ruoli_has_tbl_funzionalita_tbl_ruoli1` FOREIGN KEY (`id_ruolo`) REFERENCES `tbl_ruoli` (`id_ruolo`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -353,7 +354,7 @@ CREATE TABLE `tbl_settori` (
   `email_settore` varchar(50) DEFAULT NULL,
   `attivo` bit(1) NOT NULL,
   PRIMARY KEY (`id_settore`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -410,7 +411,7 @@ CREATE TABLE `tbl_settori_uffici` (
   `attivo` bit(1) NOT NULL,
   PRIMARY KEY (`id_settore_ufficio`),
   KEY `fk_tbl_settori_uffici_tbl_settori_idx1` (`id_settore`),
-  KEY `fk_tbl_settori_uffici_tbl_uffici_idx1` (`id_ufficio`) /*!80000 INVISIBLE */,
+  KEY `fk_tbl_settori_uffici_tbl_uffici_idx1` (`id_ufficio`),
   CONSTRAINT `fk_tbl_settori_uffici_tbl_settori` FOREIGN KEY (`id_settore`) REFERENCES `tbl_settori` (`id_settore`),
   CONSTRAINT `fk_tbl_settori_uffici_tbl_uffici` FOREIGN KEY (`id_ufficio`) REFERENCES `tbl_uffici` (`id_ufficio`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -442,7 +443,7 @@ CREATE TABLE `tbl_stati_richieste` (
   `colore` varchar(10) NOT NULL,
   `tab_wizard` int NOT NULL,
   PRIMARY KEY (`id_stato_richiesta`)
-) ENGINE=InnoDB AUTO_INCREMENT=10001 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -503,7 +504,7 @@ CREATE TABLE `tbl_tipologie_richieste` (
   PRIMARY KEY (`id_tipologia_richiesta`),
   KEY `fk_tbl_tipologie_richieste_tbl_stati_richieste1_idx` (`id_stato_richiesta_partenza`),
   CONSTRAINT `fk_tbl_tipologie_richieste_tbl_stati_richieste` FOREIGN KEY (`id_stato_richiesta_partenza`) REFERENCES `tbl_stati_richieste` (`id_stato_richiesta`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -512,7 +513,7 @@ CREATE TABLE `tbl_tipologie_richieste` (
 
 LOCK TABLES `tbl_tipologie_richieste` WRITE;
 /*!40000 ALTER TABLE `tbl_tipologie_richieste` DISABLE KEYS */;
-INSERT INTO `tbl_tipologie_richieste` VALUES (1,'Acquisto',3,_binary ''),(2,'Assegnazione Materiale Informatico',3,_binary ''),(3,'Assegnazione Materiale Operativo',3,_binary ''),(4,'Assegnazione Materiale Logistico',3,_binary ''),(5,'Corsi',3,_binary ''),(6,'DPI',999,_binary ''),(7,'Fascicolo Sanitario',998,_binary '');
+INSERT INTO `tbl_tipologie_richieste` VALUES (1,'Acquisto',3,_binary ''),(2,'Assegnazione Materiale Informatico',3,_binary ''),(3,'Assegnazione Materiale Operativo',3,_binary ''),(4,'Assegnazione Materiale Logistico',3,_binary ''),(5,'Corsi',3,_binary '');
 /*!40000 ALTER TABLE `tbl_tipologie_richieste` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -560,7 +561,7 @@ CREATE TABLE `tbl_utenti` (
   `email_utente` varchar(50) NOT NULL,
   `attivo` bit(1) NOT NULL,
   PRIMARY KEY (`id_utente`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -569,7 +570,7 @@ CREATE TABLE `tbl_utenti` (
 
 LOCK TABLES `tbl_utenti` WRITE;
 /*!40000 ALTER TABLE `tbl_utenti` DISABLE KEYS */;
-INSERT INTO `tbl_utenti` VALUES (1,'antonioroberto.diterlizzi','ANTONIO ROBERTO','DI TERLIZZI','DTRNNR85E11L109U',0,'antonioroberto.diterlizzi@vigilfuoco.it',_binary ''),(3,'simone.lecca','SIMONE','LECCA','LCCSMN97C11H856K',0,'simone.lecca@vigilfuoco.it',_binary ''),(17,'antonio.ferrato','ANTONIO','FERRATO','FRRNTN76A08H224O',0,'antonio.ferrato@vigilfuoco.it',_binary '');
+INSERT INTO `tbl_utenti` VALUES (1,'antonioroberto.diterlizzi','ANTONIO ROBERTO','DI TERLIZZI','DTRNNR85E11L109U',0,'antonioroberto.diterlizzi@vigilfuoco.it',_binary ''),(3,'simone.lecca','SIMONE','LECCA','LCCSMN97C11H856K',0,'simone.lecca@vigilfuoco.it',_binary ''),(17,'antonio.ferrato','ANTONIO','FERRATO','FRRNTN76A08H224O',0,'antonio.ferrato@vigilfuoco.it',_binary ''),(18,'raffaele.bianco','RAFFAELE','BIANCO','BNCRFL82C26A455Z',0,'raffaele.bianco@vigilfuoco.it',_binary ''),(19,'angelo.piccialli','ANGELO','PICCIALLI','PCCNGL74B15G224C',0,'angelo.piccialli@vigilfuoco.it',_binary '');
 /*!40000 ALTER TABLE `tbl_utenti` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -595,7 +596,7 @@ CREATE TABLE `tbl_utenti_uffici_ruoli` (
   CONSTRAINT `fk_tbl_utenti_tbl_uffici_tbl_utenti` FOREIGN KEY (`id_utente`) REFERENCES `tbl_utenti` (`id_utente`),
   CONSTRAINT `fk_tbl_utenti_uffici_ruoli_tbl_ruoli` FOREIGN KEY (`id_ruolo`) REFERENCES `tbl_ruoli` (`id_ruolo`),
   CONSTRAINT `fk_tbl_utenti_uffici_ruoli_tbl_settori_uffici1` FOREIGN KEY (`id_settore_ufficio`) REFERENCES `tbl_settori_uffici` (`id_settore_ufficio`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -604,7 +605,7 @@ CREATE TABLE `tbl_utenti_uffici_ruoli` (
 
 LOCK TABLES `tbl_utenti_uffici_ruoli` WRITE;
 /*!40000 ALTER TABLE `tbl_utenti_uffici_ruoli` DISABLE KEYS */;
-INSERT INTO `tbl_utenti_uffici_ruoli` VALUES (1,1,1,2,_binary '\0','2024-06-11 00:00:00','2024-06-11 00:00:00'),(2,1,5,3,_binary '','2024-07-23 00:00:00','2024-07-23 00:00:00'),(3,3,1,3,_binary '','2024-07-23 00:00:00','2024-07-23 00:00:00'),(12,1,3,3,_binary '','2024-09-30 13:54:50','2074-09-30 13:54:50'),(16,1,2,3,_binary '','2024-10-30 10:21:45','2074-10-30 10:21:45'),(23,1,1,3,_binary '','2024-11-04 13:47:26','2074-11-04 13:47:26'),(24,3,4,9,_binary '','2024-11-05 07:49:12','2074-11-05 07:49:12'),(25,17,1,4,_binary '','2024-11-05 07:50:56','2074-11-05 07:50:56');
+INSERT INTO `tbl_utenti_uffici_ruoli` VALUES (1,1,1,2,_binary '\0','2024-06-11 00:00:00','2024-06-11 00:00:00'),(2,1,5,3,_binary '','2024-07-23 00:00:00','2024-07-23 00:00:00'),(3,3,1,3,_binary '','2024-07-23 00:00:00','2024-07-23 00:00:00'),(12,1,3,3,_binary '','2024-09-30 13:54:50','2074-09-30 13:54:50'),(16,1,2,3,_binary '','2024-10-30 10:21:45','2074-10-30 10:21:45'),(23,1,1,3,_binary '','2024-11-04 13:47:26','2074-11-04 13:47:26'),(24,3,4,9,_binary '','2024-11-05 07:49:12','2074-11-05 07:49:12'),(25,17,1,4,_binary '','2024-11-05 07:50:56','2074-11-05 07:50:56'),(26,18,3,1,_binary '\0','2024-11-11 14:55:43','2074-11-11 14:55:43'),(27,18,1,1,_binary '','2024-11-11 14:56:41','2074-11-11 14:56:41'),(28,18,2,1,_binary '','2024-11-11 14:59:18','2074-11-11 14:59:18'),(29,19,1,3,_binary '','2024-11-11 15:02:55','2074-11-11 15:02:55'),(30,17,3,4,_binary '','2024-11-11 15:03:21','2074-11-11 15:03:21'),(31,3,2,3,_binary '','2024-11-11 15:03:54','2074-11-11 15:03:54'),(32,3,3,3,_binary '','2024-11-11 15:03:57','2074-11-11 15:03:57'),(33,3,4,3,_binary '\0','2024-11-11 15:03:59','2074-11-11 15:03:59');
 /*!40000 ALTER TABLE `tbl_utenti_uffici_ruoli` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -617,4 +618,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-14 13:06:24
+-- Dump completed on 2024-11-26 15:04:55

@@ -14,6 +14,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -694,22 +695,35 @@ import com.vigilfuoco.mgr.utility.Utility;
         }
         return ResponseEntity.ok(result);
 	}
-
+	
+	@Transactional
 	public ResponseEntity<String> deleteRichiesta(Long id) {
-
-        // Verifica che la richiesta esista
-        Richiesta richiesta = repositoryRichiesta.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Richiesta non trovata con id: " + id));
-
-        // Controlla se lo stato della richiesta è 1
-        if (richiesta.getStatoRichiesta().getIdStatoRichiesta() != 1) {
-            throw new InvalidRequestStateException("La richiesta non può essere cancellata perché non ha lo stato di bozza ovvero 'Inserita'.");
-        }
-
-        // Cancella la richiesta
-        repositoryRichiesta.delete(richiesta);
-
-        return ResponseEntity.ok("Richiesta cancellata con successo.");
+		try {
+	        // Verifico che la richiesta esista
+	        Richiesta richiesta = repositoryRichiesta.findById(id)
+	                .orElseThrow(() -> new ResourceNotFoundException("Richiesta non trovata con id: " + id));
+	
+	        // Controllo se lo stato della richiesta è 1
+	        if (richiesta.getStatoRichiesta().getIdStatoRichiesta() != 1) {
+	            throw new InvalidRequestStateException("La richiesta non può essere cancellata perché non ha lo stato di bozza ovvero 'Inserita'.");
+	        }
+	        
+	        // Verifico l'esistenza di un modello compilato per la singola richiesta
+	        List<ModelloCompilato> modelloCompilato = modelloCompilatoRepository.findByRichiesta_IdRichiesta(id);
+	        
+	        if (!modelloCompilato.isEmpty()) {
+		        // Cancello modello compilato
+	        	modelloCompilatoRepository.deleteAll(modelloCompilato);
+	        }
+	        
+	        // Cancello la richiesta
+	        repositoryRichiesta.delete(richiesta);
+	
+	        return ResponseEntity.ok("Richiesta cancellata con successo.");
+		} catch (Exception e) {
+		     logger.error("deleteRichiesta " + id + ": " + e);
+		}
+		return null;
 	}
 
 	public ResponseEntity<String> deleteTipologiaRichiesta(Short idTipologiaRichiesta) {
